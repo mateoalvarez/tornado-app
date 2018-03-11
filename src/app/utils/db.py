@@ -1,9 +1,11 @@
+"""Data base management and connection"""
 import asyncio
-import asyncpg
 
 import time
 import logging
 from tornado.ioloop import IOLoop
+
+import asyncpg
 
 logger = logging.getLogger(__name__)
 

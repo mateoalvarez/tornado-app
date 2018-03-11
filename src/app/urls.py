@@ -1,11 +1,13 @@
+"""Webpage urls and handlers"""
+
 from tornado.web import url
 
 # from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler
 from models.home.handlers import HomeHandler
 
-url_patterns = [
+URL_PATTERNS = [
     # Home
-    url(r"/", HomeHandler, name = "home"),
+    url(r"/", HomeHandler, name="home"),
 
     # Auth
     # url(r"/register/", RegisterHandler, name = "register"),

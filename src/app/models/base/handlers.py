@@ -1,3 +1,5 @@
+"""Main web handlers, from tornado web handler"""
+
 import logging
 import json
 import jinja2 as jinja
@@ -5,7 +7,7 @@ import jinja2 as jinja
 import tornado.web
 from tornado import gen
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class BaseHandler(tornado.web.RequestHandler):
 

@@ -1,2 +1,3 @@
 src/app/logs/
-*/__pycache__
+*/__pycache__/
+src/db/__pycache__
