@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ static_url("main.css") }}" type="text/css">
-    {% block head %}{% end %}
+    {% block navbar %}{% include "navbar.html" %}{% end %}
   </head>
   <body>
     <div id="body">
@@ -12,6 +12,6 @@
       </div>
       <div id="content">{% block body %}{% end %}</div>
     </div>
-    {% block bottom %}{% end %}
+    {% block footer %}{% include "footer.html" %}{% end %}
   </body>
 </html>
