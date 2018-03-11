@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ static_url("main.css") }}" type="text/css">
-    {% block navbar %}{% include "navbar.html" %}{% end %}
+    <link rel="stylesheet" href="{{ static_url("navbar.css") }}" type="text/css">
   </head>
-  <body>
+  <body style="margin:0;">
+    {% block navbar %}{% include "navbar.html" %}{% end %}
     <div id="body">
       <div id="header">
         <h1 style="color:red;">main</h1>
