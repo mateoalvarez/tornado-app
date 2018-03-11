@@ -1,3 +1,12 @@
-<html>
-<h1>title</h1>
-</html>
+{% extends "../base/base.html" %}
+
+{% block body %}
+  <h1>{{ _("welcome") }}</h1>
+  <ul>
+    {% for element in elementos %}
+      <li>
+        {{ escape(element) }}
+      </li>
+    {% end %}
+  </ul>
+{% end %}

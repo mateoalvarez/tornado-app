@@ -1,5 +1,6 @@
 """Home page handlers"""
 import logging
+import tornado
 from tornado import gen
 from ..base.handlers import BaseHandler
 
@@ -10,4 +11,7 @@ class HomeHandler(BaseHandler):
     @gen.coroutine
     def get(self):
         "GET method on home page"
-        self.render("home/home.html")
+        # user_locale = tornado.locale.get()
+        # print(user_locale.translate("Sign out"))
+        elementos = ["aaaaaa", "bbbbbbb", "ccccc"]
+        self.render("home/home.html", elementos=elementos)

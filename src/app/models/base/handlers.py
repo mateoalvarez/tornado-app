@@ -1,16 +1,15 @@
 """Main web handlers, from tornado web handler"""
 
 import logging
-import json
-import jinja2 as jinja
+# import json
+# import jinja2 as jinja
 
 import tornado.web
-from tornado import gen
+# from tornado import gen
 
 LOGGER = logging.getLogger(__name__)
 
 class BaseHandler(tornado.web.RequestHandler):
-
     """
         Class to collect all common handler methods.
         Extend all other handlers from this one

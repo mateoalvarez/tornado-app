@@ -19,6 +19,8 @@ class TwitterApplication(tornado.web.Application):
 def main():
     """Server starter"""
     app = TwitterApplication()
+    tornado.locale.load_translations(options.locale_dir)
+    tornado.locale.set_default_locale(options.default_locale)
     http_server = tornado.httpserver.HTTPServer(app, ssl_options=options.ssl_options)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()

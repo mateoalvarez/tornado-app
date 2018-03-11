@@ -12,8 +12,6 @@ from jinja2 import Environment, FileSystemLoader
 LOCATION = lambda x: os.path.join(
     os.path.dirname(os.path.realpath(__file__)), x)
 
-tornado.options.parse_command_line()
-
 STATIC_ROOT = LOCATION('static')
 
 # Make filepaths relative to settings.
@@ -21,7 +19,10 @@ PATH = lambda root, *a: os.path.join(root, *a)
 ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_ROOT = PATH(ROOT, 'templates')
 CERT_ROOT = PATH(ROOT, 'certs')
+LOCALE_ROOT = PATH(ROOT, 'locales')
 # Deployment configuration
+
+tornado.options.parse_command_line()
 
 # Tornado server configuration
 define("port", default=8888, help="Run on the given port", type=int)
@@ -31,7 +32,8 @@ define("ssl_options", default={
     "certfile": CERT_ROOT + '/cert.pem',
     "keyfile": CERT_ROOT + '/key.pem'
 })
-
+define("locale_dir", default=LOCALE_ROOT, help='Locale template directory')
+define("default_locale", default='es_ES', help="Default locale")
 
 COOKIE_SECRET = base64.b64encode(os.urandom(50)).decode('ascii')
 
@@ -41,7 +43,7 @@ settings = {
     'cookie_secret': COOKIE_SECRET,
     'cookie_expires': 31,
     'xsrf_cookies': False,
-    'login_url': '/login/',
+    'login_url': '/auth/login/',
     'template_loader': tornado.template.Loader(TEMPLATE_ROOT),
 }
 
