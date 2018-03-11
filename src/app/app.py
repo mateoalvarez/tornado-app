@@ -19,7 +19,7 @@ class TwitterApplication(tornado.web.Application):
 def main():
     """Server starter"""
     app = TwitterApplication()
-    http_server = tornado.httpserver.HTTPServer(app)
+    http_server = tornado.httpserver.HTTPServer(app, ssl_options=options.ssl_options)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
 

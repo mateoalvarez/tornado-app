@@ -1,42 +1,46 @@
+"""Web site settings"""
 import os
 import logging.config
+import base64
 import tornado
 import tornado.template
 from tornado.options import options, define
 from jinja2 import Environment, FileSystemLoader
 
-import base64
-import uuid
 
 # Make filepaths relative to settings.
-location = lambda x: os.path.join(
+LOCATION = lambda x: os.path.join(
     os.path.dirname(os.path.realpath(__file__)), x)
+
+tornado.options.parse_command_line()
+
+STATIC_ROOT = LOCATION('static')
+
+# Make filepaths relative to settings.
+PATH = lambda root, *a: os.path.join(root, *a)
+ROOT = os.path.dirname(os.path.abspath(__file__))
+TEMPLATE_ROOT = PATH(ROOT, 'templates')
+CERT_ROOT = PATH(ROOT, 'certs')
+# Deployment configuration
 
 # Tornado server configuration
 define("port", default=8888, help="Run on the given port", type=int)
 define("config", default=None, help="Tornado config file")
 define("debug", default=False, help="Debug mode")
+define("ssl_options", default={
+    "certfile": CERT_ROOT + '/cert.pem',
+    "keyfile": CERT_ROOT + '/key.pem'
+})
 
-tornado.options.parse_command_line()
 
-STATIC_ROOT = location('static')
-# TEMPLATE_ROOT = location('templates')
-# TEMPLATE_ROOT = location("/Users/Mat/github/tornado-app/src/app/templates")
-
-# Make filepaths relative to settings.
-path = lambda root,*a: os.path.join(root, *a)
-ROOT = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE_ROOT = path(ROOT, 'templates')
-# Deployment configuration
-
-cookie_secret = base64.b64encode(os.urandom(50)).decode('ascii')
+COOKIE_SECRET = base64.b64encode(os.urandom(50)).decode('ascii')
 
 settings = {
     'debug': options.debug,
     'static_path': STATIC_ROOT,
-    'cookie_secret': cookie_secret,
+    'cookie_secret': COOKIE_SECRET,
     'cookie_expires': 31,
-    'xsrf_cookies': True,
+    'xsrf_cookies': False,
     'login_url': '/login/',
     'template_loader': tornado.template.Loader(TEMPLATE_ROOT),
 }
@@ -72,7 +76,7 @@ LOGGING = {
     'formatters': {
         'main_formatter': {
             'format': '%(levelname)s:%(name)s: %(message)s '
-            '(%(asctime)s; %(filename)s:%(lineno)d)',
+                      '(%(asctime)s; %(filename)s:%(lineno)d)',
             'datefmt': "%Y-%m-%d %H:%M:%S",
         },
     },
@@ -80,7 +84,7 @@ LOGGING = {
         'rotate_file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': location('logs/main.log'),
+            'filename': LOCATION('logs/main.log'),
             'when': 'midnight',
             'interval':    1,  # day
             'backupCount': 7,

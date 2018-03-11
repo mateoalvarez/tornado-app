@@ -11,4 +11,3 @@ class HomeHandler(BaseHandler):
     def get(self):
         "GET method on home page"
         self.render("home/home.html")
-        # self.render( "/Users/Mat/github/tornado-app/src/app/templates/home/home.html")
