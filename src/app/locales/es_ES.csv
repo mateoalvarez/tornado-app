@@ -1,3 +1,14 @@
-"welcome", "bienvenido"
-"Welcome", "Bienvenido"
-"Sign out", "Cerrar sesión"
+# Home page
+
+"welcome","bienvenido"
+"Welcome","Bienvenido"
+"Sign out","Cerrar sesión"
+
+# User login
+"Username","Usuario"
+"Password","Password"
+"Sign in","Entrar"
+
+# User registration
+"Register","Registro"
+"Repeat Password","Repetir Password"

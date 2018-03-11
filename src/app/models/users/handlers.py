@@ -16,6 +16,7 @@ class RegisterHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         """User registration creation"""
+        self.redirect(self.get_argument("next", u"/"))
         self.render("users/creation.html")
 
 class LoginHandler(BaseHandler):

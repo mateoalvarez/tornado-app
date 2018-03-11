@@ -1,21 +1,23 @@
-<html>
-<form action="/auth/login" method="post" id="login_form">
-    <fieldset>
-        <label for="username">Username</label>
-        <input class="text-input" id="username" name="username" type="text" value="">
-    </fieldset>
+{% extends "../base/base.html" %}
 
-    <fieldset>
-        <label for="password">Password</label>
-        <input class="text-input" id="password" name="password" type="password" value="">
-    </fieldset>
+{% block body %}
+  <form action="/auth/login" method="post" id="login_form">
+      <fieldset>
+          <label for="username">{{ _("Username") }}</label>
+          <input class="text-input" id="username" name="username" type="text" value="">
+      </fieldset>
 
-    <fieldset>
-        <span class="errormessage"></span>
-    </fieldset>
+      <fieldset>
+          <label for="password">{{ _("Password") }}</label>
+          <input class="text-input" id="password" name="password" type="password" value="">
+      </fieldset>
 
-    <div id="form_btn">
-        <input id="signin-btn" class="btn btn-blue" type="submit" value="Sign In" tabindex="3">
-    </div>
-</form>
-</html>
+      <fieldset>
+          <span class="errormessage"></span>
+      </fieldset>
+
+      <div id="form_btn">
+          <input id="signin-btn" class="btn btn-blue" type="submit" value={{ _("Sign in") }} tabindex="3">
+      </div>
+  </form>
+{% end %}

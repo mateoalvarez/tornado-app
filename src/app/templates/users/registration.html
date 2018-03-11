@@ -1,3 +1,28 @@
-<html>
-  <h1>User registration page</h1>
-</html>
+{% extends "../base/base.html" %}
+
+{% block body %}
+  <form action="/auth/registration" method="post" id="registration_form">
+      <fieldset>
+          <label for="username">{{ _("Username") }}</label>
+          <input class="text-input" id="username" name="username" type="text" value="">
+      </fieldset>
+
+      <fieldset>
+          <label for="password">{{ _("Password") }}</label>
+          <input class="text-input" id="password" name="password" type="password" value="">
+      </fieldset>
+
+      <fieldset>
+          <label for="password">{{ _("Repeat Password") }}</label>
+          <input class="text-input" id="password" name="password" type="password" value="">
+      </fieldset>
+
+      <fieldset>
+          <span class="errormessage"></span>
+      </fieldset>
+
+      <div id="form_btn">
+          <input id="registration-btn" class="btn btn-blue" type="submit" value={{ _("Register") }} tabindex="3">
+      </div>
+  </form>
+{% end %}

@@ -1,3 +1,14 @@
-"welcome", "welcome"
-"Welcome", "Welcome"
-"Sign out", "Sign out"
+# Home page
+
+"welcome","welcome"
+"Welcome","Welcome"
+"Sign out","Sign out"
+
+# User login
+"Username","User"
+"Password","Password"
+"Sign in", "Sign in"
+
+# User registration
+"Register","Register"
+"Repeat Password","Repeat Password"
