@@ -25,7 +25,7 @@ class RegisterHandler(BaseHandler):
     def post(self):
         """User registration creation"""
         email = self.get_argument("email", "")
-        if user_exists(self.db, email):
+        if user_exists(self.db_cur, email):
             # self.render("users/registration.html", error="400, User already exists")
             raise tornado.web.HTTPError(400, "User already exists")
 
@@ -35,15 +35,23 @@ class RegisterHandler(BaseHandler):
             bcrypt.gensalt())
 
         user_type = 1
-
-        user_id = self.db.execute(
+        user_id = self.db_cur.execute(
             "INSERT INTO users (email, name, hashed_password, type)\
-            VALUES (%s, %s, %s, %s);",(\
-            self.get_argument("email"),
-            self.get_argument("username"),
-            hashed_password.decode('utf-8'),
-            user_type)
-             )
+                VALUES (%s, %s, %s, %s);", (\
+                self.get_argument("email"),
+                self.get_argument("username"),
+                hashed_password.decode('utf-8'),
+                user_type)
+        )
+        self.db_conn.commit()
+        # user_id = self.db.execute(
+        #     "INSERT INTO users (email, name, hashed_password, type)\
+        #     VALUES (%s, %s, %s, %s);", (\
+        #     self.get_argument("email"),
+        #     self.get_argument("username"),
+        #     hashed_password.decode('utf-8'),
+        #     user_type)
+        #     )
         self.set_secure_cookie("user", str(user_id))
         self.redirect(self.get_argument("next", "/"))
 

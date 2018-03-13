@@ -20,7 +20,8 @@ class BaseHandler(tornado.web.RequestHandler):
         """Start database"""
         super(BaseHandler, self).initialize(**kwargs)
         # self.db = self.settings['db']
-        self.db = psycopg2.connect("dbname=twitter_app_db user=postgres password=mysecretpassword host=localhost port=32768").cursor()
+        self.db_conn = psycopg2.connect("dbname=twitter_app_db user=postgres password=mysecretpassword host=localhost port=32768")
+        self.db_cur = self.db_conn.cursor()
         self.current_user_object = None
         self.template_name = None
 
