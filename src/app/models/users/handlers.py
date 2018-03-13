@@ -1,10 +1,18 @@
 """User handlers"""
+
 import logging
+import concurrent.futures
+import bcrypt
 import tornado
 from tornado import gen
 from ..base.handlers import BaseHandler
 
 LOGGER = logging.getLogger(__name__)
+
+def user_exists(db, email):
+    """Check if user exists on database"""
+    return bool(db.execute("SELECT * FROM users WHERE email='{email}'".format(email=email)))
+
 
 class RegisterHandler(BaseHandler):
     """User Registration Handler"""
@@ -16,8 +24,32 @@ class RegisterHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         """User registration creation"""
-        self.redirect(self.get_argument("next", u"/"))
-        self.render("users/creation.html")
+        email = self.get_argument("email", "")
+        if user_exists(self.db, email):
+            # self.render("users/registration.html", error="400, User already exists")
+            raise tornado.web.HTTPError(400, "User already exists")
+
+        executor = concurrent.futures.ThreadPoolExecutor(2)
+        hashed_password = yield executor.submit(
+            bcrypt.hashpw, tornado.escape.utf8(self.get_argument("password")),
+            bcrypt.gensalt())
+
+        user_type = 1
+
+        user_id = self.db.execute(
+            "INSERT INTO users (email, name, hashed_password, type)\
+            VALUES (%s, %s, %s, %s);",(\
+            self.get_argument("email"),
+            self.get_argument("username"),
+            hashed_password.decode('utf-8'),
+            user_type)
+             )
+        self.set_secure_cookie("user", str(user_id))
+        self.redirect(self.get_argument("next", "/"))
+
+
+
+
 
 class LoginHandler(BaseHandler):
     """User Login Handler"""
@@ -45,10 +77,17 @@ class LoginHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         """User login post"""
-        username = self.get_argument("username", "")
+        email = self.get_argument("email", "")
         password = self.get_argument("password", "")
+
+        author = self.db.get("SELECT * FROM users WHERE email = {email}".format(email=email))
+        if not author:
+            self.render("login.html", error="email not found")
+            return
         self.redirect(self.get_argument("next", u"/"))
-        print(username, password)
+        print(email, password)
+
+
 
 class LogoutHandler(BaseHandler):
     """User logout Handler"""

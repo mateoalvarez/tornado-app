@@ -10,4 +10,5 @@ class RunningApplicationsHandler(BaseHandler):
     """Running applications handler """
     @gen.coroutine
     def get(self):
+        """GET method"""
         self.render("running_applications/running_applications.html")

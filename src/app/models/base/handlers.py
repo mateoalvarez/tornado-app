@@ -1,6 +1,7 @@
 """Main web handlers, from tornado web handler"""
 
 import logging
+import psycopg2
 # import json
 # import jinja2 as jinja
 
@@ -16,12 +17,14 @@ class BaseHandler(tornado.web.RequestHandler):
     """
 
     def initialize(self, **kwargs):
+        """Start database"""
         super(BaseHandler, self).initialize(**kwargs)
-        self.db = self.settings['db']
+        # self.db = self.settings['db']
+        self.db = psycopg2.connect("dbname=twitter_app_db user=postgres password=mysecretpassword host=localhost port=32768").cursor()
         self.current_user_object = None
         self.template_name = None
 
-    # def render(self, template, context=None):
+        # def render(self, template, context=None):
     #     """Renders template using jinja2"""
     #     if not context:
     #         context = {}

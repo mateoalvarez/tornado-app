@@ -1,9 +1,14 @@
 {% extends "../base/base.html" %}
 
 {% block body %}
-  <form action="/auth/registration" method="post" id="registration_form">
+  <form action="/auth/register" method="post" id="registration_form">
       <fieldset>
-          <label for="username">{{ _("Username") }}</label>
+          <label for="username">{{ _("email") }}</label>
+          <input class="text-input" id="email" name="email" type="email" value="">
+      </fieldset>
+
+      <fieldset>
+          <label for="name">{{ _("Username") }}</label>
           <input class="text-input" id="username" name="username" type="text" value="">
       </fieldset>
 
