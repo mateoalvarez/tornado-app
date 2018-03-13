@@ -19,7 +19,7 @@ PATH = lambda root, *a: os.path.join(root, *a)
 ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_ROOT = PATH(ROOT, 'templates')
 CERT_ROOT = PATH(ROOT, 'certs')
-LOCALE_ROOT = PATH(ROOT, 'locales')
+LOCALE_ROOT = PATH(ROOT, 'translations')
 # Deployment configuration
 
 tornado.options.parse_command_line()

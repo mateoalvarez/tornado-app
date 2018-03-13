@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ static_url("main.css") }}" type="text/css">
-    <link rel="stylesheet" href="{{ static_url("navbar.css") }}" type="text/css">
+    <link rel="stylesheet" href="{{ static_url("css/main.css") }}" type="text/css">
+    {% block head %}{% end %}
   </head>
   <body style="margin:0;">
     {% block navbar %}{% include "navbar.html" %}{% end %}
