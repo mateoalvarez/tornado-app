@@ -7,6 +7,7 @@ from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler
 from models.datasets.handlers import DatasetsHandler
 from models.ml_models.handlers import MLModelsHandler
 from models.trained_ml_models.handlers import TrainedMLModelsHandler
+from models.running_applications.handlers import RunningApplicationsHandler
 
 URL_PATTERNS = [
     # Home
@@ -25,4 +26,7 @@ URL_PATTERNS = [
 
     # trained_ml_models
     url(r"/trained_ml_models", TrainedMLModelsHandler, name="trained_ml_models"),
+
+    # running Applications
+    url(r"/running_applications", RunningApplicationsHandler, name="running_applications")
 ]
