@@ -1,10 +1,22 @@
 """User handlers"""
+
 import logging
+import concurrent.futures
+import bcrypt
 import tornado
 from tornado import gen
 from ..base.handlers import BaseHandler
 
 LOGGER = logging.getLogger(__name__)
+
+def user_exists(db_cur, email):
+    """Check if user exists on database"""
+    print(get_user(db_cur, email))
+    return bool(get_user(db_cur, email))
+
+def get_user(db_cur, email):
+    """GET user from database"""
+    return db_cur.execute("SELECT * FROM users WHERE email= %s ;", (email,))
 
 class RegisterHandler(BaseHandler):
     """User Registration Handler"""
@@ -16,8 +28,32 @@ class RegisterHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         """User registration creation"""
-        self.redirect(self.get_argument("next", u"/"))
-        self.render("users/creation.html")
+
+        if user_exists(self.db_cur, self.get_argument("email", "")):
+            # self.render("users/registration.html", error="400, User already exists")
+            raise tornado.web.HTTPError(400, "User already exists")
+
+        executor = concurrent.futures.ThreadPoolExecutor(2)
+        hashed_password = yield executor.submit(
+            bcrypt.hashpw, tornado.escape.utf8(self.get_argument("password")),
+            bcrypt.gensalt())
+
+        user_type = 1
+        user_id = self.db_cur.execute(
+            "INSERT INTO users (email, name, hashed_password, type)\
+                VALUES (%s, %s, %s, %s);", (\
+                self.get_argument("email"),
+                self.get_argument("username"),
+                hashed_password.decode('utf-8'),
+                user_type)
+        )
+        self.db_conn.commit()
+        self.set_secure_cookie("user", str(user_id))
+        self.redirect(self.get_argument("next", "/"))
+
+
+
+
 
 class LoginHandler(BaseHandler):
     """User Login Handler"""
@@ -45,10 +81,21 @@ class LoginHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         """User login post"""
-        username = self.get_argument("username", "")
+        email = self.get_argument("email", "")
         password = self.get_argument("password", "")
+
+        print(email)
+        print(self.db_cur)
+        user = get_user(self.db_cur, email)
+
+        if not user:
+            self.render("users/login.html", error="email not found")
+            return
+        self.set_current_user(user.id)
         self.redirect(self.get_argument("next", u"/"))
-        print(username, password)
+        print(email, password)
+
+
 
 class LogoutHandler(BaseHandler):
     """User logout Handler"""

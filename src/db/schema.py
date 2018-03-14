@@ -1,7 +1,7 @@
 """Schemas of models"""
 USERS = {
-    "id": "id INTEGER NOT NULL",
-    "email": "email VARCHAR",
+    "id": "id  SERIAL PRIMARY KEY",
+    "email": "email VARCHAR UNIQUE",
     "password": "password VARCHAR",
     "name": "name CHARACTER [20]",
     "type": "type INTEGER NOT NULL",
@@ -9,7 +9,7 @@ USERS = {
 }
 
 TWITTER_ACCOUNTS = {
-    "id": "id INTEGER NOT NULL",
+    "id": "id SERIAL PRIMARY KEY",
     "user_id": "user_id INTEGER NOT NULL",
     "tokens": "tokens VARCHAR",
     "twitter_apps": "twitter_apps VARCHAR",
@@ -19,14 +19,14 @@ TWITTER_ACCOUNTS = {
 }
 
 ML_MODELS = {
-    "id": ["id INTEGER NOT NULL"],
+    "id": ["id SERIAL PRIMARY KEY"],
     "display_name": ["display_name VARCHAR"],
     "type": ["type INTEGER"],
     "PRIMARY KEY": ["PRIMARY KEY id"],
 }
 
 TRAINED_MODELS = {
-    "id": "id INTEGER NOT NULL",
+    "id": "id SERIAL PRIMARY KEY",
     "user_id": "user_id INTEGER NOT NULL",
     "ml_model_id": "ml_model_id INTEGER NOT NULL",
     "display_name": "display_name CHARACTER [15]",
@@ -39,7 +39,7 @@ TRAINED_MODELS = {
 }
 
 DATASETS = {
-    "id": "id INTEGER NOT NULL",
+    "id": "id SERIAL PRIMARY KEY",
     "user_id": "user_id INTEGER NOT NULL",
     "store_url": "store_url VARCHAR NOT NULL",
     "statistics": "statistics JSONB",
@@ -48,6 +48,13 @@ DATASETS = {
 }
 
 CLASSIFIERS = {
-    "id": "id INTEGER NOT NULL",
+    "id": "id SERIAL PRIMARY KEY",
     "model_ids": "model_ids JSONB",
+}
+
+RUNNING_APPLICATIONS = {
+    "id": "id SERIAL PRIMARY KEY",
+    "user_id": "user_id INTEGER NOT NULL",
+    "PRIMARY KEY": "PRIMARY KEY (id)",
+    "FOREIGN KEY": "FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE"
 }
