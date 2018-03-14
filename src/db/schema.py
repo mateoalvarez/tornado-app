@@ -5,6 +5,7 @@ USERS = {
     "password": "password VARCHAR",
     "name": "name CHARACTER [20]",
     "type": "type INTEGER NOT NULL",
+    "creation_date": "creation_date DATE NOT NULL",
     "PRIMARY KEY": "PRIMARY KEY (id)",
 }
 
