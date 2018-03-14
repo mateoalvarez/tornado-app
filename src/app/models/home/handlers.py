@@ -11,7 +11,5 @@ class HomeHandler(BaseHandler):
     @gen.coroutine
     def get(self):
         "GET method on home page"
-        # user_locale = tornado.locale.get()
-        # print(user_locale.translate("Sign out"))
         elementos = ["aaaaaa", "bbbbbbb", "ccccc"]
         self.render("home/home.html", elementos=elementos)
