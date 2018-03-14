@@ -61,9 +61,10 @@ class LoginHandler(BaseHandler):
     def set_current_user(self, user):
         """Aux function to create user cookie"""
         if user:
-            self.set_secure_cookie("user", tornado.escape.json_encode(user))
+            self.set_secure_cookie("user", user)
         else:
             self.clear_cookie("user")
+        return
 
     #  to refactor
     @staticmethod
@@ -84,9 +85,11 @@ class LoginHandler(BaseHandler):
 
         user = get_user(self.db_cur, self.get_argument("email", ""))
 
-        if user and bcrypt.checkpw(self.get_argument("password").encode(), user["hashed_password"].encode()):
-            self.set_current_user(user["id"])
-            self.redirect(self.get_argument("next", u"/"))
+        if user and bcrypt.checkpw(\
+        self.get_argument("password").encode(),\
+        user["hashed_password"].encode()):
+            self.set_current_user(str(user["id"]))
+            self.redirect(self.get_argument("next", "/"))
         else:
             self.render("users/login.html", error="Incorrect email or password")
             print("error login")
@@ -101,7 +104,5 @@ class LogoutHandler(BaseHandler):
     @gen.coroutine
     def get(self):
         """GET logout"""
-
-    @gen.coroutine
-    def delete(self):
-        """DELETE user session"""
+        self.clear_cookie("user")
+        self.redirect(self.get_argument("next", "/"))
