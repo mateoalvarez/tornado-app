@@ -2,6 +2,7 @@
 
 import logging
 import psycopg2
+from psycopg2.extras import RealDictCursor
 # import json
 # import jinja2 as jinja
 
@@ -20,8 +21,8 @@ class BaseHandler(tornado.web.RequestHandler):
         """Start database"""
         super(BaseHandler, self).initialize(**kwargs)
         # self.db = self.settings['db']
-        self.db_conn = psycopg2.connect("dbname=twitter_app_db user=postgres password=mysecretpassword host=localhost port=32768")
-        self.db_cur = self.db_conn.cursor()
+        self.db_conn = psycopg2.connect("dbname=twitter_app_db user=postgres password=mysecretpassword host=localhost port=32769")
+        self.db_cur = self.db_conn.cursor(cursor_factory=RealDictCursor)
         self.current_user_object = None
         self.template_name = None
 
