@@ -11,12 +11,12 @@ LOGGER = logging.getLogger(__name__)
 
 def user_exists(db_cur, email):
     """Check if user exists on database"""
-    print(get_user(db_cur, email))
     return bool(get_user(db_cur, email))
 
 def get_user(db_cur, email):
     """GET user from database"""
-    return db_cur.execute("SELECT * FROM users WHERE email= %s ;", (email,))
+    db_cur.execute("SELECT * FROM users WHERE email=%s;", (email,))
+    return db_cur.fetchone()
 
 class RegisterHandler(BaseHandler):
     """User Registration Handler"""
@@ -81,19 +81,17 @@ class LoginHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         """User login post"""
-        email = self.get_argument("email", "")
-        password = self.get_argument("password", "")
 
-        print(email)
-        print(self.db_cur)
-        user = get_user(self.db_cur, email)
+        user = get_user(self.db_cur, self.get_argument("email", ""))
 
-        if not user:
-            self.render("users/login.html", error="email not found")
+        if user and bcrypt.checkpw(self.get_argument("password").encode(), user["hashed_password"].encode()):
+            self.set_current_user(user["id"])
+            self.redirect(self.get_argument("next", u"/"))
+        else:
+            self.render("users/login.html", error="Incorrect email or password")
+            print("error login")
             return
-        self.set_current_user(user.id)
-        self.redirect(self.get_argument("next", u"/"))
-        print(email, password)
+
 
 
 
