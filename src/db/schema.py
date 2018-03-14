@@ -1,7 +1,7 @@
 """Schemas of models"""
 USERS = {
     "id": "id  SERIAL PRIMARY KEY",
-    "email": "email VARCHAR",
+    "email": "email VARCHAR UNIQUE",
     "password": "password VARCHAR",
     "name": "name CHARACTER [20]",
     "type": "type INTEGER NOT NULL",
