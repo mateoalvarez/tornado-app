@@ -2,3 +2,4 @@ src/app/logs/
 */__pycache__/
 src/db/__pycache__
 *.pyc
+.idea/

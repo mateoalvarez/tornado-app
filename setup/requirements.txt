@@ -7,3 +7,5 @@ pyspark
 userapp.tornado
 asyncio
 asyncpg
+psycopg2
+bcrypt
