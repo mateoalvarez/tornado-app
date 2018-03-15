@@ -28,8 +28,8 @@ class RegisterHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         """User registration creation"""
-
-        if user_exists(self.db_cur, self.get_argument("email", "")):
+        email = self.get_argument("email", "")
+        if user_exists(self.db_cur, email):
             # self.render("users/registration.html", error="400, User already exists")
             raise tornado.web.HTTPError(400, "User already exists")
 
@@ -39,16 +39,18 @@ class RegisterHandler(BaseHandler):
             bcrypt.gensalt())
 
         user_type = 1
-        user_id = self.db_cur.execute(
+        self.db_cur.execute(
             "INSERT INTO users (email, name, hashed_password, type)\
                 VALUES (%s, %s, %s, %s);", (\
-                self.get_argument("email"),
+                email,
                 self.get_argument("username"),
                 hashed_password.decode('utf-8'),
                 user_type)
         )
         self.db_conn.commit()
-        self.set_secure_cookie("user", str(user_id))
+        user = get_user(self.db_cur, email)
+        self.set_current_user(str(user["id"]))
+        print(self.current_user)
         self.redirect(self.get_argument("next", "/"))
 
 
@@ -57,15 +59,6 @@ class RegisterHandler(BaseHandler):
 
 class LoginHandler(BaseHandler):
     """User Login Handler"""
-
-    def set_current_user(self, user):
-        """Aux function to create user cookie"""
-        if user:
-            self.set_secure_cookie("user", user)
-        else:
-            self.clear_cookie("user")
-        return
-
     #  to refactor
     @staticmethod
     def check_permission(password, username):

@@ -11,11 +11,15 @@ navbar.user.Logout, Logout
 navbar.user.Register, Registro
 navbar.user.Settings, Configuración
 
+# Datasets
+
+"datasets.header.dataset_name","Dataset"
+
 # User login
 
 login.user.Email, Email
 login.user.Password, Password
-login.user.Login, Entrar
+"login.user.Login", "Entrar"
 
 # User registration
 
