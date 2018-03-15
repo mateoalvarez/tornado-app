@@ -3,12 +3,12 @@
 {% block body %}
   <form action="/auth/login" method="post" id="login_form">
       <fieldset>
-          <label for="email">{{ _("Username") }}</label>
+          <label for="email">{{ _("login.user.Email") }}</label>
           <input class="text-input" id="email" name="email" type="text" value="">
       </fieldset>
 
       <fieldset>
-          <label for="password">{{ _("Password") }}</label>
+          <label for="password">{{ _("login.user.Password") }}</label>
           <input class="text-input" id="password" name="password" type="password" value="">
       </fieldset>
 
@@ -17,7 +17,7 @@
       </fieldset>
 
       <div id="form_btn">
-          <input id="signin-btn" class="btn btn-blue" type="submit" value={{ _("Sign in") }} tabindex="3">
+          <input id="signin-btn" class="btn btn-blue" type="submit" value={{ _("login.user.Login") }} tabindex="3">
       </div>
   </form>
 {% end %}

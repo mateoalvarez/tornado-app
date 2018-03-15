@@ -27,14 +27,17 @@
       <ul class="navbar-nav navbar-right">
         {% if current_user %}
           <li class="nav-item">
-            <a class="nav-link" href="/auth/logout" data-method="delete">Logout</a>
+            <a class="nav-link" href="/auth/logout" data-method="delete">{{ _("navbar.user.Logout") }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/user_settings" data-method="delete">Settings</a>
+            <a class="nav-link" href="/user_settings" data-method="delete">{{ _("navbar.user.Settings") }}</a>
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="/auth/login">Login</a>
+            <a class="nav-link" href="/auth/login">{{ _("navbar.user.Login") }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/register">{{ _("navbar.user.Register") }}</a>
           </li>
         {% end %}
       </ul>
