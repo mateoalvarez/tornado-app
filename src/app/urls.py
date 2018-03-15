@@ -3,7 +3,7 @@
 from tornado.web import url
 
 from models.home.handlers import HomeHandler
-from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler
+from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler, UserSettingsHandler
 from models.datasets.handlers import DatasetsHandler
 from models.ml_models.handlers import MLModelsHandler
 from models.trained_ml_models.handlers import TrainedMLModelsHandler
@@ -28,5 +28,8 @@ URL_PATTERNS = [
     url(r"/trained_ml_models", TrainedMLModelsHandler, name="trained_ml_models"),
 
     # running Applications
-    url(r"/running_applications", RunningApplicationsHandler, name="running_applications")
+    url(r"/running_applications", RunningApplicationsHandler, name="running_applications"),
+
+    # User settings page
+    url(r"/user_settings", UserSettingsHandler, name="user_settings"),
 ]

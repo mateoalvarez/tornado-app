@@ -1,0 +1,28 @@
+{% extends "../base/base.html" %}
+{% block body %}
+<div class="container">
+  <h1>{{ _("user.settings.title") }}</h1>
+  <div class="row">
+    <div class="col">
+      <h1>User Settings</h1>
+      <div class="table-responsive text-center mx-auto">
+        <table class="table-striped table-bordered table-hover">
+          {% for data_key, data_value in zip(user_data.keys(), user_data.values()) %}
+            <tr>
+              <td>
+                {{ _("user.settings." + data_key) }}
+              </td>
+              <td>
+                {{ data_value }}
+              </td>
+            </tr>
+          {% end %}
+        </table>
+      </div>
+    </div>
+    <div class="col">
+      <h1>User Datasets</h1>
+    </div>
+  </div>
+</div>
+{% end %}
