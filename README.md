@@ -48,5 +48,7 @@ psql
 
 deploy a postgresql database on localhost, port 32769 and run
 ```bash
+export AWS_ACCESS_KEY_ID=<AWS ID>
+export AWS_SECRET_ACCESS_KEY=<AWS SECRET>
 python src/app/app.py
 ```

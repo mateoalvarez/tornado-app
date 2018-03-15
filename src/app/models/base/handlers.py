@@ -23,6 +23,14 @@ class BaseHandler(tornado.web.RequestHandler):
             return None
         self.db_cur.execute("SELECT * FROM users WHERE id=%s;", (user_id.decode("utf-8"),))
         return self.db_cur.fetchone()
+        
+    def set_current_user(self, user):
+        """Aux function to create user cookie"""
+        if user:
+            self.set_secure_cookie("user", user)
+        else:
+            self.clear_cookie("user")
+        return
 
     def initialize(self, **kwargs):
         """Start database"""

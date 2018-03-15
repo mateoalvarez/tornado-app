@@ -1,6 +1,76 @@
 {% extends "../base/base.html" %}
 
 {% block body %}
-  <h1>{{ _("welcome") }}</h1>
-  <h1>datasets</h1>
+  <div class="container">
+    <div class="row">
+      <h1>Public Datasets</h1>
+    </div>
+    <div class="row">
+      <div class="table-responsive text-center mx-auto">
+        <table class="table-striped table-bordered table-hover">
+            <tr>
+              <th>
+                #
+              </th>
+              <th>
+                {{ _("datasets.header.dataset_name") }}
+              </th>
+              <th>
+                {{ _("datasets.header.dataset_name") }}
+              </th>
+            </tr>
+          {% for index, dataset in enumerate(public_datasets) %}
+            <tr>
+              <td>
+                {{ index }}
+              </td>
+              <td>
+                {{ dataset["Key"] }}
+              </td>
+              <td>
+                {{ dataset["Size"] }}
+              </td>
+            </tr>
+          {% end %}
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <h1>User Datasets</h1>
+    </div>
+    {% if bool(user_datasets) %}
+      <div class="row">
+        <div class="table-responsive text-center mx-auto">
+          <table class="table-striped table-bordered table-hover">
+              <tr>
+                <th>
+                  #
+                </th>
+                <th>
+                  {{ _("datasets.header.dataset_name") }}
+                </th>
+                <th>
+                  {{ _("datasets.header.dataset_name") }}
+                </th>
+              </tr>
+            {% for index, dataset in enumerate(user_datasets) %}
+              <tr>
+                <td>
+                  {{ index }}
+                </td>
+                <td>
+                  {{ dataset["Key"] }}
+                </td>
+                <td>
+                  {{ dataset["Size"] }}
+                </td>
+              </tr>
+            {% end %}
+          </table>
+        </div>
+      </div>
+    {% else %}
+      <h2>No user datasets yet</h2>
+    {% end %}
+  </div>
 {% end %}
