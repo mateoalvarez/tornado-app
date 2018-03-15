@@ -1,33 +1,37 @@
 {% extends "../base/base.html" %}
 
 {% block body %}
-  <form action="/auth/register" method="post" id="registration_form">
-      <fieldset>
-          <label for="username">{{ _("email") }}</label>
-          <input class="text-input" id="email" name="email" type="email" value="">
-      </fieldset>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <form action="/auth/register" method="post" id="registration_form">
+          <fieldset>
+              <label for="username">{{ _("registration.user.Email") }}</label>
+              <input class="text-input" id="email" name="email" type="email" value="">
+          </fieldset>
 
-      <fieldset>
-          <label for="name">{{ _("Username") }}</label>
-          <input class="text-input" id="username" name="username" type="text" value="">
-      </fieldset>
+          <fieldset>
+              <label for="name">{{ _("registration.user.Username") }}</label>
+              <input class="text-input" id="username" name="username" type="text" value="">
+          </fieldset>
 
-      <fieldset>
-          <label for="password">{{ _("Password") }}</label>
-          <input class="text-input" id="password" name="password" type="password" value="">
-      </fieldset>
+          <fieldset>
+              <label for="password">{{ _("registration.user.Password") }}</label>
+              <input class="text-input" id="password" name="password" type="password" value="">
+          </fieldset>
 
-      <fieldset>
-          <label for="password">{{ _("Repeat Password") }}</label>
-          <input class="text-input" id="password" name="password" type="password" value="">
-      </fieldset>
+          <fieldset>
+              <label for="password">{{ _("registration.user.Repeatpassword") }}</label>
+              <input class="text-input" id="password" name="password" type="password" value="">
+          </fieldset>
 
-      <fieldset>
-          <span class="errormessage"></span>
-      </fieldset>
+          <fieldset>
+              <span class="errormessage"></span>
+          </fieldset>
 
-      <div id="form_btn">
-          <input id="registration-btn" class="btn btn-blue" type="submit" value={{ _("Register") }} tabindex="3">
-      </div>
-  </form>
+          <div id="form_btn">
+              <input id="registration-btn" class="btn btn-blue" type="submit" value={{ _("registration.user.Register") }} tabindex="3">
+          </div>
+      </form>
+    </div>
+  </div>
 {% end %}

@@ -4,16 +4,29 @@
 "Welcome","Welcome"
 "Sign out","Sign out"
 
+# Navbar
+
+navbar.user.Login, Login
+navbar.user.Logout, Logout
+navbar.user.Register, Register
+navbar.user.Settings, Settings
+
 # User login
-"Username","User"
-"Password","Password"
-"Sign in", "Sign_in"
+
+login.user.Email, Email
+login.user.Password, Password
+login.user.Login, Log in
 
 # User registration
-"Register","Register"
-"Repeat Password","Repeat Password"
+
+registration.user.Email, Email
+registration.user.Username, Username
+registration.user.Password, Password
+registration.user.Repeatpassword, Repeat password
+registration.user.Register, Register
 
 # User settings page
+
 user.settings.title, Settings
 user.settings.name, Name
 user.settings.email, Email

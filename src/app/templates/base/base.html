@@ -12,7 +12,9 @@
   <body style="margin:0;">
     {% block navbar %}{% include "navbar.html" %}{% end %}
     <div id="body">
-      <div id="content">{% block body %}{% end %}</div>
+      <div id="content">
+        {% block body %}{% end %}
+      </div>
     </div>
     {% block footer %}{% include "footer.html" %}{% end %}
   </body>

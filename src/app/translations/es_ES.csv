@@ -4,16 +4,29 @@
 "Welcome","Bienvenido"
 "Sign out","Cerrar sesión"
 
+# Navbar
+
+navbar.user.Login, Login
+navbar.user.Logout, Logout
+navbar.user.Register, Registro
+navbar.user.Settings, Configuración
+
 # User login
-"Username","Usuario"
-"Password","Password"
-"Sign_in","Entrar"
+
+login.user.Email, Email
+login.user.Password, Password
+login.user.Login, Entrar
 
 # User registration
-"Register","Registro"
-"Repeat Password","Repetir Password"
+
+registration.user.Email, Email
+registration.user.Username, Nombre
+registration.user.Password, Password
+registration.user.Repeatpassword, Repetir password
+registration.user.Register, Registrarse
 
 # User settings page
+
 user.settings.title, Configuración
 user.settings.name, Nombre
 user.settings.email, Email
