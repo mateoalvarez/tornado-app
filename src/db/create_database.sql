@@ -6,7 +6,7 @@ CREATE TABLE users (
   password VARCHAR,
   name CHAR(20),
   type INTEGER,
-  creation_date DATETIME NOT NULL DEFAULT(GETDATE()),
-  last_login DATETIME NOT NULL DEFAULT(GETDATE()),
+  creation_date DATE NOT NULL DEFAULT(now()),
+  last_login DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id, email)
 );
