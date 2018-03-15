@@ -12,7 +12,7 @@
             {{ _("datasets.header.dataset_name") }}
           </th>
           <th>
-            {{ _("datasets.header.dataset_download_link") }}
+            {{ _("datasets.header.metrics") }}
           </th>
         </tr>
       {% for index, dataset in enumerate(user_datasets) %}
@@ -24,10 +24,10 @@
             {{ dataset["Key"] }}
           </td>
           <td>
-            {{ dataset["Size"] }}
+            {{ dataset["Size"] }} B
           </td>
           <td>
-            {{ "https://s3.eu-central-1.amazonaws.com/tornado-app-datasets/" + dataset["Key"] }}
+            {{ dataset["Size"] }}
           </td>
         </tr>
       {% end %}

@@ -9,6 +9,9 @@
       <li class="nav-item">
         <a class="nav-link" id="upload-datasets-tab" data-toggle="tab" href="#Upload" role="tab" aria-controls="upload" aria-selected="false">{{ _("datasets.tab.Uploaddataset") }}</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" id="manage-datasets" data-toggle="tab" href="#Manage" role="tab" aria-controls="manage" aria-selected="false">{{ _("datasets.tab.Managedatasets") }}</a>
+      </li>
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="Datasets" role="tabpanel" aria-labelledby="list-datasets-tab">
@@ -27,6 +30,9 @@
       </div>
       <div class="tab-pane fade" id="Upload" role="tabpanel" aria-labelledby="upload-datasets-tab">
         {% include "_upload_dataset.html" %}
+      </div>
+      <div class="tab-pane fade" id="Manage" role="tabpanel" aria-labelledby="manage-datasets-tab">
+        {% include "_manage_datasets.html" %}
       </div>
     </div>
 

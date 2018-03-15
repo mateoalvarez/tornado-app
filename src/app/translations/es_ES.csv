@@ -16,6 +16,8 @@ navbar.user.Settings, Configuración
 "datasets.header.dataset_name","Dataset"
 "datasets.tab.Existingdatasets","Datasets cargados"
 "datasets.tab.Uploaddataset","Cargar nuevo dataset"
+"datasets.header.delete_dataset","Delete dataset"
+"datasets.body.delete_dataset","Delete dataset: "
 
 # User login
 

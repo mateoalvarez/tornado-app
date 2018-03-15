@@ -9,13 +9,16 @@
             {{ _("datasets.header.dataset_name") }}
           </th>
           <th>
-            {{ _("datasets.header.dataset_size") }}
+            {{ _("datasets.header.size") }}
           </th>
           <th>
-            {{ _("datasets.header.metrics") }}
+            {{ _("datasets.header.dataset_download_link") }}
+          </th>
+          <th>
+            {{ _("datasets.header.delete_dataset") }}
           </th>
         </tr>
-      {% for index, dataset in enumerate(public_datasets) %}
+      {% for index, dataset in enumerate(user_datasets) %}
         <tr>
           <td>
             {{ index }}
@@ -24,10 +27,13 @@
             {{ dataset["Key"] }}
           </td>
           <td>
-            {{ dataset["Size"] }} B
+            {{ dataset["Size"] }}
           </td>
           <td>
-            {{ dataset["Size"] }}
+            {{ "https://s3.eu-central-1.amazonaws.com/tornado-app-datasets/" + dataset["Key"] }}
+          </td>
+          <td>
+            <form method='post' action='/datasets/delete'><input type='submit' value={{ dataset["Key"] }} name="dataset" id="dataset"></form>
           </td>
         </tr>
       {% end %}
