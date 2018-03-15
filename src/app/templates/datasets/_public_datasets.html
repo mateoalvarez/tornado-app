@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="table-responsive text-center mx-auto">
+    <table class="table-striped table-bordered table-hover">
+        <tr>
+          <th>
+            #
+          </th>
+          <th>
+            {{ _("datasets.header.dataset_name") }}
+          </th>
+          <th>
+            {{ _("datasets.header.dataset_size") }}
+          </th>
+          <th>
+            {{ _("datasets.header.metrics") }}
+          </th>
+        </tr>
+      {% for index, dataset in enumerate(public_datasets) %}
+        <tr>
+          <td>
+            {{ index }}
+          </td>
+          <td>
+            {{ dataset["Key"] }}
+          </td>
+          <td>
+            {{ dataset["Size"] }} B
+          </td>
+          <td>
+            {{ dataset["Size"] }}
+          </td>
+        </tr>
+      {% end %}
+    </table>
+  </div>
+</div>

@@ -4,7 +4,7 @@ from tornado.web import url
 
 from models.home.handlers import HomeHandler
 from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler, UserSettingsHandler
-from models.datasets.handlers import DatasetsHandler
+from models.datasets.handlers import DatasetsHandler, DatasetsDeleteHandler
 from models.ml_models.handlers import MLModelsHandler
 from models.trained_ml_models.handlers import TrainedMLModelsHandler
 from models.running_applications.handlers import RunningApplicationsHandler
@@ -20,6 +20,7 @@ URL_PATTERNS = [
 
     # datasets
     url(r"/datasets", DatasetsHandler, name="datasets"),
+    url(r"/datasets/delete", DatasetsDeleteHandler, name="datasets_delete"),
 
     # ml_models
     url(r"/ml_models", MLModelsHandler, name="ml_models"),

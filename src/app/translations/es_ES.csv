@@ -14,12 +14,30 @@ navbar.user.Settings, Configuración
 # Datasets
 
 "datasets.header.dataset_name","Dataset"
+"datasets.tab.Existingdatasets","Datasets cargados"
+"datasets.tab.Uploaddataset","Cargar nuevo dataset"
+
+## Upload Datasets
+
+"datasets.upload.dataset","Cargar dataset"
+
+## Manage Datasets
+
+"datasets.header.delete_dataset","Borrar dataset"
+"datasets.delete.button","Borrar dataset: "
+
+### Manage Datasets Modal
+
+"datasets.delete.confirm.title","Confirmar borrado"
+"datasets.delete.confirm.confirmation_text","Esta acción no se puede deshacer, por favor, confirma el borrado: "
+"datasets.delete.confirm.go_back","Atrás"
+"datasets.delete.confirm.confirm","Confirmar"
 
 # User login
 
-login.user.Email, Email
-login.user.Password, Password
-"login.user.Login", "Entrar"
+"login.user.Email","Email"
+"login.user.Password","Password"
+"login.user.Login","Entrar"
 
 # User registration
 
