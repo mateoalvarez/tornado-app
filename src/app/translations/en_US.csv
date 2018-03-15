@@ -13,11 +13,30 @@ navbar.user.Settings, Settings
 
 # Datasets
 
-"datasets.header.dataset_name","Dataset name"
 "datasets.tab.Existingdatasets","Existing datasets"
 "datasets.tab.Uploaddataset","Upload dataset"
+
+## Datasets
+
+"datasets.header.dataset_name","Dataset name"
+"datasets.header.dataset_size","Dataset size"
+"datasets.header.metrics","Dataset metrics"
+
+## Upload Datasets
+
+"datasets.upload.dataset","Load dataset"
+
+## Manage Datasets
+
 "datasets.header.delete_dataset","Delete dataset"
-"datasets.body.delete_dataset","Delete dataset: "
+"datasets.delete.button","Delete dataset: "
+
+### Manage Datasets Modal
+
+"datasets.delete.confirm.title","Confirm Deletion"
+"datasets.delete.confirm.confirmation_text","This action can not be undone, please confirm deletion of dataset: "
+"datasets.delete.confirm.go_back","Go back"
+"datasets.delete.confirm.confirm","Confirm"
 
 # User login
 
