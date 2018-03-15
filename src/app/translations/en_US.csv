@@ -14,6 +14,8 @@ navbar.user.Settings, Settings
 # Datasets
 
 "datasets.header.dataset_name","Dataset name"
+"datasets.tab.Existingdatasets","Existing datasets"
+"datasets.tab.Uploaddataset","Upload dataset"
 
 # User login
 

@@ -14,6 +14,8 @@ navbar.user.Settings, Configuración
 # Datasets
 
 "datasets.header.dataset_name","Dataset"
+"datasets.tab.Existingdatasets","Datasets cargados"
+"datasets.tab.Uploaddataset","Cargar nuevo dataset"
 
 # User login
 

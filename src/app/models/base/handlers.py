@@ -23,7 +23,7 @@ class BaseHandler(tornado.web.RequestHandler):
             return None
         self.db_cur.execute("SELECT * FROM users WHERE id=%s;", (user_id.decode("utf-8"),))
         return self.db_cur.fetchone()
-        
+
     def set_current_user(self, user):
         """Aux function to create user cookie"""
         if user:
@@ -45,7 +45,7 @@ class BaseHandler(tornado.web.RequestHandler):
         )
         self.db_cur = self.db_conn.cursor(cursor_factory=RealDictCursor)
 
-        self.current_user_object = None
+
         # self.template_name = None
 
         # def render(self, template, context=None):

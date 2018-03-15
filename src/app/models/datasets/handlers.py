@@ -3,6 +3,7 @@ import logging
 import tornado
 from tornado import gen
 import boto3
+import os
 from ..base.handlers import BaseHandler
 
 LOGGER = logging.getLogger(__name__)
@@ -37,13 +38,27 @@ class DatasetsHandler(BaseHandler):
         public_datasets = []
         for public_dataset_s3 in public_datasets_s3["Contents"]:
             public_datasets.append(public_dataset_s3)
-
+        print("########################\n", public_datasets_s3, "#####################\n")
+        # First element is the root element, not necessary for the user
         self.render("datasets/dataset.html",\
-                     user_datasets=user_datasets,\
-                     public_datasets=public_datasets
+                     user_datasets=user_datasets[1:],\
+                     public_datasets=public_datasets[1:],\
+                     error="Errorrrr"
                    )
 
     @gen.coroutine
     @tornado.web.authenticated
     def post(self):
         """POST file to S3 bucket"""
+        for field_name, files in self.request.files.items():
+            for info in files:
+                filename, content_type = info['filename'], info['content_type']
+                body = info['body']
+                LOGGER.info('POST "%s" "%s" %d bytes', filename, content_type, len(body))
+                self.S3_CLIENT.put_object\
+                (\
+                    Bucket=self.BUCKET,\
+                    Body=body,\
+                    Key=self.current_user["email"] + "/" + filename
+                )
+                self.redirect(self.get_argument("next", "/datasets"))
