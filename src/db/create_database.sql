@@ -10,3 +10,31 @@ CREATE TABLE users (
   last_login DATETIME NOT NULL DEFAULT(GETDATE()),
   PRIMARY KEY (id, email)
 );
+
+CREATE TABLE user_settings (
+  id SERIAL,
+  user_id INTEGER NOT NULL,
+  PRIMARY KEY (id, user_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE datasets (
+  id SERIAL,
+  user_id INTEGER NOT NULL,
+  storage_url VARCHAR NOT NULL,
+  PRIMARY KEY (id, user_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- NOT NECESSARY FOR THE MOMENT
+-- CREATE TABLE dataset_metrics (
+--   id SERIAL,
+--   dataset_id INTEGER NOT NULL,
+--   metrics JSONB,
+--   PRIMARY KEY (id, dataset_id),
+--   FOREIGN KEY (dataset_id) REFERENCES datasets(id) ON UPDATE CASCADE ON DELETE CASCADE
+-- );
+
+CREATE TABLE  (
+
+);

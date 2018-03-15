@@ -12,3 +12,9 @@
 # User registration
 "Register","Register"
 "Repeat Password","Repeat Password"
+
+# User settings page
+user.settings.title, Settings
+user.settings.name, Name
+user.settings.email, Email
+user.settings.type, Type

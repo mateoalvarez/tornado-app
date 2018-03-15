@@ -106,3 +106,17 @@ class LogoutHandler(BaseHandler):
         """GET logout"""
         self.clear_cookie("user")
         self.redirect(self.get_argument("next", "/"))
+
+
+class UserSettingsHandler(BaseHandler):
+    """User settings page handler"""
+
+    @gen.coroutine
+    @tornado.web.authenticated
+    def get(self):
+        """GET user settings page"""
+
+        self.db_cur.execute("SELECT name, email, type\
+         FROM users where id=%s;", (str(self.current_user["id"]),))
+        user_data = self.db_cur.fetchone()
+        self.render("users/settings.html", user_data=user_data)

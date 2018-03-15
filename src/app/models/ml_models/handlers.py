@@ -11,7 +11,5 @@ class MLModelsHandler(BaseHandler):
     @gen.coroutine
     def get(self):
         "GET method on dataset page"
-        # user_locale = tornado.locale.get()
-        # print(user_locale.translate("Sign out"))
         elementos = ["aaaaaa", "bbbbbbb", "ccccc"]
         self.render("ml_models/ml_models.html", elementos=elementos)
