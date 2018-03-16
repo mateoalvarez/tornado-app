@@ -48,7 +48,8 @@ CREATE TABLE  pipelines (
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (pipeline_dataset) REFERENCES datasets(id),
-  FOREIGN KEY (pipeline_engine) REFERENCES engines(id)
+  FOREIGN KEY (pipeline_engine) REFERENCES engines(id),
+  FOREIGN KEY (classification_criteria) REFERENCES classification_criteria(id)
 );
 
 CREATE TABLE preprocessing_methods (
@@ -73,5 +74,12 @@ CREATE TABLE engines (
   id SERIAL UNIQUE,
   engine_name CHAR(20),
   engine_configuration JSONB,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE classification_criteria (
+  id SERIAL UNIQUE,
+  name CHAR(20),
+  properties JSONB,
   PRIMARY KEY (id)
 );
