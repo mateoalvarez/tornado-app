@@ -7,6 +7,7 @@ from psycopg2.extras import RealDictCursor
 # import jinja2 as jinja
 
 import tornado.web
+import boto3
 # from tornado import gen
 
 LOGGER = logging.getLogger(__name__)
@@ -45,6 +46,22 @@ class BaseHandler(tornado.web.RequestHandler):
         )
         self.db_cur = self.db_conn.cursor(cursor_factory=RealDictCursor)
 
+        self.s3_client, self.s3_resource = self.start_AWS_connection("s3")
+        self.emr_client = boto3.client("emr")
+
+    """S3 variables"""
+
+    BUCKET_DATASETS = "tornado-app-datasets"
+    BUCKET_SPARK_JOBS = "tornado-app-emr-bootstrap"
+
+    @staticmethod
+    def start_AWS_connection(service):
+        """Configure AWS credentials"""
+
+        service_client = boto3.client(service)
+        service_resource = boto3.resource(service)
+
+        return service_client, service_resource
 
         # self.template_name = None
 
