@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="table-responsive text-center mx-auto">
+    <table class="table-striped table-bordered table-hover">
+        <tr>
+          <th>
+            #
+          </th>
+          <th>
+            {{ _("models.header.model_name") }}
+          </th>
+          <th>
+            {{ _("models.header.model_properties") }}
+          </th>
+        </tr>
+      {% for index, model in enumerate(models) %}
+        <tr>
+          <td>
+            {{ index }}
+          </td>
+          <td>
+            {{ model["model_name"] }}
+          </td>
+          <td>
+            {{ model["model_properties"] }}
+          </td>
+        </tr>
+      {% end %}
+    </table>
+  </div>
+</div>

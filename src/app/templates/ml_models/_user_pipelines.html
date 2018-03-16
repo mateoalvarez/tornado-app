@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="table-responsive text-center mx-auto">
+    <table class="table-striped table-bordered table-hover">
+        <tr>
+          <th>
+            #
+          </th>
+          <th>
+            {{ _("models.header.pipeline_name") }}
+          </th>
+          <th>
+            {{ _("models.header.dataset") }}
+          </th>
+          <th>
+            {{ _("models.header.preprocessing_stages") }}
+          </th>
+          <th>
+            {{ _("models.header.models") }}
+          </th>
+          <th>
+            {{ _("models.header.classification_criteria") }}
+          </th>
+          <th>
+            {{ _("models.header.status") }}
+          </th>
+        </tr>
+      {% for index, pipeline in enumerate(user_pipelines) %}
+        <tr>
+          <td>
+            {{ pipeline["pipeline_name"] }}
+          </td>
+          <td>
+            {{ pipeline["pipeline_dataset"] }}
+          </td>
+          <td>
+            {{ pipeline["pipeline_prep_stages"] }}
+          </td>
+          <td>
+            {{ pipeline["pipeline_models"] }}
+          </td>
+          <td>
+            {{ pipeline["classification_criteria"] }}
+          </td>
+          <td>
+            {{ pipeline["training_status"] }}
+          </td>
+        </tr>
+      {% end %}
+    </table>
+  </div>
+</div>
