@@ -39,6 +39,7 @@ CREATE TABLE  pipelines (
   id SERIAL UNIQUE,
   user_id INTEGER NOT NULL,
   pipeline_name CHAR(20),
+  pipeline_engine INTEGER NOT NULL DEFAULT(1),
   pipeline_dataset INTEGER NOT NULL,
   pipeline_prep_stages JSONB NOT NULL,
   pipeline_models JSONB NOT NULL,
@@ -46,19 +47,31 @@ CREATE TABLE  pipelines (
   training_status INTEGER NOT NULL DEFAULT(0),
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (pipeline_dataset) REFERENCES datasets(id)
+  FOREIGN KEY (pipeline_dataset) REFERENCES datasets(id),
+  FOREIGN KEY (pipeline_engine) REFERENCES engines(id)
 );
 
 CREATE TABLE preprocessing_methods (
   id SERIAL UNIQUE,
   prep_name CHAR(20),
+  prep_engine INTEGER NOT NULL DEFAULT(1),
   prep_transformation JSONB,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY (prep_engine) REFERENCES engines(id)
 );
 
 CREATE TABLE models (
   id SERIAL UNIQUE,
   model_name CHAR(20),
+  model_engine INTEGER NOT NULL DEFAULT(1),
   model_properties JSONB,
+  PRIMARY KEY (id),
+  FOREIGN KEY (model_engine) REFERENCES engines(id)
+);
+
+CREATE TABLE engines (
+  id SERIAL UNIQUE,
+  engine_name CHAR(20),
+  engine_configuration JSONB,
   PRIMARY KEY (id)
 );

@@ -2,6 +2,7 @@
 import logging
 import tornado
 from tornado import gen
+import boto3
 from ..base.handlers import BaseHandler
 
 LOGGER = logging.getLogger(__name__)
@@ -37,6 +38,36 @@ class MLModelsHandler(BaseHandler):
         )
         models = self.db_cur.fetchall()
         return models
+# DEPLOY ON AWS-EMR
+
+    def _start_EMR_connection(self):
+        """Configure AWS credentials"""
+
+        EMR_CLIENT = boto3.client('emr')
+        EMR_RESOURCE = boto3.resource('emr')
+
+        return EMR_CLIENT, EMR_RESOURCE
+
+    def _preconfigure_EMR_machines(self):
+        """Install dependencies for the Spark Job"""
+
+        EMR_CLIENT, EMR_RESOURCE = self._start_EMR_connection()
+
+        
+
+    def _deploy_EMR_pipeline_training(self):
+        """DEPLOT pipeline on cluster"""
+
+        EMR_CLIENT, EMR_RESOURCE = self._start_EMR_connection()
+
+
+
+    # def _deploy_tensorflow_pipeline_training(self):
+    #     """DEPLOY """
+    #
+
+
+
 # Handler methods
 
     @gen.coroutine
