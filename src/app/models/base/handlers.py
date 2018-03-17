@@ -52,7 +52,7 @@ class BaseHandler(tornado.web.RequestHandler):
     """S3 variables"""
 
     BUCKET_DATASETS = "tornado-app-datasets"
-    BUCKET_SPARK_JOBS = "tornado-app-emr-bootstrap"
+    BUCKET_SPARK_JOBS = "tornado-app-emr"
 
     @staticmethod
     def start_AWS_connection(service):
@@ -66,15 +66,15 @@ class BaseHandler(tornado.web.RequestHandler):
     def start_S3_connection():
         """Configure AWS credentials"""
 
-        s3_client = boto3.client("s3")
-        s3_resource = boto3.resource("s3")
+        s3_client = boto3.client("s3", region_name="eu-west-1")
+        s3_resource = boto3.resource("s3", region_name="eu-west-1")
 
         return s3_client, s3_resource
     @staticmethod
     def start_emr_connection():
         """Configure AWS credentials"""
 
-        emr_client = boto3.client("emr")
+        emr_client = boto3.client("emr", region_name="eu-west-1")
 
         return emr_client
         # self.template_name = None
