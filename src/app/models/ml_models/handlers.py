@@ -2,7 +2,7 @@
 import logging
 import tornado
 from tornado import gen
-import boto3
+import json
 from ..base.handlers import BaseHandler
 
 LOGGER = logging.getLogger(__name__)
@@ -107,10 +107,11 @@ class MLModelsHandler(BaseHandler):
 class MLModelsAWSDeployHandler(BaseHandler):
     """Handler to deploy jobs on AWS"""
 
-    def _preconfigure_EMR_machines(self):
-        """Install dependencies for the Spark Job"""
+    def _create_job_from_template(self, params):
+        """Create configuration from template and params"""
 
-        EMR_CLIENT, EMR_RESOURCE = self.start_AWS_connection("emr")
+        template = json.loads("emr_basic_template.json")
+
 
     def _upload_EMR_job_to_S3(self, file_content, pipeline):
         """Upload job file to S3 and return url"""

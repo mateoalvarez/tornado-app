@@ -43,7 +43,7 @@ settings = {
     'cookie_secret': COOKIE_SECRET,
     'cookie_expires': 31,
     'xsrf_cookies': False,
-    'login_url': '/auth/login/',
+    'login_url': '/auth/login',
     'template_loader': tornado.template.Loader(TEMPLATE_ROOT),
 }
 
