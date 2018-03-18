@@ -82,6 +82,7 @@ class LoginHandler(BaseHandler):
         self.get_argument("password").encode(),\
         user["hashed_password"].encode()):
             self.set_current_user(str(user["id"]))
+            # print('##########################\n\n\n\n',self.get_argument("next", "/"))
             self.redirect(self.get_argument("next", "/"))
         else:
             self.render("users/login.html", error="Incorrect email or password")

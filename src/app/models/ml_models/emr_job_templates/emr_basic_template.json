@@ -1,0 +1,64 @@
+{
+    "Name": "Template Spark Job",
+    "LogUri": "s3://tornado-app-emr/{user}/{job_id}/logs",
+    "JobFlowRole": "EMR_EC2_DefaultRole",
+    "ServiceRole": "EMR_DefaultRole",
+    "ReleaseLabel": "emr-5.12.0",
+    "Instances":{
+      "MasterInstanceType": "m3.xlarge",
+      "SlaveInstanceType": "m3.xlarge",
+      "InstanceCount": 2
+    },
+    "Steps":[
+        {
+            "Name": "Train",
+            "ActionOnFailure": "TERMINATE_CLUSTER",
+            "HadoopJarStep": {
+                "Properties": [
+                    {
+                        "Key": "string",
+                        "Value": "string"
+                    }
+                ],
+                "Jar": "command-runner.jar",
+                "MainClass": "string",
+                "Args": [
+                    "spark-submit",
+                    "{spark-job}"
+                ]
+            }
+        }
+    ],
+    "BootstrapActions":[
+        {
+            "Name": "Install dependencies",
+            "ScriptBootstrapAction": {
+                "Path": "{preconfig_script}",
+                "Args": [
+                    "string"
+                ]
+            }
+        }
+    ],
+    "Applications":[
+        {
+            "Name": "Spark"
+        }
+    ],
+    "Tags":[
+        {
+            "Key": "app",
+            "Value": "tornado-app"
+        },
+        {
+          "Key": "tier",
+          "Value": "emr"
+        },
+        {
+          "Key": "user",
+          "Value": "{user}"
+        }
+    ],
+    "ScaleDownBehavior":"TERMINATE_AT_TASK_COMPLETION",
+    "EbsRootVolumeSize":50
+}
