@@ -1,5 +1,7 @@
 CREATE DATABASE twitter_app_db;
 
+\connect twitter_app_db
+
 CREATE TABLE users (
   id SERIAL UNIQUE,
   email VARCHAR,
@@ -24,6 +26,20 @@ CREATE TABLE datasets (
   storage_url VARCHAR NOT NULL,
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE classification_criteria (
+  id SERIAL UNIQUE,
+  name CHAR(20),
+  properties JSONB,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE engines (
+  id SERIAL UNIQUE,
+  engine_name CHAR(20),
+  engine_configuration JSONB,
+  PRIMARY KEY (id)
 );
 
 -- NOT NECESSARY FOR THE MOMENT
@@ -68,18 +84,4 @@ CREATE TABLE models (
   model_properties JSONB,
   PRIMARY KEY (id),
   FOREIGN KEY (model_engine) REFERENCES engines(id)
-);
-
-CREATE TABLE engines (
-  id SERIAL UNIQUE,
-  engine_name CHAR(20),
-  engine_configuration JSONB,
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE classification_criteria (
-  id SERIAL UNIQUE,
-  name CHAR(20),
-  properties JSONB,
-  PRIMARY KEY (id)
 );

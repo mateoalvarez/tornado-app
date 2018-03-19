@@ -18,37 +18,34 @@ pip install -r setup/requirements.txt
 Deploy postgres and make sure you have created the database in postgres.
 ``` bash
 # deploy postgres container
-docker run --name postgres -p 32769:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+docker run --name postgres -p 32769:5432 -v $(pwd)/src/db/create_database.sql:/create_database.sql -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 
 # connect to postgres container
 docker exec -it $(docker ps -aqf "name=postgres") bash
 
 # inside docker
-cat << EOF > /tmp/database.sql
-CREATE DATABASE twitter_app_db;
-CREATE TABLE users (
-  id SERIAL,
-  email VARCHAR,
-  hashed_password VARCHAR,
-  name CHAR(20),
-  type INTEGER,
-  creation_date DATE NOT NULL DEFAULT(now()),
-  last_login DATE NOT NULL DEFAULT(now()),
-  PRIMARY KEY (id, email)
-);
-EOF
-
-# change user to postgres
-su postgres
-
 # as postres user
 psql
-\i /tmp/database.sql
+\i /create_database.sql
 ```
 
-deploy a postgresql database on localhost, port 32769 and run
+deploy the application on localhost, on port 8888
 ```bash
 export AWS_ACCESS_KEY_ID=<AWS ID>
 export AWS_SECRET_ACCESS_KEY=<AWS SECRET>
 python src/app/app.py
 ```
+
+generate a docker image
+
+```
+cd tornado-app
+docker build -t image:0.1.1 .
+```
+
+deploy docker image, by default it will use region=eu-west-1. In case you want to change it, you should set an extra environment variable: -e AWS_REGION=<your_region>
+
+```
+docker run -it --rm -p 9090:8888 -e DATABASE_NAME=twitter_app_db -e DATABASE_USER=postgres -e DATABASE_PASS=mysecretpassword -e DATABASE_HOST=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' postgres) -e DATABASE_PORT=5432  -e AWS_ACCESS_KEY_ID=<aws_access_key_id> -e AWS_SECRET_ACCESS_KEY=<aws_secret_access_key> --name tornado-app image:0.1.1
+```
+
