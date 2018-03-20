@@ -5,6 +5,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 # import json
 # import jinja2 as jinja
+import os
 
 import tornado.web
 import boto3
@@ -38,12 +39,15 @@ class BaseHandler(tornado.web.RequestHandler):
         super(BaseHandler, self).initialize(**kwargs)
         # self.db = self.settings['db']
         self.db_conn = psycopg2.connect(\
-            "dbname=twitter_app_db \
-            user=postgres \
-            password=mysecretpassword \
-            host=localhost \
-            port=32769"\
-        )
+            "dbname={database_name} \
+            user={database_user} \
+            password={database_pass} \
+            host={database_host} \
+            port={database_port}".format(database_name=os.environ.get("DATABASE_NAME", "twitter_app_db"),
+                                         database_user=os.environ.get("DATABASE_USER", "postgres"),
+                                         database_pass=os.environ.get("DATABASE_PASS", "mysecretpassword"),
+                                         database_host=os.environ.get("DATABASE_HOST", "localhost"),
+                                         database_port=os.environ.get("DATABASE_PORT", "32769")))
         self.db_cur = self.db_conn.cursor(cursor_factory=RealDictCursor)
 
         self.s3_client, self.s3_resource = self.start_AWS_connection("s3")

@@ -6,14 +6,12 @@ import tornado.web
 from tornado.options import options
 from settings import settings, PSQL_DB
 from urls import URL_PATTERNS
-from utils.db import connect_psql
 
 class TwitterApplication(tornado.web.Application):
     """Web application class"""
     def __init__(self, *args, **kwargs):
-        db = connect_psql(PSQL_DB, **kwargs)
         super(TwitterApplication, self).__init__(
-            URL_PATTERNS, db=db, *args, **dict(settings, **kwargs)
+            URL_PATTERNS, *args, **dict(settings, **kwargs)
         )
 
 def main():
