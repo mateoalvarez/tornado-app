@@ -1,6 +1,18 @@
 {% extends "../base/base.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+<link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+<script src="{{ static_url("js/particles.js") }}"></script>
+{% end %}
 {% block body %}
+
+
+
+<div id="particles"></div>
+<div style="background-color: linear-gradient(to right, #2ecc71 0%,#27aa6b 35%,#2ecc71 64%,#229379 100%);">
+
+
   <h1>{{ _("welcome") }}</h1>
   <ul>
     {% for element in elementos %}
@@ -10,3 +22,4 @@
     {% end %}
   </ul>
 {% end %}
+</div>
