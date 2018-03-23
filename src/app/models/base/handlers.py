@@ -43,15 +43,13 @@ class BaseHandler(tornado.web.RequestHandler):
             user={database_user} \
             password={database_pass} \
             host={database_host} \
-            port={database_port}".format(database_name=os.environ.get("DATABASE_NAME", "twitter_app_db"),
-                                         database_user=os.environ.get("DATABASE_USER", "postgres"),
-                                         database_pass=os.environ.get("DATABASE_PASS", "mysecretpassword"),
-                                         database_host=os.environ.get("DATABASE_HOST", "localhost"),
-                                         database_port=os.environ.get("DATABASE_PORT", "32769")))
+            port={database_port}".format(
+                database_name=os.environ.get("DATABASE_NAME", "twitter_app_db"),
+                database_user=os.environ.get("DATABASE_USER", "postgres"),
+                database_pass=os.environ.get("DATABASE_PASS", "mysecretpassword"),
+                database_host=os.environ.get("DATABASE_HOST", "localhost"),
+                database_port=os.environ.get("DATABASE_PORT", "32769")))
         self.db_cur = self.db_conn.cursor(cursor_factory=RealDictCursor)
-
-        self.s3_client, self.s3_resource = self.start_AWS_connection("s3")
-        self.emr_client = boto3.client("emr")
 
     """S3 variables"""
 
@@ -59,21 +57,14 @@ class BaseHandler(tornado.web.RequestHandler):
     BUCKET_SPARK_JOBS = "tornado-app-emr"
 
     @staticmethod
-    def start_AWS_connection(service):
+    def start_s3_connection():
         """Configure AWS credentials"""
 
-        service_client = boto3.client(service)
-        service_resource = boto3.resource(service)
-
-        return service_client, service_resource
-    @staticmethod
-    def start_S3_connection():
-        """Configure AWS credentials"""
-
-        s3_client = boto3.client("s3", region_name="eu-west-1")
-        s3_resource = boto3.resource("s3", region_name="eu-west-1")
+        s3_client = boto3.client("s3", region_name="eu-central-1")
+        s3_resource = boto3.resource("s3", region_name="eu-central-1")
 
         return s3_client, s3_resource
+
     @staticmethod
     def start_emr_connection():
         """Configure AWS credentials"""
