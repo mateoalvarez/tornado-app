@@ -188,7 +188,6 @@ class MLModelsAWSDeployHandler(BaseHandler):
         )
         spark_job_file_url = "s3://tornado-app-emr/" + spark_job_file_url
         prereq_file_url = "s3://tornado-app-emr/" + prereq_file_url
-        # prereq_file_url = "s3://tornado-app-emr/" + prereq_file_url
 
         return spark_job_file_url, prereq_file_url
 

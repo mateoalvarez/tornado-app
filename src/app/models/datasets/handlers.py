@@ -9,17 +9,8 @@ LOGGER = logging.getLogger(__name__)
 
 class DatasetsHandler(BaseHandler):
     """ Home page handler """
-    # SUPPORTED_METHODS = RequestHandler.SUPPORTED_METHODS + ('DELETE_DATASET',)
 
-    def start_AWS_connection(self,service):
-        """Configure AWS credentials"""
-
-        service_client = boto3.client(service)
-        service_resource = boto3.resource(service)
-
-        return service_client, service_resource
-    # boto3.set_stream_logger('boto3.resources', logging.INFO)
-    S3_CLIENT, S3_RESOURCE = boto3.client('s3'), boto3.resource('s3')
+    S3_CLIENT, S3_RESOURCE = BaseHandler.start_s3_connection()
 
     def _save_dataset_in_database(self, dataset):
         """Store dataset references on database"""
@@ -83,8 +74,7 @@ class DatasetsHandler(BaseHandler):
 
 class DatasetsDeleteHandler(BaseHandler):
 
-    S3_CLIENT = boto3.client('s3')
-    S3_RESOURCE = boto3.resource('s3')
+    S3_CLIENT, S3_RESOURCE = BaseHandler.start_s3_connection()
 
     def _delete_dataset(self, dataset):
         """DELETE dataset from database"""
