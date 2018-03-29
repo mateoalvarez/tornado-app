@@ -11,11 +11,10 @@ WORKDIR /usr/src/app
 COPY setup/requirements.txt /usr/src/app/
 RUN pip install -r requirements.txt
 
-COPY . /usr/src/app
-
 ENV TINI_VERSION v0.17.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
 
+COPY . /usr/src/app
+ENTRYPOINT ["/tini", "--"]
 CMD ["bash", "/usr/src/app/docker/entrypoint.sh"]

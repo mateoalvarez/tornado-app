@@ -3,6 +3,7 @@
 : ${AWS_ACCESS_KEY_ID:?"Need to set AWS_ACCESS_KEY_ID in order to stablish correctly the connection to AWS backend."}
 : ${AWS_SECRET_ACCESS_KEY:?"Need to set AWS_SECRET_ACCESS_KEY in order to stablish correctly the connection to AWS backend."}
 
+
 if [ -z ${DATABASE_NAME} ]; then
     echo "DATABASE_NAME is not set, default value will be used."
 fi
@@ -21,6 +22,22 @@ fi
 
 if [ -z ${DATABASE_PORT} ]; then
     echo "DATABASE_PORT is not set, default value will be used."
+fi
+
+if [ -z ${BUCKET_DATASET} ]; then
+    echo "BUCKET_DATASET is not set, default value will be used."
+fi
+
+if [ -z ${BUCKET_DATASETS_REGION} ]; then
+    echo "BUCKET_DATASETS_REGION is not set, default value will be used."
+fi
+
+if [ -z ${BUCKET_SPARK_JOBS} ]; then
+    echo "BUCKET_SPARK_JOBS is not set, default value will be used."
+fi
+
+if [ -z ${BUCKET_SPARK_JOBS_REGION} ]; then
+    echo "BUCKET_SPARK_JOBS_REGION is not set, default value will be used."
 fi
 
 AWS_REGION=${AWS_REGION:-"eu-west-1"}

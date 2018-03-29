@@ -42,11 +42,12 @@ class DatasetsHandler(BaseHandler):
             Prefix="Public"
         )
         public_datasets = []
-        for public_dataset_s3 in public_datasets_s3["Contents"]:
-            public_datasets.append(public_dataset_s3)
-# First element is the root element, not necessary for the user
+        if public_datasets_s3["KeyCount"] > 0:
+            for public_dataset_s3 in public_datasets_s3["Contents"]:
+                public_datasets.append(public_dataset_s3)
+        # First element is the root element in case of public_datasets, not necessary for the user
         self.render("datasets/dataset.html",\
-                     user_datasets=user_datasets[1:],\
+                     user_datasets=user_datasets,\
                      public_datasets=public_datasets[1:]\
                    )
 
@@ -66,10 +67,10 @@ class DatasetsHandler(BaseHandler):
                     Body=body,\
                     Key=self.current_user["email"] + "/" + filename
                 )
-        self._save_dataset_in_database("s3://{bucket}/{directory}"\
-        .format(\
-            bucket=self.BUCKET_DATASETS,\
-            directory=self.current_user["email"] + "/" + filename))
+                self._save_dataset_in_database("s3://{bucket}/{directory}"\
+                .format(\
+                    bucket=self.BUCKET_DATASETS,\
+                    directory=self.current_user["email"] + "/" + filename))
         self.redirect(self.get_argument("next", "/datasets"))
 
 class DatasetsDeleteHandler(BaseHandler):
