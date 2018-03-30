@@ -70,7 +70,6 @@ class BaseHandler(tornado.web.RequestHandler):
     @staticmethod
     def start_emr_connection():
         """Configure AWS credentials"""
-
         emr_client = boto3.client("emr", region_name=os.environ.get("BUCKET_SPARK_JOBS_REGION", "eu-central-1"))
 
         return emr_client

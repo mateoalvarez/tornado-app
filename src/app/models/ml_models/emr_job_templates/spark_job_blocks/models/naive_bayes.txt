@@ -1,0 +1,4 @@
+from pyspark.mllib.classification import NaiveBayes, NaiveBayesModel
+from pyspark.mllib.util import MLUtils
+
+NB_model = NaiveBayes.train(rdd_training_set, 1.0)

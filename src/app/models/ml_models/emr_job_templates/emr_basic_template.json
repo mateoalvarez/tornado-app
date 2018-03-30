@@ -12,19 +12,12 @@
     "Steps":[
         {
             "Name": "Train",
-            "ActionOnFailure": "TERMINATE_CLUSTER",
+            "ActionOnFailure": "CANCEL_AND_WAIT",
             "HadoopJarStep": {
-                "Properties": [
-                    {
-                        "Key": "string",
-                        "Value": "string"
-                    }
-                ],
                 "Jar": "command-runner.jar",
-                "MainClass": "string",
                 "Args": [
-                    "spark-submit",
-                    "{spark-job}"
+                  "spark-submit",
+                  "/tmp/spark-job.py"
                 ]
             }
         }
@@ -45,6 +38,19 @@
             "Name": "Spark"
         }
     ],
+    "Configurations": [
+      {
+        "Classification": "spark-env",
+        "Configurations": [
+          {
+            "Classification": "export",
+            "Properties": {
+              "PYSPARK_PYTHON": "/usr/bin/python3"
+              }
+          }
+        ]
+      }
+    ],
     "Tags":[
         {
             "Key": "app",
@@ -59,6 +65,5 @@
           "Value": "{user}"
         }
     ],
-    "ScaleDownBehavior":"TERMINATE_AT_TASK_COMPLETION",
     "EbsRootVolumeSize":50
 }

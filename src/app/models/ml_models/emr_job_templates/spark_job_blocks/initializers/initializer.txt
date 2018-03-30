@@ -1,0 +1,20 @@
+import nltk
+import random
+from nltk.corpus import movie_reviews
+from nltk.classify.scikitlearn import SklearnClassifier
+from nltk.tokenize import word_tokenize
+
+
+import pyspark
+from pyspark import sql
+sc = pyspark.SparkContext(appName="myAppName").getOrCreate()
+spark = pyspark.sql.SparkSession(sc)
+sc._conf.getAll()
+
+from pyspark.ml import Pipeline
+
+input_data = sc.readText(<input_file>)
+
+input_data_df = spark.createDataFrame(input_data, ["features", "label"])
+
+pipeline_stages = []
