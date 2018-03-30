@@ -169,7 +169,7 @@ class MLModelsAWSDeployHandler(BaseHandler):
         spark_job_file_url = "{user}/{job_id}/spark_job_{job_id}".\
             format(user=self.current_user["email"], job_id=job_id)
 
-        s3_client, _ = self.start_AWS_connection("s3")
+        s3_client, _ = self.start_s3_connection()
 
         s3_client.put_object\
         (\
@@ -187,7 +187,8 @@ class MLModelsAWSDeployHandler(BaseHandler):
             Key=prereq_file_url
         )
         spark_job_file_url = "s3://tornado-app-emr/" + spark_job_file_url
-        prereq_file_url = "s3://tornado-app-emr/" + prereq_file_url
+        # prereq_file_url = "s3://tornado-app-emr/" + prereq_file_url
+        prereq_file_url = 's3://tornado-app-emr/Templates/prereq_template.sh'
 
         return spark_job_file_url, prereq_file_url
 

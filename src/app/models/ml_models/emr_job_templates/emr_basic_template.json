@@ -20,6 +20,15 @@
                         "Value": "string"
                     }
                 ],
+                "Configurations": [
+                    {
+                        "Classification": "export",
+                        "Properties": {
+                            "PYSPARK_PYTHON": "python35"
+                        },
+                        "Configurations": []
+                    }
+                ],
                 "Jar": "command-runner.jar",
                 "MainClass": "string",
                 "Args": [

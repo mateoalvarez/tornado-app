@@ -1,0 +1,7 @@
+nltk
+pandas
+scipy
+numpy
+tensorflow
+pyspark
+mleap

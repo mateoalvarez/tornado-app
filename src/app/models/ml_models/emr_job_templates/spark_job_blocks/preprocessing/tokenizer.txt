@@ -1,0 +1,20 @@
+from pyspark.ml.feature import Tokenizer, RegexTokenizer
+from pyspark.sql.functions import col, udf
+from pyspark.sql.types import IntegerType
+
+tokenizer = Tokenizer(inputCol="features", outputCol="features_mod")
+
+regexTokenizer = RegexTokenizer(inputCol="sentence", outputCol="words", pattern="\\W")
+# alternatively, pattern="\\w+", gaps(False)
+
+countTokens = udf(lambda words: len(words), IntegerType())
+
+tokenized = tokenizer.transform(sentenceDataFrame)
+tokenized.select("sentence", "words")\
+    .withColumn("tokens", countTokens(col("words"))).show(truncate=False)
+
+regexTokenized = regexTokenizer.transform(sentenceDataFrame)
+regexTokenized.select("sentence", "words") \
+    .withColumn("tokens", countTokens(col("words"))).show(truncate=False)
+
+pipeline_stages +=
