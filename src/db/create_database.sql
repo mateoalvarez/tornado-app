@@ -23,6 +23,7 @@ CREATE TABLE user_settings (
 CREATE TABLE datasets (
   id SERIAL UNIQUE,
   user_id INTEGER NOT NULL,
+  dataset_name VARCHAR NOT NULL,
   storage_url VARCHAR NOT NULL,
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
