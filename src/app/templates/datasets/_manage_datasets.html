@@ -51,7 +51,7 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>
                 <form method='post' action='/datasets/delete'>
-                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ dataset["Key"] }}" type='submit' value={{ dataset["Key"] }} name="dataset" id="dataset">{{ _("datasets.delete.confirm.confirm") }}</button>
+                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ dataset["Key"] }}" type='submit' value={{ dataset["id"] }} name="dataset" id="dataset">{{ _("datasets.delete.confirm.confirm") }}</button>
                 </form>
               </div>
             </div>
