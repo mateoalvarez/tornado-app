@@ -45,4 +45,4 @@ NLTK_POS_TAGGER = NLTKPosTagger(
     outputCol="features_output"
     )
 
-pipeline_stages += NLTK_POS_TAGGER
+pipeline_preprocessing_stages += NLTKPosTagger(inputCol=pipeline_stages[-1].getOutputCol(), "nltk_pos_tagger_col")

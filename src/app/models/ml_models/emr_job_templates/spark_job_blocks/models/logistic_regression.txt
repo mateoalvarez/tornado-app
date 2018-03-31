@@ -1,0 +1,5 @@
+from pyspark.ml.classification import LogisticRegression
+
+lr = LogisticRegression(maxIter=10, regParam=0.001)
+
+pipeline_models_stages += lr

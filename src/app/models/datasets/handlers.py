@@ -44,8 +44,9 @@ class DatasetsHandler(BaseHandler):
             for user_dataset_s3 in user_datasets_s3["Contents"]:
                 aux_user_dataset = user_dataset_s3
                 db_user_datasets = self._get_dataset_from_database_by_s3_key(self.current_user["id"], aux_user_dataset["Key"])
-                aux_user_dataset.update(db_user_datasets[0])
-                user_datasets.append(aux_user_dataset)
+                if bool(db_user_datasets):
+                    aux_user_dataset.update(db_user_datasets[0])
+                    user_datasets.append(aux_user_dataset)
 
         public_datasets_s3 = self.S3_CLIENT.list_objects_v2\
         (\
