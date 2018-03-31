@@ -1,5 +1,4 @@
 import mleap.pyspark
 from mleap.pyspark.spark_support import SimpleSparkSerializer
 
-for model in models_array:
-    model.save(sc, path="{model_path}".format("model" + "model.type"))
+.serializeToBundle("jar:file:/tmp/pyspark.example.zip")

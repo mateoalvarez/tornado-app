@@ -1,0 +1,57 @@
+import nltk
+import random
+from nltk.corpus import movie_reviews
+from nltk.classify.scikitlearn import SklearnClassifier
+from nltk.tokenize import word_tokenize
+
+
+import pyspark
+from pyspark import sql
+sc = pyspark.SparkContext(appName="myAppName").getOrCreate()
+spark = pyspark.sql.SparkSession(sc)
+sc._conf.getAll()
+
+from pyspark.ml import Pipeline
+
+input_data = sc.readText(<input_file>)
+
+input_data_df = spark.createDataFrame(input_data, ["features", "label"])
+
+pipeline_preprocessing_stages = []
+pipeline_models_stages = []
+pipeline_stages = []
+
+from pyspark.ml.feature import Tokenizer, RegexTokenizer
+from pyspark.sql.functions import col, udf
+from pyspark.sql.types import IntegerType
+
+if (pipeline_preprocessing_stages[-1]):
+    tokenizer = Tokenizer(inputCol=pipeline_preprocessing_stages[-1].getOutputCol(), outputCol="tokenizer_col")
+else:
+    tokenizer = Tokenizer(inputCol="input_features", outputCol="tokenizer_col")
+
+pipeline_preprocessing_stages += tokenizer
+
+from pyspark.ml.classification import LogisticRegression
+
+lr = LogisticRegression(maxIter=10, regParam=0.001)
+
+pipeline_models_stages += lr
+
+
+rom pyspark.ml import Pipeline, PipelineModel
+
+last_column_name = pipeline_preprocessing_stages[-1].getOutputCol()
+
+preprocessing_pipeline = Pipeline(stages=pipeline_preprocessing_stages)
+
+preprocessing_pipeline_trained = preprocessing_pipeline.\
+fit(input_data_df).\
+transform(input_data_df).\
+withColumnRenamed(last_column_name, "features")
+
+models_pipelines = []
+
+for model_pipeline in pipeline_models_stages:
+
+    models_pipelines.append(model_pipeline.fit(preprocessing_pipeline_trained))

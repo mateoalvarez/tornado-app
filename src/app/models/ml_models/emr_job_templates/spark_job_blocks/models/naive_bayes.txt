@@ -1,4 +1,5 @@
-from pyspark.mllib.classification import NaiveBayes, NaiveBayesModel
-from pyspark.mllib.util import MLUtils
+from pyspark.ml.classification import NaiveBayes
 
-NB_model = NaiveBayes.train(rdd_training_set, 1.0)
+nb = NaiveBayes(maxIter=10, regParam=0.001)
+
+pipeline_models_stages += nb

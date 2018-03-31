@@ -17,4 +17,6 @@ input_data = sc.readText(<input_file>)
 
 input_data_df = spark.createDataFrame(input_data, ["features", "label"])
 
+pipeline_preprocessing_stages = []
+pipeline_models_stages = []
 pipeline_stages = []
