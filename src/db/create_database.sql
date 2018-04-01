@@ -43,6 +43,15 @@ CREATE TABLE engines (
   PRIMARY KEY (id)
 );
 
+-- CREATE TABLE spark_blocks (
+--   id SERIAL UNIQUE,
+--   type INTEGER NOT NULL,
+--   name CHAR(40),
+--   description TEXT,
+--   code_block TEXT,
+--   PRIMARY KEY (id)
+-- );
+
 -- NOT NECESSARY FOR THE MOMENT
 -- CREATE TABLE dataset_metrics (
 --   id SERIAL,
@@ -73,7 +82,7 @@ CREATE TABLE preprocessing_methods (
   id SERIAL UNIQUE,
   prep_name CHAR(20),
   prep_engine INTEGER NOT NULL DEFAULT(1),
-  prep_transformation JSONB,
+  code_content JSONB,
   PRIMARY KEY (id),
   FOREIGN KEY (prep_engine) REFERENCES engines(id)
 );
@@ -82,7 +91,7 @@ CREATE TABLE models (
   id SERIAL UNIQUE,
   model_name CHAR(20),
   model_engine INTEGER NOT NULL DEFAULT(1),
-  model_properties JSONB,
+  code_content JSONB,
   PRIMARY KEY (id),
   FOREIGN KEY (model_engine) REFERENCES engines(id)
 );
