@@ -1,5 +1,5 @@
 CREATE DATABASE twitter_app_db;
-
+CREATE TYPE application_status_enum AS ENUM ('untrained', 'training', 'trained', 'running', 'stopped', 'error');
 \connect twitter_app_db
 
 CREATE TABLE users (
@@ -13,9 +13,11 @@ CREATE TABLE users (
   PRIMARY KEY (id, email)
 );
 
-CREATE TABLE user_settings (
+CREATE TABLE datasource_settings (
   id SERIAL UNIQUE,
   user_id INTEGER NOT NULL,
+  type INTEGER NOT NULL DEFAULT(1),
+  datasource_access_settings JSONB,
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -25,15 +27,10 @@ CREATE TABLE datasets (
   user_id INTEGER NOT NULL,
   dataset_name VARCHAR NOT NULL,
   storage_url VARCHAR NOT NULL,
+  dataset_description TEXT,
+  dataset_properties JSONB, -- {columns:# , rows:# , labels:# }
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE classification_criteria (
-  id SERIAL UNIQUE,
-  name CHAR(20),
-  properties JSONB,
-  PRIMARY KEY (id)
 );
 
 CREATE TABLE engines (
@@ -43,55 +40,59 @@ CREATE TABLE engines (
   PRIMARY KEY (id)
 );
 
--- CREATE TABLE spark_blocks (
---   id SERIAL UNIQUE,
---   type INTEGER NOT NULL,
---   name CHAR(40),
---   description TEXT,
---   code_block TEXT,
---   PRIMARY KEY (id)
--- );
+-- Templates for models
 
--- NOT NECESSARY FOR THE MOMENT
--- CREATE TABLE dataset_metrics (
---   id SERIAL,
---   dataset_id INTEGER NOT NULL,
---   metrics JSONB,
---   PRIMARY KEY (id, dataset_id),
---   FOREIGN KEY (dataset_id) REFERENCES datasets(id) ON UPDATE CASCADE ON DELETE CASCADE
--- );
-
-CREATE TABLE  pipelines (
-  id SERIAL UNIQUE,
-  user_id INTEGER NOT NULL,
-  pipeline_name CHAR(20),
-  pipeline_engine INTEGER NOT NULL DEFAULT(1),
-  pipeline_dataset INTEGER NOT NULL,
-  pipeline_prep_stages JSONB NOT NULL,
-  pipeline_models JSONB NOT NULL,
-  classification_criteria INTEGER NOT NULL,
-  training_status INTEGER NOT NULL DEFAULT(0),
-  PRIMARY KEY (id, user_id),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (pipeline_dataset) REFERENCES datasets(id),
-  FOREIGN KEY (pipeline_engine) REFERENCES engines(id),
-  FOREIGN KEY (classification_criteria) REFERENCES classification_criteria(id)
-);
-
-CREATE TABLE preprocessing_methods (
-  id SERIAL UNIQUE,
-  prep_name CHAR(20),
-  prep_engine INTEGER NOT NULL DEFAULT(1),
-  code_content JSONB,
-  PRIMARY KEY (id),
-  FOREIGN KEY (prep_engine) REFERENCES engines(id)
-);
-
-CREATE TABLE models (
-  id SERIAL UNIQUE,
-  model_name CHAR(20),
+CREATE TABLE code_block_templates (
+  id  SERIAL UNIQUE,
+  template_name CHAR(20),
   model_engine INTEGER NOT NULL DEFAULT(1),
   code_content JSONB,
   PRIMARY KEY (id),
   FOREIGN KEY (model_engine) REFERENCES engines(id)
+);
+
+-- Block codes for users
+
+CREATE TABLE code_block (
+  id SERIAL UNIQUE,
+  user_id INTEGER NOT NULL,
+  code_block_template_id INTEGER NOT NULL,
+  code_content JSONB,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (code_block_template_id) REFERENCES code_block_templates(id)
+);
+
+CREATE TABLE classification_criteria (
+  id SERIAL UNIQUE,
+  name CHAR(20),
+  properties JSONB,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE datasource_configurations (
+  id SERIAL UNIQUE,
+  datasource_settings_id INTEGER NOT NULL,
+  datasource_application_config JSONB,
+  PRIMARY KEY (id),
+  FOREIGN KEY (datasource_settings_id) REFERENCES datasource_settings(id)
+);
+
+CREATE TABLE  applications (
+  id SERIAL UNIQUE,
+  user_id INTEGER NOT NULL,
+  application_name CHAR(20),
+  training_config_resources JSONB,
+  application_dataset INTEGER NOT NULL,
+  application_prep_stages_ids INTEGER ARRAY NOT NULL,
+  application_models_ids INTEGER ARRAY NOT NULL,
+  classification_criteria INTEGER NOT NULL,
+  application_status application_status_enum,
+  datasource_configuration INTEGER NOT NULL,
+  error_status TEXT,
+  PRIMARY KEY (id, user_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (application_dataset) REFERENCES datasets(id),
+  FOREIGN KEY (datasource_id) REFERENCES (id),
+  FOREIGN KEY (datasource_settings_id) REFERENCES datasource_settings(id)
 );
