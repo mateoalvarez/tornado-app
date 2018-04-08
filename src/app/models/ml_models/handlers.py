@@ -106,15 +106,38 @@ class MLModelsHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         """CREATE and deploy training works"""
+        print('\n\n\n')
+        print('POST PARAMS')
+        print(self.request.arguments)
+        print('\n\n\n')
+        dataset = self.get_argument('application_dataset', '')
 
-        # substitutes the config values
-        dataset = self.get_argument('application_dataset')
-        preprocessing_blocks = self.get_argument('application_prep_stages_ids')
-        preprocessing_blocks_config = self.get_argument('application_prep_stages_config', '')
-        model_blocks = self.get_argument('application_models_ids')
-        model_blocks_config = self.get_argument('application_models_config', '')
+        preprocessing_blocks = self.get_arguments('application_prep_stages_ids')
+        preprocessing_blocks_full = []
+        for block in preprocessing_blocks:
+            preprocessing_blocks_full.append\
+                (\
+                    {
+                        "id": block,
+                        "config": json.loads(self.get_argument('application_prep_stages_config_{block_id}'.\
+                        format(block_id=block), '{}'))
+                    }
+                )
+
+        model_blocks = self.get_arguments('application_models_ids')
+        model_blocks_full = []
+        for block in model_blocks:
+            model_blocks_full.append\
+            (\
+                {
+                    "id": block,
+                    "config": json.loads(self.get_argument('application_models_config_{block_id}'.\
+                    format(block_id=block), '{}'))
+                }
+            )
 
         # Create block codes
+
         assembler_class = JobAssemblerHandler(self.db_cur, self.current_user)
 
         dataset_url = assembler_class._get_dataset_from_db(dataset)[0]["storage_url"]
@@ -125,13 +148,25 @@ class MLModelsHandler(BaseHandler):
             initializer_block_ids.append(assembler_class._create_code_block(initializer["id"], initializer_config)[0]["id"])
 
         preprocessing_block_ids = []
-        for preprocessing_block, preprocessing_block_config in zip(preprocessing_blocks, preprocessing_blocks_config):
-            preprocessing_block_ids.append(assembler_class._create_code_block(preprocessing_block["id"], preprocessing_block_config)[0]["id"])
+        for preprocessing_block_full in preprocessing_blocks_full:
+            preprocessing_block_ids.append(assembler_class._create_code_block(\
+            preprocessing_block_full['id'], preprocessing_block_full['config']\
+            ))
 
         model_block_ids = []
-        for model_block, model_block_config in zip(model_blocks, model_blocks_config):
-            model_block_ids.append(assembler_class._create_code_block(model_block["id"], model_block_config)[0]["id"])
+        for model_block_full in model_blocks_full:
+            model_block_ids.append(assembler_class._create_code_block(\
+            model_block_full['id'], model_block_full['config']\
+            ))
 
+        print("\n\n\n")
+        print('initializer blocks')
+        print(initializer_block_ids)
+        print('pp blocks')
+        print(preprocessing_block_ids)
+        print('model blocks')
+        print(model_block_ids)
+        print("\n\n\n")
         self.db_cur.execute\
         (\
             "INSERT INTO applications (user_id, application_name, training_config_resources, application_dataset, application_prep_stages_ids, application_models_ids, classification_criteria, application_status, error_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);", \
@@ -145,7 +180,6 @@ class MLModelsHandler(BaseHandler):
                 self.get_argument('classification_criteria', ''),\
                 'untrained',\
                 ''\
-
             )
         )
         self.db_conn.commit()

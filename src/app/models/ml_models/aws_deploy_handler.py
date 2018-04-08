@@ -119,14 +119,13 @@ class MLModelsAWSDeployHandler(BaseHandler):
             "SELECT * FROM applications WHERE id=%s;",\
             (application_id,)
         )
-        pipeline = self.db_cur.fetchone()
-        print(pipeline)
+        application = self.db_cur.fetchone()
+        print(application)
 
-        spark_job_file, prereq_file = self._create_emr_files(pipeline)
+        # spark_job_file, prereq_file = self._create_emr_files(pipeline)
 
-        spark_job_file_url, prereq_file_url = self._upload_emr_files(\
-            spark_job_file, prereq_file, pipeline["id"])
+        # spark_job_file_url, prereq_file_url = self._upload_emr_files(\
 
-        self._deploy_emr_pipeline_training(pipeline, spark_job_file_url, prereq_file_url)
+        # self._deploy_emr_pipeline_training(pipeline, spark_job_file_url, prereq_file_url)
 
         self.redirect(self.get_argument("next", "/ml_models"))
