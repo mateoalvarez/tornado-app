@@ -3,7 +3,7 @@
 import requests
 import json
 from ..base.handlers import BaseHandler
-from .spark_job_builder import SparkJobAssemblerHandler
+from .job_builder import JobAssemblerHandler
 
 class MLModelsAWSDeployHandler(BaseHandler):
     """Handler to deploy jobs on AWS"""
@@ -58,19 +58,9 @@ class MLModelsAWSDeployHandler(BaseHandler):
         #     '''
         return spark_job_file
 
-    def _create_emr_files(self, pipeline):
-        """CREATE spark job and prerequisites files"""
-
-        # prerequisites file
-        prereq_file = self._create_prerequisites_from_template()
-        # spark job file
-        # spark_job_file = SparkJobAssemblerHandler.spark_job_assembler(pipeline)
-        spark_job_file = self._create_spark_job_file(pipeline)
-
-        return spark_job_file, prereq_file
-
-    def _upload_emr_files(self, spark_job_file, prereq_file, job_id):
-        """UPLOAD files and return url"""
+        def _upload_emr_files(self, spark_job_file, prereq_file, job_id):
+            """UPLOAD files and return url"""
+            pass
 
         prereq_file_url = "{user}/{job_id}/prerequisites_{job_id}.sh".\
             format(user=self.current_user["email"], job_id=job_id)

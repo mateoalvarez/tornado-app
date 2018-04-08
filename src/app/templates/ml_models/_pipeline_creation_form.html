@@ -1,24 +1,24 @@
 <form method='post' action='/ml_models'>
   <div class="dropdown">
-    <label for="pipeline_dataset">{{ _("models.pipeline_creation.select.dataset") }}</label>
-    <select class="form-control" id="pipeline_dataset" name="pipeline_dataset">
+    <label for="application_dataset">{{ _("models.application_creation.select.dataset") }}</label>
+    <select class="form-control" id="application_dataset" name="application_dataset">
       {% for dataset in datasets %}
         <option value="{{ dataset["id"] }}">{{ dataset["storage_url"] }}</option>
       {% end %}
     </select>
-    <label for="pipeline_prep_stages">{{ _("models.pipeline_creation.select.preprocessing") }}</label>
-    <select class="form-control" id="pipeline_prep_stages" name="pipeline_prep_stages">
+    <label for="application_prep_stages_ids">{{ _("models.application_creation.select.preprocessing") }}</label>
+    <select class="form-control" id="application_prep_stages_ids" name="application_prep_stages_ids">
       {% for method in data_prep_methods %}
-        <option value="{{ method["id"] }}">{{ method["prep_name"] }}</option>
+        <option value="{{ method["id"] }}">{{ method["template_name"] }}</option>
       {% end %}
     </select>
-    <label for="pipeline_models">{{ _("models.pipeline_creation.select.model") }}</label>
-    <select class="form-control" id="pipeline_models" name="pipeline_models">
+    <label for="application_models_ids">{{ _("models.application_creation.select.model") }}</label>
+    <select class="form-control" id="application_models_ids" name="application_models_ids">
       {% for model in models %}
-        <option value="{{ model["id"] }}">{{ model["model_name"] }}</option>
+        <option value="{{ model["id"] }}">{{ model["template_name"] }}</option>
       {% end %}
     </select>
-    <label for="classification_criteria">{{ _("models.pipeline_creation.select.classification_criteria") }}</label>
+    <label for="classification_criteria">{{ _("models.application_creation.select.classification_criteria") }}</label>
     <select class="form-control" id="classification_criteria" name="classification_criteria">
       {% for criteria in classification_criteria %}
         <option value="{{ criteria["id"] }}">{{ criteria["name"] }}</option>
@@ -26,9 +26,9 @@
     </select>
   </div>
   <div>
-    <input class="text-input" id="pipeline_name" name="pipeline_name" type="text" value="" />
+    <input class="text-input" id="application_name" name="application_name" type="text" value="" />
   </div>
   <div>
-    <button class="btn btn-primary" type='submit'>{{ _("models.pipeline_creation.submit") }}</button>
+    <button class="btn btn-primary" type='submit'>{{ _("models.application_creation.submit") }}</button>
   </div>
 </form>
