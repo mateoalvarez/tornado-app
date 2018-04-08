@@ -58,11 +58,8 @@ class JobAssemblerHandler():
         for element_key, element_arg in replace_dict.items():
             code_content = code_content.replace("<"+element_key+">", element_arg)
         # Now create a new code block filled with user's params
-        print('\n\n')
-        print(code_content.replace('"', '\\"'))
-        print('\n\n')
-        
-        code_content_json = '{"code": %s, "params": "%s"}' % (code_content.replace('"', '\\"'), replace_dict)
+
+        code_content_json = '{"code": "%s", "params": "%s"}' % (code_content.replace('"', '\\"'), replace_dict)
         self.db_cur.execute\
         (\
             "INSERT INTO code_block (user_id, code_block_template_id, code_content) VALUES (%s, %s, %s) returning id;",
@@ -72,7 +69,7 @@ class JobAssemblerHandler():
                 code_content_json
             )
         )
-
+        code_content = self.db_cur.fetchall()
         return code_content
 
 

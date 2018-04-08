@@ -113,11 +113,11 @@ class MLModelsAWSDeployHandler(BaseHandler):
     def post(self):
         """CREATE deployment on AWS"""
 
-        pipeline_id = self.get_argument("pipeline", "")
+        application_id = self.get_argument("application", "")
         self.db_cur.execute\
         (\
-            "SELECT * FROM pipelines WHERE id=%s;",\
-            (pipeline_id,)
+            "SELECT * FROM applications WHERE id=%s;",\
+            (application_id,)
         )
         pipeline = self.db_cur.fetchone()
         print(pipeline)

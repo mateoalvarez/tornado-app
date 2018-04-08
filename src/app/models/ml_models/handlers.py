@@ -114,42 +114,38 @@ class MLModelsHandler(BaseHandler):
         model_blocks = self.get_argument('application_models_ids')
         model_blocks_config = self.get_argument('application_models_config', '')
 
-        # print('\n\n\n')
-        # print(model_blocks)
-        # print(dataset)
-        # print('\n\n\n')
-
         # Create block codes
         assembler_class = JobAssemblerHandler(self.db_cur, self.current_user)
 
         dataset_url = assembler_class._get_dataset_from_db(dataset)[0]["storage_url"]
         initializer_ids = assembler_class._get_code_block_template_by_type("input")
         initializer_configs = [{"dataset": dataset_url}]
+        initializer_block_ids = []
         for initializer, initializer_config in zip(initializer_ids, initializer_configs):
-            initializer_ids.append(assembler_class._create_code_block(initializer["id"], initializer_config))
+            initializer_block_ids.append(assembler_class._create_code_block(initializer["id"], initializer_config)[0]["id"])
 
         preprocessing_block_ids = []
         for preprocessing_block, preprocessing_block_config in zip(preprocessing_blocks, preprocessing_blocks_config):
-            preprocessing_block_ids.append(assembler_class._create_code_block(preprocessing_block, preprocessing_block_config))
+            preprocessing_block_ids.append(assembler_class._create_code_block(preprocessing_block["id"], preprocessing_block_config)[0]["id"])
 
         model_block_ids = []
         for model_block, model_block_config in zip(model_blocks, model_blocks_config):
-            model_block_ids.append(assembler_class._create_code_block(model_block, model_block_config))
+            model_block_ids.append(assembler_class._create_code_block(model_block["id"], model_block_config)[0]["id"])
 
-        print("################################", preprocessing_block_ids)
         self.db_cur.execute\
         (\
-            "INSERT INTO applications (user_id, application_name, training_config_resources, application_dataset, application_prep_stages_ids, application_models_ids, classification_criteria, application_status, error_status) VALUES (%s, %s, %s, %s, ARRAY[%s], ARRAY[%s], %s, %s, %s);", \
+            "INSERT INTO applications (user_id, application_name, training_config_resources, application_dataset, application_prep_stages_ids, application_models_ids, classification_criteria, application_status, error_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);", \
             (\
                 self.current_user['id'],\
                 self.get_argument('application_name', ''),\
-                self.get_argument('training_config_resources', ''),\
+                self.get_argument('training_config_resources', '{}'),\
                 dataset,\
-                ','.join(map(str, preprocessing_block_ids)),\
-                ','.join(map(str, model_block_ids)),\
+                preprocessing_block_ids,\
+                model_block_ids,\
                 self.get_argument('classification_criteria', ''),\
                 'untrained',\
                 ''\
+
             )
         )
         self.db_conn.commit()
