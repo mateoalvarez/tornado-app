@@ -10,9 +10,10 @@ LOGGER = logging.getLogger(__name__)
 
 class JobAssemblerHandler():
     """Class to compose the spark jobs"""
-    def __init__(self, db_cur, current_user):
+    def __init__(self, db_cur, db_conn, current_user):
         """Initializer method"""
         self.db_cur = db_cur
+        self.db_conn = db_conn
         self.current_user = current_user
 
     def _get_dataset_from_db(self, dataset_id):
@@ -70,6 +71,7 @@ class JobAssemblerHandler():
             )
         )
         code_content = self.db_cur.fetchall()
+        self.db_conn.commit()
         return code_content
 
 

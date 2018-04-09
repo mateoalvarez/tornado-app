@@ -106,13 +106,14 @@ class MLModelsHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         """CREATE and deploy training works"""
+
         print('\n\n\n')
         print('POST PARAMS')
         print(self.request.arguments)
         print('\n\n\n')
-        dataset = self.get_argument('application_dataset', '')
 
-        preprocessing_blocks = self.get_arguments('application_prep_stages_ids')
+        dataset = self.get_argument('application_dataset', '')
+        preprocessing_blocks = list(map(int, self.request.arguments['application_prep_stages_ids']))
         preprocessing_blocks_full = []
         for block in preprocessing_blocks:
             preprocessing_blocks_full.append\
@@ -124,7 +125,7 @@ class MLModelsHandler(BaseHandler):
                     }
                 )
 
-        model_blocks = self.get_arguments('application_models_ids')
+        model_blocks = list(map(int, self.request.arguments['application_models_ids']))
         model_blocks_full = []
         for block in model_blocks:
             model_blocks_full.append\
@@ -138,7 +139,7 @@ class MLModelsHandler(BaseHandler):
 
         # Create block codes
 
-        assembler_class = JobAssemblerHandler(self.db_cur, self.current_user)
+        assembler_class = JobAssemblerHandler(self.db_cur, self.db_conn, self.current_user)
 
         dataset_url = assembler_class._get_dataset_from_db(dataset)[0]["storage_url"]
         initializer_ids = assembler_class._get_code_block_template_by_type("input")
@@ -151,13 +152,13 @@ class MLModelsHandler(BaseHandler):
         for preprocessing_block_full in preprocessing_blocks_full:
             preprocessing_block_ids.append(assembler_class._create_code_block(\
             preprocessing_block_full['id'], preprocessing_block_full['config']\
-            ))
+            )[0]["id"])
 
         model_block_ids = []
         for model_block_full in model_blocks_full:
             model_block_ids.append(assembler_class._create_code_block(\
             model_block_full['id'], model_block_full['config']\
-            ))
+            )[0]["id"])
 
         print("\n\n\n")
         print('initializer blocks')
