@@ -50,11 +50,12 @@ class MLModelsAWSDeployHandler(BaseHandler):
 
     def _upload_emr_files(self, job_file, prereq_file, application_json, application_id):
         """UPLOAD files and return url"""
+        import urllib
 
         prereq_file_url = "{user}/application_{application_id}/prerequisites_{application_id}.sh".\
-            format(user=self.current_user["email"], application_id=application_id)
+            format(user="user_" + str(self.current_user["id"]), application_id=application_id)
         job_file_url = "{user}/application_{application_id}/job_{application_id}.py".\
-            format(user=self.current_user["email"], application_id=application_id)
+            format(user="user_" + str(self.current_user["id"]), application_id=application_id)
 
         s3_client, _ = self.start_s3_connection()
 
@@ -75,23 +76,28 @@ class MLModelsAWSDeployHandler(BaseHandler):
         )
 
         job_file_url = "s3://" + self.BUCKET_SPARK_JOBS + "/" + job_file_url
-        prereq_file_url = "s3://" + self.BUCKET_SPARK_JOBS + "/" + prereq_file_url
-        # prereq_file_url = "https://s3.eu-central-1.amazonaws.com/" + self.BUCKET_SPARK_JOBS + prereq_file_url
+        prereq_file_url = "s3://" + self.BUCKET_SPARK_JOBS + "/" + urllib.parse.quote(prereq_file_url)
         return job_file_url, prereq_file_url
 
     def _deploy_emr_application_training(self, application, job_file_url, prereq_file_url):
         """DEPLOT application on cluster"""
 
         elements_to_replace = {
-            "user": self.current_user["email"],
+            "user": "user_" + str(self.current_user["id"]),
             "spark-job": job_file_url,
             "application_id": application["id"],
             "preconfig_script": prereq_file_url,
             "job_id": application["id"]
         }
 
-        job_step_content = self._create_job_json_from_template(elements_to_replace=elements_to_replace)
-
+        job_step_content = self._create_job_json_from_template(\
+        elements_to_replace=elements_to_replace)
+        print('\n\n\n\n\n\n')
+        print('#########################')
+        import pprint
+        pprint.pprint(job_step_content)
+        print('#########################')
+        print('\n\n\n\n\n\n')
         emr_client = self.start_emr_connection()
         result = emr_client.run_job_flow(**job_step_content)
         print("\n\n\n\n\n\n\n", result, "\n\n\n\n\n")
@@ -101,10 +107,11 @@ class MLModelsAWSDeployHandler(BaseHandler):
         job_file = self._create_application_job_file(application)
 
         elements_to_replace = {}
-        application_training_json = self._create_job_json_from_template(elements_to_replace=elements_to_replace)
+        application_training_json = self._create_job_json_from_template(\
+        elements_to_replace=elements_to_replace)
 
-        job_file_url = "{user}/application_{application_id}/job_{application_id}.py".\
-            format(user=self.current_user["email"], application_id=application['id'])
+        job_file_url = self.BUCKET_SPARK_JOBS + "/{user}/application_{application_id}/job_{application_id}.py".\
+            format(user="user_" + str(self.current_user["id"]), application_id=application['id'])
         prereq_file = self._create_prerequisites_from_template(job_file_url)
 
         return job_file, prereq_file, application_training_json
@@ -125,7 +132,8 @@ class MLModelsAWSDeployHandler(BaseHandler):
 
         job_file, prereq_file, application_training_json = self._create_emr_files(application)
 
-        job_file_url, prereq_file_url = self._upload_emr_files(job_file, prereq_file, application_training_json, application_id)
+        job_file_url, prereq_file_url = self._upload_emr_files(\
+        job_file, prereq_file, application_training_json, application_id)
         self._deploy_emr_application_training(application, job_file_url, prereq_file_url)
 
         self.redirect(self.get_argument("next", "/ml_models"))
