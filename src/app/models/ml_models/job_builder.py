@@ -80,7 +80,16 @@ class JobAssemblerHandler():
         job_code = ''
 
         stages = ['input', 'preprocessing', 'model', 'output']
+        self.db_cur.execute("SELECT * FROM code_block_templates WHERE name='initializer';")
+        initializer = self.db_cur.fetchone()
 
+        self.db_cur.execute("SELECT * FROM code_block_templates WHERE name='pipeline_execution';")
+        pipeline_execution = self.db_cur.fetchone()
+
+        self.db_cur.execute("SELECT * FROM code_block_templates WHERE name='output';")
+        output = self.db_cur.fetchone()
+
+        pipeline_sequence = [initializer] + pipeline_sequence + [pipeline_execution, output]
         for stage in stages:
             for action, action_params in zip(pipeline_sequence[stage], pipeline_sequence_params[stage]):
                 job_code += self._create_code_block(action, action_params)

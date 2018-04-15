@@ -90,15 +90,19 @@ class MLModelsHandler(BaseHandler):
         models = self._get_models()
         user_applications = self._get_user_applications()
         datasets = self._get_datasets()
+        input_methods = self._get_initializers()
+        output_methods = self._get_outputs()
         classification_criteria = self._get_classification_criteria()
 
         self.render\
         (\
             "ml_models/ml_models.html",\
             datasets=datasets,\
+            input_methods=input_methods,\
             data_prep_methods=data_prep_methods,\
             user_applications=user_applications,\
             models=models,\
+            output_methods=output_methods,\
             classification_criteria=classification_criteria
         )
 
@@ -113,6 +117,15 @@ class MLModelsHandler(BaseHandler):
         print('\n\n\n')
 
         dataset = self.get_argument('application_dataset', '')
+        #
+        # # Get input code
+        # self.db_cur.execute("SELECT * FROM code_block WHERE Type=input;")
+        # input_template = self.db_cur.fetchone()
+        # # replace input dataset
+        # self.db_cur.execute("SELECT * FROM datasets WHERE id=%s;", (dataset, ))
+        # input_dataset = self.db_cur.fetchone()
+        # input_template_filled = input_template["code_content"]["code"].replace("<dataset>", input_dataset)
+
         preprocessing_blocks = list(map(int, self.request.arguments['application_prep_stages_ids']))
         preprocessing_blocks_full = []
         for block in preprocessing_blocks:

@@ -6,9 +6,15 @@
         <option value="{{ dataset["id"] }}">{{ dataset["storage_url"] }}</option>
       {% end %}
     </select>
+    <!-- <select class="form-control" id="application_input" name="application_input">
+      {% for input_method in input_methods %}
+        <option value="{{ input_method["id"] }}">{{ input_method["template_name"] }}</option>
+      {% end %}
+    </select> -->
   </div>
   <div class="input-group">
     <label for="application_prep_stages_ids">{{ _("models.application_creation.select.preprocessing") }}</label>
+    <br>
     <table>
       <tr>
         <th>
@@ -32,6 +38,7 @@
   </div>
   <div class="input-group">
     <label for="application_models_ids">{{ _("models.application_creation.select.model") }}</label>
+    <br>
     <table>
       <tr>
         <th>
@@ -53,6 +60,13 @@
       {% end %}
     </table>
   </div>
+  <!-- <div class="dropdown">
+    <select class="form-control" id="application_output" name="application_output">
+      {% for output_method in output_methods %}
+        <option value="{{ output_method["id"] }}">{{ output_method["template_name"] }}</option>
+      {% end %}
+    </select>
+  </div> -->
   <div>
     <label for="classification_criteria">{{ _("models.application_creation.select.classification_criteria") }}</label>
     <select id="classification_criteria" name="classification_criteria">

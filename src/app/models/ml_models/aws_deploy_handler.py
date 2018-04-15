@@ -42,10 +42,31 @@ class MLModelsAWSDeployHandler(BaseHandler):
     def _create_application_job_file(self, application):
         """Generate spark job code"""
         stages = application['application_prep_stages_ids'] + application['application_models_ids']
+        # Create code execution
+        # stages = ['input', 'preprocessing', 'model', 'output']
         full_job_file = ''
+        # Initializer
+        self.db_cur.execute('SELECT storage_url FROM datasets WHERE id=%s', (application['application_dataset'], ))
+        dataset = self.db_cur.fetchone()['storage_url']
+
+        self.db_cur.execute('SELECT * FROM code_block_templates WHERE template_name=%s;', ('initializer', ))
+        initializer = self.db_cur.fetchone()['code_content']
+        full_job_file = initializer['code'].replace("<dataset>", dataset)
+
         for stage in stages:
             self.db_cur.execute('SELECT code_content FROM code_block WHERE id=%s;', (stage, ))
             full_job_file += self.db_cur.fetchone()['code_content']['code']
+
+        # Output
+        self.db_cur.execute('SELECT * FROM code_block_templates WHERE template_name=%s;', ('pipeline_execution', ))
+        pipeline_execution = self.db_cur.fetchone()['code_content']
+
+        self.db_cur.execute('SELECT * FROM code_block_templates WHERE template_name=%s;', ('output', ))
+        output = self.db_cur.fetchone()['code_content']
+
+        full_job_file += pipeline_execution['code']
+        full_job_file += output['code']
+
         return full_job_file
 
     def _upload_emr_files(self, job_file, prereq_file, application_json, application_id):
