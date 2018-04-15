@@ -70,6 +70,9 @@ class LoginHandler(BaseHandler):
     @gen.coroutine
     def get(self):
         """User login page"""
+        if self.get_current_user():
+            self.redirect(self.get_argument("next", "/"))
+            return
         self.render("users/login.html")
 
     @gen.coroutine
@@ -82,7 +85,7 @@ class LoginHandler(BaseHandler):
         self.get_argument("password").encode(),\
         user["hashed_password"].encode()):
             self.set_current_user(str(user["id"]))
-            # print('##########################\n\n\n\n',self.get_argument("next", "/"))
+            # print("#########{}".format(self.path_kwargs))
             self.redirect(self.get_argument("next", "/"))
         else:
             self.render("users/login.html", error="Incorrect email or password")

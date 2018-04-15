@@ -6,7 +6,7 @@
             #
           </th>
           <th>
-            {{ _("models.header.pipeline_name") }}
+            {{ _("models.header.application_name") }}
           </th>
           <th>
             {{ _("models.header.dataset") }}
@@ -27,40 +27,38 @@
             {{ _("models.header.start_training") }}
           </th>
         </tr>
-      {% for index, pipeline in enumerate(user_pipelines) %}
+      {% for index, application in enumerate(user_applications) %}
         <tr>
           <td>
             {{ index }}
           </td>
           <td>
-            {{ pipeline["pipeline_name"] }}
+            {{ application["application_name"] }}
           </td>
           <td>
-            {{ pipeline["pipeline_dataset"] }}
+            {{ application["application_dataset"] }}
           </td>
           <td>
-            {{ pipeline["pipeline_prep_stages"] }}
+            {{ application["application_prep_stages_ids"] }}
           </td>
           <td>
-            {{ pipeline["pipeline_models"] }}
+            {{ application["application_models_ids"] }}
           </td>
           <td>
-            {{ pipeline["classification_criteria"] }}
+            {{ application["classification_criteria"] }}
           </td>
           <td>
-            {{ pipeline["training_status"] }}
+            {{ application["application_status"] }}
           </td>
           <td>
-            {% if pipeline["training_status"] == 1 %}
-              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ pipeline["id"] }}"/>{{ _("models.content.start_training") }}</button>
-            {% elif pipeline["training_status"] == 2 %}
-              <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ pipeline["id"] }}"/>{{ _("models.content.start_training") }}</button>
+            {% if application["application_status"] == "untrained" %}
+              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("models.content.start_training") }}</button>
             {% else %}
-              <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ pipeline["id"] }}"/>{{ _("models.content.start_training") }}</button>
+              <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("models.content.start_training") }}</button>
             {% end %}
           </td>
         </tr>
-        <div class="modal fade" id="{{ pipeline["id"] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="{{ application["id"] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -70,12 +68,12 @@
                 </button>
               </div>
               <div class="modal-body">
-                {{ _("models.deploy.confirm.confirmation_text") }} {{ pipeline["id"] }}
+                {{ _("models.deploy.confirm.confirmation_text") }} {{ application["id"] }}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>
                 <form method='post' action='/ml_models/deploy'>
-                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ pipeline["id"] }}" type='submit' value={{ pipeline["id"] }} name="pipeline" id="pipeline">{{ _("models.content.start_training") }}</button>
+                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ application["id"] }}" type='submit' value={{ application["id"] }} name="application" id="application">{{ _("models.content.start_training") }}</button>
                 </form>
               </div>
             </div>

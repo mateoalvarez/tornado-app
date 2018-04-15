@@ -1,5 +1,5 @@
 from pyspark.ml.classification import NaiveBayes
 
-nb = NaiveBayes(maxIter=10, regParam=0.001)
+nb = NaiveBayes(smoothing=1.0, modelType="multinomial")
 
-pipeline_models_stages += nb
+pipeline_models_stages += (nb.uid, nb)
