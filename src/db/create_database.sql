@@ -72,7 +72,14 @@ CREATE TABLE classification_criteria (
   properties JSONB,
   PRIMARY KEY (id)
 );
+
 -- Twitter configuration
+
+-- Configuration:
+-- datasource_application_config: {
+--  filter:
+    -
+-- }
 CREATE TABLE datasource_configurations (
   id SERIAL UNIQUE,
   datasource_settings_id INTEGER NOT NULL,
