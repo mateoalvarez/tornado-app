@@ -1,0 +1,25 @@
+import nltk
+import random
+from nltk.corpus import movie_reviews
+from nltk.classify.scikitlearn import SklearnClassifier
+from nltk.tokenize import word_tokenize
+
+
+import pyspark
+from pyspark.sql import SparkSession
+
+spark = SparkSession \
+    .builder \
+    .appName("Basic template") \
+    .config('spark.jars.packages',
+                'ml.combust.mleap:mleap-spark-base_2.11:0.7.0,ml.combust.mleap:mleap-spark_2.11:0.7.0') \
+    .getOrCreate()
+sc = spark.sparkContext
+
+input_data = sc.readText(<input_file>)
+
+input_data_df = spark.createDataFrame(input_data, ["features", "label"])
+
+pipeline_preprocessing_stages = []
+pipeline_models_stages = []
+pipeline_stages = []
