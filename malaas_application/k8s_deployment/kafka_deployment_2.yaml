@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kafka-pod
+  labels:
+    app: kafka
+    name: kafka-pod
+spec:
+  containers:
+    - name: kafka
+      imagePullPolicy: IfNotPresent
+      image: spotify/kafka
+      ports:
+        - name: kafka-port
+          containerPort: 9092
+          hostPort: 9092
+        - name: zk-port
+          containerPort: 2181
+          hostPort: 2181
