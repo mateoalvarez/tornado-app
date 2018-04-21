@@ -3,7 +3,7 @@
 ## Requirements
 
 ### Deploy kafka
-Note that you must know beforehand the IP that docker would set to your kafka container in order to set this IP to your malaas_application
+Note that you must know beforehand the IP that docker would set to your kafka container in order to set this IP to your user_application
 
 ```
 docker run -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=192.168.240.2 --env ADVERTISED_PORT=9092 spotify/kafka
