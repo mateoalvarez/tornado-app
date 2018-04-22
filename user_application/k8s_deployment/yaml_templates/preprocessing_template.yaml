@@ -34,5 +34,5 @@ spec:
         image: preprocessing_#{application_id}
         imagePullPolicy: Always
         ports:
-        - containerPort: 8000
+        - containerPort: 65327
           hostPort: 8000
