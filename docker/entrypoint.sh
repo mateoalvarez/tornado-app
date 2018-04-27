@@ -58,4 +58,4 @@ EOF
 unset AWS_ACCESS_KEY_ID
 unset AWS_SECRET_ACCESS_KEY
 
-python /usr/src/app/src/app/app.py
+python3 /usr/src/app/src/app/app.py

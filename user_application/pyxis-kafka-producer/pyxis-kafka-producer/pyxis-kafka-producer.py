@@ -9,13 +9,13 @@ class ExploiterTwitterStreamListener(tweepy.StreamListener):
 
     def __init__(self):
         super(ExploiterTwitterStreamListener, self).__init__()
-        bootstrap_server = os.environ.get("KAFKA_BOOTSTRAP_SERVER", "127.0.0.1")
-        kafka_topic = os.environ.get("KAFKA_TOPIC", "foobar_python")
+        bootstrap_server = os.environ.get("KAFKA_BOOTSTRAP_SERVER", "kafka-server")
+        kafka_topic = os.environ.get("KAFKA_TOPIC", "default-token")
         if bootstrap_server is None:
             LOGGER.error("There is no KAFKA_BOOTSTRAP_SERVER present in environment")
             return None
         if kafka_topic is None:
-            LOGGER.error("There is no KAFKA_BOOTSTRAP_SERVER present in environment")
+            LOGGER.error("There is no KAFKA_TOPIC present in environment")
             kafka_topic = "empty_topic"
         self.producer = KafkaProducer(bootstrap_servers=bootstrap_server,
                                  value_serializer=lambda v: json.dumps(v).encode('utf-8'))
@@ -24,7 +24,7 @@ class ExploiterTwitterStreamListener(tweepy.StreamListener):
     def on_data(self, data):
         print(" -> I am going to write...")
         self.producer.send(self.kafka_topic, data)
-        self.producer.flus()
+        self.producer.flush()
         return True
 
     def on_status(self, status):
@@ -53,5 +53,3 @@ def runApplication():
 
 if __name__ == '__main__':
     runApplication()
-
-

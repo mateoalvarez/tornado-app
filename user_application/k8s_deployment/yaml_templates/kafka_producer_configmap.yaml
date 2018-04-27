@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-producer-config-#{application_id}
+  namespace: default
+data:
+  TWITTER_CONSUMER_API_KEY: qUBED8JONS1rdOXMGXxJw3KDK
+  TWITTER_CONSUMER_API_SECRET: DUI0ICvIXTYE4SPxdBSRVlq3xEw1UDpcy6mZG2qWE1yyX3nH2M
+  TWITTER_CONSUMER_TOKEN: 245605482-rajqw4klordPOid8izXvAHBc8DhU8QliOFraCFqM
+  TWITTER_CONSUMER_SECRET: kYalUO9SmnLvcjXPIrRE0dSEDd2LhQBSBMPD57UgLvzse
+  WORDS_TO_TRACK: kubernetes
+  KAFKA_TOPIC: application_#{application_id}

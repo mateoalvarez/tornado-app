@@ -1,0 +1,41 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: kafka_producer_application_#{application_id}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka_producer_application_#{application_id}
+      tier: producer
+  template:
+    metadata:
+      labels:
+        app: kafka_producer_application_#{application_id}
+        tier: producer
+    spec:
+      containers:
+      - name: kafka_producer_application_#{application_id}
+        image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-kafka-producer:latest
+        imagePullPolicy: Always
+        env:
+          - name: TWITTER_CONSUMER_API_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-producer-config
+                key: TWITTER_CONSUMER_API_KEY
+          - name: TWITTER_CONSUMER_API_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-producer-config
+                key: TWITTER_CONSUMER_API_SECRET
+          - name: TWITTER_CONSUMER_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-producer-config
+                key: TWITTER_CONSUMER_SECRET
+          - name: WORDS_TO_TRACK
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-producer-config
+                key: WORDS_TO_TRACK
