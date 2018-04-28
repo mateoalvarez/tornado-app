@@ -1,7 +1,7 @@
 CREATE DATABASE twitter_app_db;
+\connect twitter_app_db
 CREATE TYPE application_status_enum AS ENUM ('untrained', 'training', 'trained', 'running', 'stopped', 'error');
 CREATE TYPE code_block_type AS ENUM ('input', 'output', 'preprocessing', 'model');
-\connect twitter_app_db
 
 CREATE TABLE users (
   id SERIAL UNIQUE,
