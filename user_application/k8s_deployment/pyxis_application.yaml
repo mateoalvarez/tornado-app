@@ -50,6 +50,31 @@ spec:
               secretKeyRef:
                 name: aws-secrets
                 key: AWS_SECRET_ACCESS_KEY
+          - name: DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secrets
+                key: DATABASE_NAME
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secrets
+                key: DATABASE_USER
+          - name: DATABASE_PASS
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secrets
+                key: DATABASE_PASS
+          - name: DATABASE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secrets
+                key: DATABASE_HOST
+          - name: DATABASE_PORT
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secrets
+                key: DATABASE_PORT
         ports:
         - containerPort: 8888
           hostPort: 8888
