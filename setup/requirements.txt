@@ -8,3 +8,4 @@ asyncpg
 psycopg2
 bcrypt
 boto3
+kubernetes
