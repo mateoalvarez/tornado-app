@@ -17,7 +17,7 @@ class DispatcherDeployer():
         self.BUCKET_YAML_TEMPLATES = BUCKET_YAML_TEMPLATES
         self.BUCKET_YAML_TEMPLATES_REGION = BUCKET_YAML_TEMPLATES_REGION
 
-    def deploy_dispatcher(self, application):
+    def deploy_dispatcher(self, application, datasource_configuration):
         """Disparcher deployer"""
 
         dispatcher_template = requests.get(\
@@ -28,11 +28,11 @@ class DispatcherDeployer():
         except Exception as e:
             print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
 
-    def deploy_kafka_producer(self, application):
+    def deploy_kafka_producer(self, application, keywords):
         """Kafka producer deployer"""
 
         producer_template = requests.get(\
-            "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/kafka_producer_deployment.yaml").content.decode("utf-8").format(application_id=application["id"])
+            "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/kafka_producer_deployment.yaml").content.decode("utf-8").format(application_id=application["id"], words_to_track=keywords)
 
         try:
             self.k8s_deployment.create_namespaced_deployment(namespace=self.k8s_namespace, body=yaml.load(producer_template), pretty=True)

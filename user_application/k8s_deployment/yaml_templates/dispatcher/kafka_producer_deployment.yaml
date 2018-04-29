@@ -17,5 +17,5 @@ spec:
         image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-kafka-producer:latest
         imagePullPolicy: Always
         env:
-          - name: ADVERTISED_HOST
-            value: kafka-server
+          - name: WORDS_TO_TRACK
+            value: {words_to_track}

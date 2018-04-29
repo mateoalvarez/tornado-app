@@ -98,18 +98,25 @@ CREATE TABLE  applications (
   application_models_ids INTEGER ARRAY NOT NULL,
   classification_criteria INTEGER NOT NULL,
   application_status application_status_enum,
-  datasource_configuration INTEGER,
+  datasource_configuration_id INTEGER,
   datasource_settings_id INTEGER,
   error_status TEXT,
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (application_dataset) REFERENCES datasets(id),
   FOREIGN KEY (datasource_settings_id) REFERENCES datasource_settings(id),
-  FOREIGN KEY (datasource_configuration) REFERENCES datasource_configurations(id)
+  FOREIGN KEY (datasource_configuration_id) REFERENCES datasource_configurations(id)
 );
 
 
 -- INSERT EXAMPLE code_block_templates
+-- FIRST USER ADMIN
+INSERT INTO users(email, hashed_password, name, type)
+VALUES ('admin@pyxisml.com','$2b$12$jzfu7DwswPSzBWV9tjHSpeBxuasg27M9Ho5Zw7yKPBekmCNm.F8OS','ADMIN',1);
+-- TWITTER API FOR ADMIN
+INSERT INTO datasource_settings (user_id, type, datasource_access_settings)
+VALUES (1, 1, '{"TWITTER_CONSUMER_API_KEY":"qUBED8JONS1rdOXMGXxJw3KDK", "TWITTER_CONSUMER_API_SECRET":"DUI0ICvIXTYE4SPxdBSRVlq3xEw1UDpcy6mZG2qWE1yyX3nH2M", "TWITTER_CONSUMER_TOKEN":"245605482-rajqw4klordPOid8izXvAHBc8DhU8QliOFraCFqM", "TWITTER_CONSUMER_SECRET":"kYalUO9SmnLvcjXPIrRE0dSEDd2LhQBSBMPD57UgLvzse"}');
+-- MODELS
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
 VALUES ('initializer', 1, 'input', '{"code": "import nltk\nimport random\nfrom nltk.corpus import movie_reviews\nfrom nltk.classify.scikitlearn import SklearnClassifier\nfrom nltk.tokenize import word_tokenize\nimport pyspark\nfrom pyspark.sql import SparkSession\nspark = SparkSession.builder.appName(\"Basic template\").config(\"spark.jars.packages\",\"ml.combust.mleap:mleap-spark-base_2.11:0.7.0,ml.combust.mleap:mleap-spark_2.11:0.7.0\").getOrCreate()\nsc = spark.sparkContext\ninput_data = sc.textFile(\"full.txt\").map(lambda line: line.split(\"\t\"))\nfrom pyspark import Row\ninput_data_splitted = input_data.map(lambda line: Row(features=line[0], label=int(float(line[1]))))\nfrom pyspark.sql.types import StringType, IntegerType\nfrom pyspark.sql.types import *\nschema = StructType([StructField(\"label\", IntegerType(), False), StructField(\"features\", StringType(), False)])\ninput_data_df = spark.createDataFrame(input_data_splitted, schema=schema)\npipeline_preprocessing_stages = []\npipeline_models_stages = []\npipeline_stages = []", "params":"[<dataset>]"}');
 
