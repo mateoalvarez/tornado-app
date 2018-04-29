@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka-producer-{application_id}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-producer-{application_id}
+  template:
+    metadata:
+      labels:
+        app: kafka-producer-{application_id}
+    spec:
+      containers:
+      - name: kafka-producer-{application_id}
+        image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-kafka-producer:latest
+        imagePullPolicy: Always
+        env:
+          - name: ADVERTISED_HOST
+            value: kafka-server

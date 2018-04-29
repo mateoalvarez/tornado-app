@@ -29,6 +29,7 @@ URL_PATTERNS = [
 
     # trained_ml_models
     url(r"/trained_ml_models", TrainedMLModelsHandler, name="trained_ml_models"),
+    url(r"/trained_ml_models/deploy", TrainedMLModelsHandler, name="trained_ml_models"),
 
     # running Applications
     url(r"/running_applications", RunningApplicationsHandler, name="running_applications"),

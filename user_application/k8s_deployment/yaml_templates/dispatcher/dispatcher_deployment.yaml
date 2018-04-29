@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dispatcher-{application_id}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dispatcher-{application_id}
+  template:
+    metadata:
+      labels:
+        app: dispatcher-{application_id}
+    spec:
+      containers:
+      - name: dispatcher-{application_id}
+        image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-dispatcher:latest
+        imagePullPolicy: Always
+        env:
+          - name: ADVERTISED_HOST
+            value: kafka-server

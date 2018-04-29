@@ -1,6 +1,11 @@
 {% extends "../base/base.html" %}
-
+{% block head %}
+{% end %}
 {% block body %}
-  <h1>{{ _("welcome") }}</h1>
-  <h1>trained ml models</h1>
+  <div class="container container-fluid">
+    <div class="row">
+      <h1>{{ _("mlmodels.tab.applications") }}</h1>
+    </div>
+    {% include "_user_applications.html" %}
+  </div>
 {% end %}
