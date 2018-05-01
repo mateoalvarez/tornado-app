@@ -18,4 +18,6 @@ spec:
         imagePullPolicy: Always
         env:
           - name: WORDS_TO_TRACK
-            value: {words_to_track}
+            value: {WORDS_TO_TRACK}
+          - name: KAFKA_TOPIC
+            value: {KAFKA_TOPIC}

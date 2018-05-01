@@ -22,7 +22,7 @@ class ExploiterTwitterStreamListener(tweepy.StreamListener):
         self.kafka_topic = kafka_topic
 
     def on_data(self, data):
-        print(" -> I am going to write...")
+        print(" -> I am going to write on topic {topic}".format(self.kafka_topic))
         self.producer.send(self.kafka_topic, data)
         self.producer.flush()
         return True

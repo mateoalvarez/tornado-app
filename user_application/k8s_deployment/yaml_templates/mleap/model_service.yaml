@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: model_#{application_id}
+  name: model_#{model_id}
   labels:
     app: application_#{application_id}
     tier: model

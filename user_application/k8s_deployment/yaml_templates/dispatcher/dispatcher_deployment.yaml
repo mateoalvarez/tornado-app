@@ -20,15 +20,15 @@ spec:
           - name: MONGODB_HOST
             valueFrom:
               secretKeyRef:
-                name: mongodb_secrets
+                name: mongodb-secrets
                 key: MONGODB_HOST
           - name: MONGODB_PORT
             valueFrom:
               secretKeyRef:
-                name: mongodb_secrets
+                name: mongodb-secrets
                 key: MONGODB_PORT
           - name: MONGODB_DBNAME
-            value: {MONGODB_NAME}
+            value: {MONGODB_DBNAME}
           - name: MONGODB_COLLECTION_NAME
             value: {MONGODB_COLLECTION_NAME}
           - name: KAFKA_TOPIC

@@ -77,7 +77,7 @@ CREATE TABLE classification_criteria (
 
 -- Configuration:
 -- datasource_application_config: {
---  filter:
+--  keywords:
     -
 -- }
 CREATE TABLE datasource_configurations (

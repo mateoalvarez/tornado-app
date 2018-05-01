@@ -73,7 +73,9 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>
                 <form method='post' action='/trained_ml_models/deploy'>
-                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ application["id"] }}" type='submit' value={{ application["id"] }} name="application" id="application">{{ _("models.content.start_training") }}</button>
+                  <input class="text-input" name="keywords"/>
+                  <input class="text-input" type="hidden" name="datasource_settings_id" value={{ application["datasource_settings_id"] }} />
+                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ application["id"] }}" type='submit' value={{ application["id"] }} name="application_id" id="application">{{ _("models.content.start_training") }}</button>
                 </form>
               </div>
             </div>
