@@ -17,5 +17,21 @@ spec:
         image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-dispatcher:latest
         imagePullPolicy: Always
         env:
-          - name: ADVERTISED_HOST
+          - name: MONGODB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: mongodb_secrets
+                key: MONGODB_HOST
+          - name: MONGODB_PORT
+            valueFrom:
+              secretKeyRef:
+                name: mongodb_secrets
+                key: MONGODB_PORT
+          - name: MONGODB_DBNAME
+            value: {MONGODB_NAME}
+          - name: MONGODB_COLLECTION_NAME
+            value: {MONGODB_COLLECTION_NAME}
+          - name: KAFKA_TOPIC
+            value: {KAFKA_TOPIC}
+          - name: KAFKA_BOOTSTRAP_SERVER
             value: kafka-server

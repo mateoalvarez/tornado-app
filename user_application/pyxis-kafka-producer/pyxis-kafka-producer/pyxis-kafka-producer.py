@@ -42,7 +42,7 @@ def generate_auth_object():
 def runApplication():
     auth = generate_auth_object()
     myStreamListener = ExploiterTwitterStreamListener()
-    words_to_track = os.environ.get("WORDS_TO_TRACK", "#NoALaGuerra,BarcaValencia,Suarez,#FelizDomingo,Ipurua").split(',')
+    words_to_track = os.environ.get("WORDS_TO_TRACK", "#bigdata, #machinelearning").split(',')
     myStream = tweepy.Stream(auth=auth, listener=myStreamListener)
     # Goal is to keep this process always going
     while True:
