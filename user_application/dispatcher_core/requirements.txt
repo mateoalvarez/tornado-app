@@ -1,0 +1,3 @@
+tweepy
+kafka-python
+pymongo
