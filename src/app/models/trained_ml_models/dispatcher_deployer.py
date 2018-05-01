@@ -38,3 +38,57 @@ class DispatcherDeployer():
             self.k8s_deployment.create_namespaced_deployment(namespace=self.k8s_namespace, body=yaml.load(producer_template), pretty=True)
         except Exception as e:
             print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
+
+    def deploy_models(self, application):
+        """Deploy all application's models"""
+
+        model_ids = application["application_models_ids"]
+        deploy_template = requests.get(\
+        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/model_deployment.yaml").content.decode("utf-8").format(application_id=application["id"]\
+        )
+        service_template = requests.get(\
+        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/model_service.yaml").content.decode("utf-8").format(application_id=application["id"]\
+        )
+
+        model_deployment_templates = []
+        model_service_templates = []
+
+        for model_id in model_ids:
+            model_templates.append(deploy_template.format())
+            model_service_templates.append(service_template.format())
+
+        for model_template, model_service in zip(model_templates, model_services):
+            # deployment
+            try:
+                self.k8s_deployment.create_namespaced_deployment(namespace=self.k8s_namespace, body=yaml.load(model_template), pretty=True)
+            except Exception as e:
+                print("Exception when calling V1Api->create_namespaced_deployment:%s\n" % e)
+            # service
+            try:
+                self.k8s_service.create_namespaced_service(namespace=self.k8s_namespace, body=yaml.load(model_service), pretty=True)
+            except Exception as e:
+                print("Exception when calling V1Api->create_service:%s\n" % e)
+
+
+    def deploy_preprocessing(self, application):
+        """Deploy preprocessing stages"""
+        preprocessing_id = application["application_prep_stages_ids"]
+
+        deploy_template = requests.get(\
+        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/preprocessing_deployment.yaml").content.decode("utf-8").format(application_id=application["id"]\
+        )
+        service_template = requests.get(\
+        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/preprocessing_service.yaml").content.decode("utf-8").format(application_id=application["id"]\
+        )
+
+        # deployment
+        try:
+            self.k8s_deployment.create_namespaced_deployment(namespace=self.k8s_namespace, body=yaml.load(deploy_template), pretty=True)
+        except Exception as e:
+            print("Exception when calling V1Api->create_namespaced_deployment:%s\n" % e)
+
+        # service
+        try:
+            self.k8s_service.create_namespaced_service(namespace=self.k8s_namespace, body=yaml.load(service_template), pretty=True)
+        except Exception as e:
+            print("Exception when calling V1Api->create_service:%s\n" % e)
