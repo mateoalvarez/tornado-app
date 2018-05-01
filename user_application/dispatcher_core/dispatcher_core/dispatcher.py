@@ -13,10 +13,10 @@ class DispatcherApplication():
         LOGGER.debug("Creating mongo client with - {ip}:{port}".format(ip=mongo_host, port=mongo_port))
         mongo_client = MongoClient(mongo_host, mongo_port)
         LOGGER.debug("Setting mongo database - {name}".format(name=mongo_dbname))
-        mongo_database = mongo_client[mongo_dbname]
+        mongo_database = mongo_client[str(mongo_dbname)]
         LOGGER.debug("Setting mongo collection - {name}".format(name=mongo_collectionname))
         # This operation is lazy, there will not render any error in case exists until an operation has been made
-        self._mongo_collection = mongo_database[mongo_collectionname]
+        self._mongo_collection = mongo_database[str(mongo_collectionname)]
 
     def get_kafka_consumer(self, kafka_topic=None, kafka_bootstrap_server=None):
         """
@@ -87,7 +87,7 @@ def run_application():
     mongo_host = os.environ.get("MONGODB_HOST", "127.0.0.1")
     mongo_port = int(os.environ.get("MONGODB_PORT", "27017"))
     mongo_dbname = os.environ.get("MONGODB_DBNAME")
-    mongo_collectionname = os.environ.get("MONGODB_COLLECTIONNAME")
+    mongo_collectionname = os.environ.get("MONGODB_COLLECTION_NAME")
 
     if kafka_topic is None:
         LOGGER.critical("There is not KAFKA_TOPIC present in environment")
