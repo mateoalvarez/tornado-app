@@ -39,23 +39,33 @@ class DispatcherDeployer():
         except Exception as e:
             print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
 
-    def deploy_models(self, application):
+    def deploy_models(self, application_id, model_ids):
         """Deploy all application's models"""
 
-        model_ids = application["application_models_ids"]
         deploy_template = requests.get(\
-        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/model_deployment.yaml").content.decode("utf-8").format(application_id=application["id"]\
-        )
+        "https://s3." + self.BUCKET_YAML_TEMPLATES_REGION + ".amazonaws.com/" +\
+        self.BUCKET_YAML_TEMPLATES + "/mleap/model_deployment.yaml")\
+        .content.decode("utf-8")
+
         service_template = requests.get(\
-        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/model_service.yaml").content.decode("utf-8").format(application_id=application["id"]\
-        )
+        "https://s3." + self.BUCKET_YAML_TEMPLATES_REGION + ".amazonaws.com/" +\
+        self.BUCKET_YAML_TEMPLATES + "/mleap/model_service.yaml")\
+        .content.decode("utf-8")
+
+        # from pprint import pprint
+        # print('\n\n\n\n')
+        # print('########################################')
+        # pprint(deploy_template)
+        # print('\n\n\n\n')
+        # pprint(service_template)
+        # print('\n\n\n\n')
 
         model_deployment_templates = []
         model_service_templates = []
 
         for model_id in model_ids:
-            model_deployment_templates.append(deploy_template.format(model_id=model_id))
-            model_service_templates.append(service_template.format(model_id=model_id))
+            model_deployment_templates.append(deploy_template.format(model_id=model_id, application_id=application_id))
+            model_service_templates.append(service_template.format(model_id=model_id, application_id=application_id))
 
         for model_template, model_service in zip(model_deployment_templates, model_service_templates):
             # deployment
@@ -69,26 +79,30 @@ class DispatcherDeployer():
             except Exception as e:
                 print("Exception when calling V1Api->create_service:%s\n" % e)
 
-
-    def deploy_preprocessing(self, application):
+    def deploy_preprocessing(self, application_id, preprocessing_ids):
         """Deploy preprocessing stages"""
-        preprocessing_id = application["application_prep_stages_ids"]
 
         deploy_template = requests.get(\
-        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/preprocessing_deployment.yaml").content.decode("utf-8").format(application_id=application["id"], preprocessing_id=preprocessing_id\
-        )
+        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/mleap/preprocessing_deployment.yaml").content.decode("utf-8")
         service_template = requests.get(\
-        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/preprocessing_service.yaml").content.decode("utf-8").format(application_id=application["id"], preprocessing_id=preprocessing_id\
-        )
+        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/mleap/preprocessing_service.yaml").content.decode("utf-8")
 
-        # deployment
-        try:
-            self.k8s_deployment.create_namespaced_deployment(namespace=self.k8s_namespace, body=yaml.load(deploy_template), pretty=True)
-        except Exception as e:
-            print("Exception when calling V1Api->create_namespaced_deployment:%s\n" % e)
+        prep_deployment_templates = []
+        prep_service_templates = []
 
-        # service
-        try:
-            self.k8s_service.create_namespaced_service(namespace=self.k8s_namespace, body=yaml.load(service_template), pretty=True)
-        except Exception as e:
-            print("Exception when calling V1Api->create_service:%s\n" % e)
+        for preprocessing_id in preprocessing_ids:
+            prep_deployment_templates.append(deploy_template.format(application_id=application_id, preprocessing_id=preprocessing_id))
+            prep_service_templates.append(service_template.format(application_id=application_id, preprocessing_id=preprocessing_id))
+
+        for prep_deployment, prep_service in zip(prep_deployment_templates, prep_service_templates):
+            # deployment
+            try:
+                self.k8s_deployment.create_namespaced_deployment(namespace=self.k8s_namespace, body=yaml.load(prep_deployment), pretty=True)
+            except Exception as e:
+                print("Exception when calling V1Api->create_namespaced_deployment:%s\n" % e)
+
+            # service
+            try:
+                self.k8s_service.create_namespaced_service(namespace=self.k8s_namespace, body=yaml.load(prep_service), pretty=True)
+            except Exception as e:
+                print("Exception when calling V1Api->create_service:%s\n" % e)

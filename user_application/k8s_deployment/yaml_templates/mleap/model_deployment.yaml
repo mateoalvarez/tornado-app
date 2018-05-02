@@ -1,21 +1,21 @@
-apiVersion: apps/v1beta2
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: model_#{model_id}
+  name: model-{model_id}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: application_#{application_id}
+      app: application-{application_id}
       tier: model
   template:
     metadata:
       labels:
-        app: application_#{application_id}
+        app: application-{application_id}
         tier: model
     spec:
       containers:
-      - name: model_#{model_id}
+      - name: model-{model_id}
         image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-mleap
         imagePullPolicy: Always
         ports:

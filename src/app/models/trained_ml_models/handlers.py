@@ -10,11 +10,11 @@ LOGGER = logging.getLogger(__name__)
 
 class TrainedMLModelsHandler(BaseHandler):
     """ Home page handler """
+    #
+    # def _get_k8s_config():
+    #     """Retrieve configuration for k8s"""
 
-    def _get_k8s_config():
-        """Retrieve configuration for k8s"""
-
-    def _parse_application_configuration(datasource_configuration):
+    def _parse_application_configuration(self, datasource_configuration):
         """Parse information from application configuration"""
         datasource_configuration_dict = json.loads(datasource_configuration)
         return datasource_configuration_dict
@@ -50,10 +50,6 @@ class TrainedMLModelsHandler(BaseHandler):
 
         datasource_keywords = str(self.get_argument("keywords", "big data, ai"))
 
-        print('\n\n\n')
-        print(datasource_settings_id)
-        print('\n\n\n')
-
         self.db_cur.execute("INSERT INTO datasource_configurations (datasource_settings_id, datasource_application_config) VALUES (%s, %s) returning id;", (datasource_settings_id, '{"keywords":"' + datasource_keywords + '"}', ))
         datasource_configuration_id = self.db_cur.fetchone()["id"]
         self.db_conn.commit()
@@ -67,11 +63,22 @@ class TrainedMLModelsHandler(BaseHandler):
         BUCKET_YAML_TEMPLATES=self.BUCKET_YAML_TEMPLATES,\
         BUCKET_YAML_TEMPLATES_REGION=self.BUCKET_YAML_TEMPLATES_REGION\
         )
-
+        # print('\n\n\n\n\n\n\n')
+        # print(application["application_models_ids"])
+        # print('\n\n\n\n\n\n\n')
         application_datasource_configuration = ""
-        dispatcher_deployer.deploy_dispatcher(application["id"], self.current_user["id"], application_datasource_configuration)
-        dispatcher_deployer.deploy_kafka_producer(application["id"], datasource_keywords)
-        dispatcher_deployer.deploy_models(application)
-        dispatcher_deployer.deploy_preprocessing(application)
+        dispatcher_deployer.deploy_dispatcher(\
+            application_id=application["id"],\
+            user_id=self.current_user["id"],\
+            datasource_configuration=application_datasource_configuration)
+        dispatcher_deployer.deploy_kafka_producer(\
+            application_id=application["id"],\
+            keywords=datasource_keywords)
+        dispatcher_deployer.deploy_models(\
+            application_id=application["id"],\
+            model_ids=application["application_models_ids"])
+        dispatcher_deployer.deploy_preprocessing(\
+            application_id=application["id"],\
+            preprocessing_ids=application["application_prep_stages_ids"])
 
         self.redirect(self.get_argument("next", "/trained_ml_models"))

@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: prepr_#{preprocessing_id}
+  name: prepr-{preprocessing_id}
   labels:
-    app: application_#{application_id}
+    app: application-{application_id}
     tier: preprocessing
 spec:
   selector:
-    app: application_#{application_id}
+    app: application-{application_id}
   ports:
-  - name: prep_port
+  - name: prep-port
     port: 8000
     targetPort: 8000
