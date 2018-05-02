@@ -63,22 +63,26 @@ class TrainedMLModelsHandler(BaseHandler):
         BUCKET_YAML_TEMPLATES=self.BUCKET_YAML_TEMPLATES,\
         BUCKET_YAML_TEMPLATES_REGION=self.BUCKET_YAML_TEMPLATES_REGION\
         )
-        # print('\n\n\n\n\n\n\n')
-        # print(application["application_models_ids"])
-        # print('\n\n\n\n\n\n\n')
-        application_datasource_configuration = ""
-        dispatcher_deployer.deploy_dispatcher(\
-            application_id=application["id"],\
-            user_id=self.current_user["id"],\
-            datasource_configuration=application_datasource_configuration)
-        dispatcher_deployer.deploy_kafka_producer(\
-            application_id=application["id"],\
-            keywords=datasource_keywords)
+
+        application_datasource_configuration = '\{"code":"codigo"\}'
+        classification_configuration = '\{"code":"codigo"\}'
         dispatcher_deployer.deploy_models(\
             application_id=application["id"],\
             model_ids=application["application_models_ids"])
         dispatcher_deployer.deploy_preprocessing(\
             application_id=application["id"],\
             preprocessing_ids=application["application_prep_stages_ids"])
+        # dispatcher_deployer.deploy_dispatcher(\
+        #     application_id=application["id"],\
+        #     user_id=self.current_user["id"],\
+        #     datasource_configuration=application_datasource_configuration)
+        dispatcher_deployer.deploy_dispatcher(\
+        **application,\
+        datasource_configuration=application_datasource_configuration,\
+        classification_configuration=classification_configuration\
+        )
+        dispatcher_deployer.deploy_kafka_producer(\
+            application_id=application["id"],\
+            keywords=datasource_keywords)
 
         self.redirect(self.get_argument("next", "/trained_ml_models"))

@@ -3,6 +3,7 @@ from pymongo import MongoClient
 import json
 import os
 import logging
+import requests
 
 LOGGER = logging.getLogger(__name__)
 
@@ -17,6 +18,8 @@ class DispatcherApplication():
         LOGGER.debug("Setting mongo collection - {name}".format(name=mongo_collectionname))
         # This operation is lazy, there will not render any error in case exists until an operation has been made
         self._mongo_collection = mongo_database[str(mongo_collectionname)]
+        self.models = os.environ.get("MODELS")
+        self.preprocessing = os.environ.get("PREPROCESSING")
 
     def get_kafka_consumer(self, kafka_topic=None, kafka_bootstrap_server=None):
         """
@@ -43,15 +46,25 @@ class DispatcherApplication():
         LOGGER.info("Retrieved data will be preprocessed...")
         # here we should make a remote call,
         # instead and only for development purposes. We filter data inside the function
-        if data is None:
-            return None
-        if "text" in data:
-            return data["text"]
-        else:
-            return None
+        # if data is None:
+        #     return None
+        # if "text" in data:
+        #     return data["text"]
+        # else:
+        #     return None
+        response = []
+        for preprocessing_id in self.preprocessing:
+            preprocessing_url = "prepr-" + str(preprocessing_id)
+            response.append(requests.post(preprocessing_url, data).text)
 
-    def get_responses_from_models(self):
-        pass
+        return response
+
+    def get_responses_from_models(self, data):
+        response = []
+        for model_id in self.models:
+            model_url = "model-" + str(model_id)
+            response.append(requests.post(model_url, data).text)
+        return response
 
     def get_classification(self):
         pass

@@ -17,11 +17,27 @@ class DispatcherDeployer():
         self.BUCKET_YAML_TEMPLATES = BUCKET_YAML_TEMPLATES
         self.BUCKET_YAML_TEMPLATES_REGION = BUCKET_YAML_TEMPLATES_REGION
 
-    def deploy_dispatcher(self, application_id, user_id, datasource_configuration):
+    # def deploy_dispatcher(self, application_id, user_id, datasource_configuration, model_ids, preprocessing_ids, ):
+    def deploy_dispatcher(self, **kwargs):
         """Disparcher deployer"""
 
+        dispatcher_config_map_template = requests.get(\
+        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/dispatcher_config_map.yaml").\
+        content.decode("utf-8").format(application_id=kwargs["id"], application_models=",".join(map(str,kwargs["application_models_ids"])), application_preprocessing=",".join(map(str,kwargs["application_prep_stages_ids"])), application_classification_configuration=kwargs["classification_configuration"])
+
+        from pprint import pprint
+        print('\n\n\n\n\n\n')
+        pprint(dispatcher_config_map_template)
+        print('\n\n\n\n\n\n')
+
         dispatcher_template = requests.get(\
-        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/dispatcher_deployment.yaml").content.decode("utf-8").format(application_id=application_id, MONGODB_DBNAME='user_' + str(user_id), MONGODB_COLLECTION_NAME = 'application_' + str(application_id), KAFKA_TOPIC = 'application_' + str(application_id))
+        "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/dispatcher_deployment.yaml").\
+        content.decode("utf-8").format(application_id=kwargs["id"], MONGODB_DBNAME='user_' + str(kwargs["user_id"]), MONGODB_COLLECTION_NAME = 'application_' + str(kwargs["id"]), KAFKA_TOPIC = 'application_' + str(kwargs["id"]))
+
+        try:
+            self.k8s_config_map.create_namespaced_config_map(namespace=self.k8s_namespace, body=yaml.load(dispatcher_config_map_template), pretty=True)
+        except Exception as e:
+            print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
 
         try:
             self.k8s_deployment.create_namespaced_deployment(namespace=self.k8s_namespace, body=yaml.load(dispatcher_template), pretty=True)

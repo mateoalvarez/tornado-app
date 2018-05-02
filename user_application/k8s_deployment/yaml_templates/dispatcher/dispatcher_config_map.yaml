@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: application-{application_id}-configmap
+  namespace: default
+data:
+  application.models: '{application_models}'
+  application.preprocessing: '{application_preprocessing}'
+  application.classification: |
+    {application_classification_configuration}

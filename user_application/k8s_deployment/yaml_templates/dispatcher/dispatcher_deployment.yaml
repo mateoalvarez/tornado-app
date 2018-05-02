@@ -27,6 +27,16 @@ spec:
               secretKeyRef:
                 name: mongodb-secrets
                 key: MONGODB_PORT
+          - name: MODELS
+            valueFrom:
+              configMapKeyRef:
+                name: application-{application_id}-configmap
+                key: application.models
+          - name: PREPROCESSING
+            valueFrom:
+              configMapKeyRef:
+                name: application-{application_id}-configmap
+                key: application.preprocessing
           - name: MONGODB_DBNAME
             value: {MONGODB_DBNAME}
           - name: MONGODB_COLLECTION_NAME
@@ -35,3 +45,13 @@ spec:
             value: {KAFKA_TOPIC}
           - name: KAFKA_BOOTSTRAP_SERVER
             value: kafka-server
+        volumeMounts:
+        - name: classification-config
+          mountPath: /tmp/classification-config
+      volumes:
+      - name: classification-config
+        configMap:
+          name: application-{application_id}-configmap
+          items:
+          - key: application.classification
+            path: classification.config
