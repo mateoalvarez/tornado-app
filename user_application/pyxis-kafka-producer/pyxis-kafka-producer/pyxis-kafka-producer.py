@@ -9,7 +9,7 @@ class ExploiterTwitterStreamListener(tweepy.StreamListener):
 
     def __init__(self):
         super(ExploiterTwitterStreamListener, self).__init__()
-        bootstrap_server = os.environ.get("KAFKA_BOOTSTRAP_SERVER", "kafka-server")
+        bootstrap_server = os.environ.get("KAFKA_BOOTSTRAP_SERVER", "kafka-server:9092")
         kafka_topic = os.environ.get("KAFKA_TOPIC", "default-token")
         if bootstrap_server is None:
             LOGGER.error("There is no KAFKA_BOOTSTRAP_SERVER present in environment")
@@ -48,7 +48,8 @@ def runApplication():
     while True:
         try:
             myStream.filter(track=words_to_track)
-        except:
+        except Exception as e:
+            print(e)
             pass
 
 if __name__ == '__main__':

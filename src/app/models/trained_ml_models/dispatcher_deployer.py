@@ -23,7 +23,7 @@ class DispatcherDeployer():
 
         dispatcher_config_map_template = requests.get(\
         "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/dispatcher_config_map.yaml").\
-        content.decode("utf-8").format(application_id=kwargs["id"], application_models=",".join(map(str,kwargs["application_models_ids"])), application_preprocessing=",".join(map(str,kwargs["application_prep_stages_ids"])), application_classification_configuration=kwargs["classification_configuration"])
+        content.decode("utf-8").format(application_id=kwargs["id"], application_models=kwargs["application_models_ids"], application_preprocessing=kwargs["application_prep_stages_ids"], application_classification_configuration=kwargs["classification_configuration"])
 
         from pprint import pprint
         print('\n\n\n\n\n\n')
