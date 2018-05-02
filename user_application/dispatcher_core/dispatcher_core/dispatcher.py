@@ -52,10 +52,23 @@ class DispatcherApplication():
         #     return data["text"]
         # else:
         #     return None
+        # data = "the gorgeously elaborate continuation of \" the lord of the rings \" trilogy is so huge that a column of words cannot adequately describe co-writer/director peter jackson's expanded vision of j . r . r . tolkien\'s middle-earth ."
+        data = data.replace("&", "&#38;").replace("\'", "&#39;").replace("\"", "&#34;")
+        template_url = "https://s3.eu-central-1.amazonaws.com/tornado-app/Templates/input_data_template.json"
+        input_data_json_template = json.loads(requests.get(template_url).content.decode('utf-8'))
+        input_data_json_template['rows'][0][0] = input_data_json_template['rows'][0][0].format(text=data)
+        data = json.dumps(input_data_json_template)
+
+        # from pprint import pprint
+        # print('\n\n\n\n\n')
+        # pprint(input_data_json_template)
+        # print('\n\n\n\n\n')
+
         response = []
+        headers = {'Content-type': 'application/json'}
         for preprocessing_id in self.preprocessing:
             preprocessing_url = "prepr-" + str(preprocessing_id)
-            response.append(requests.post(preprocessing_url, data).text)
+            response.append(requests.post(preprocessing_url, data=data, headers=headers).text)
 
         return response
 
@@ -66,8 +79,20 @@ class DispatcherApplication():
             response.append(requests.post(model_url, data).text)
         return response
 
-    def get_classification(self):
-        pass
+    def get_classification(self, model_values, classification_code=None):
+        # set default 0
+        tweet_classification = 0
+        num_models = len(model_values)
+
+        if classification_code:
+            exec(classification_code)
+        else:
+            if num_models>1:
+                tweet_classification = sum(model_values)/num_models
+            else:
+                tweet_classification = model_values
+
+        return round(tweet_classification)
 
     def get_fake_classification(self, data):
         data["malaas_application_value"] = "inserted_with_malaas"

@@ -1,0 +1,12 @@
+{
+  "schema": {
+    "fields": [{
+      "name": "features",
+      "type": "string"
+    },{
+      "name": "label",
+      "type": "integer"
+    }]
+  },
+  "rows": [["{text}", 1]]
+}
