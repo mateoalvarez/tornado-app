@@ -5,12 +5,13 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 # import json
 # import jinja2 as jinja
-import os
 
 import tornado.web
 import boto3
 import requests
 import kubernetes
+from pymongo import MongoClient
+import os
 # from tornado import gen
 
 LOGGER = logging.getLogger(__name__)
@@ -56,6 +57,14 @@ class BaseHandler(tornado.web.RequestHandler):
                 database_host=os.environ.get("DATABASE_HOST", "localhost"),
                 database_port=os.environ.get("DATABASE_PORT", "32769")))
         self.db_cur = self.db_conn.cursor(cursor_factory=RealDictCursor)
+
+        # init mongo client. It is lazy.
+        LOGGER.info("Setting Mongo Client to retrieve results")
+        mongo_client = MongoClient(host=os.environ.get("MONGO_HOST", "192.168.240.2"),
+                                   port=int(os.environ.get("MONGO_PORT", "27017")))
+        self._mongo_database = mongo_client[os.environ.get("MONGO_DBNAME", "pyxis_db")]
+        self._mongo_client = mongo_client
+        LOGGER.info("Mongo Client has been set")
 
         """S3 variables"""
         self.AWS_REGION = os.environ.get("AWS_REGION", "eu-central-1")

@@ -9,15 +9,16 @@ LOGGER = logging.getLogger(__name__)
 class RunningApplicationsHandler(BaseHandler):
     """Running applications handler """
 
-    def get_applications_list(self, db_cur, user):
+    def _get_applications_list(self, db_cur, user):
+        """This method handles the request to list all running applications"""
         db_cur.execute("""SELECT id, application_name, application_status
                         FROM applications
                         WHERE user_id=%s;""", (str(user["id"]),))
         applications = db_cur.fetchall()
         return applications
 
-    def put_applications(self, db_cur, db_conn, user, application):
-        """ Method to store application in database """
+    def _put_application(self, db_cur, db_conn, user, application):
+        """ this method handles the registration of a application aplication """
         db_cur.execute("""INSERT INTO applications (user_id,
                                                     application_name,
                                                     training_config_resources,
@@ -36,7 +37,7 @@ class RunningApplicationsHandler(BaseHandler):
             LOGGER.error("There was an error in INSERT process into applications table")
             LOGGER.error(e)
 
-    def delete_applications(self, db_cur, db_conn, user, applications):
+    def _delete_applications(self, db_cur, db_conn, user, applications):
         db_cur.execute("""DELETE FROM
                             applications
                             WHERE id=%s AND user_id=%s;""", (applications["id"], user["id"]))
@@ -50,5 +51,30 @@ class RunningApplicationsHandler(BaseHandler):
 
     @gen.coroutine
     def get(self):
-        """GET method"""
+        """GET method
+        This method will have an parameter to discover in case it is GET running_application/{id_application}"""
         self.render("running_applications/running_applications.html")
+
+class VisualizeApplicationsHandler(BaseHandler):
+    """ Handler to manage visualize running application """
+
+
+    @gen.coroutine
+    def get(self):
+        LOGGER.info("Going to retrieve information from MongoDB in order to render it in client browser")
+        application_name = self.get_argument("app_name", "aaa")
+        last_elements = self.get_argument("elements", "0")
+        LOGGER.debug("Application name: {name}".format(name=application_name))
+        LOGGER.debug("Elements to show: {elements}".format(elements=last_elements))
+        if application_name == "":
+            self.render("ml_models/ml_models_visualization.html", records=[])
+        else:
+            ############################################################
+            # Overriding application name only for development purposes,
+            # it should be changed before to open PR
+            ############################################################
+            application_name = "mock_collection"
+            ############################################################
+            # TODO Filter for those that match with timestamp filter
+            records_to_show = list(self._mongo_database[application_name].find())
+            self.render("ml_models/ml_models_visualization.html", records=records_to_show)
