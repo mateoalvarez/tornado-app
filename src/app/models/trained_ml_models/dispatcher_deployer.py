@@ -25,11 +25,6 @@ class DispatcherDeployer():
         "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/dispatcher_config_map.yaml").\
         content.decode("utf-8").format(application_id=kwargs["id"], application_models=kwargs["application_models_ids"], application_preprocessing=kwargs["application_prep_stages_ids"], application_classification_configuration=kwargs["classification_configuration"])
 
-        from pprint import pprint
-        print('\n\n\n\n\n\n')
-        pprint(dispatcher_config_map_template)
-        print('\n\n\n\n\n\n')
-
         dispatcher_template = requests.get(\
         "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"+self.BUCKET_YAML_TEMPLATES+"/dispatcher/dispatcher_deployment.yaml").\
         content.decode("utf-8").format(application_id=kwargs["id"], MONGODB_DBNAME='user_' + str(kwargs["user_id"]), MONGODB_COLLECTION_NAME = 'application_' + str(kwargs["id"]), KAFKA_TOPIC = 'application_' + str(kwargs["id"]))
