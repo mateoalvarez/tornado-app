@@ -15,23 +15,31 @@ class MLModelsAWSDeployHandler(BaseHandler):
         json_template_file = requests.get(\
         "https://s3.eu-central-1.amazonaws.com/tornado-app-emr/Templates/emr_basic_template.json")\
         .content.decode("utf-8")
+
         # REPLACE VALUES
         json_template_filled = json_template_file
+
         for element_to_replace_key, element_to_replace_value in elements_to_replace.items():
             json_template_filled = json_template_filled.replace\
             ("{" + element_to_replace_key + "}", str(element_to_replace_value))
-
+        # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+        # print(json_template_filled)
+        # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
         template = json.loads(json_template_filled)
+        from pprint import pprint
+        # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+        # pprint(template)
+        # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
         return template
 
     @staticmethod
     def _create_prerequisites_from_template(job_file_url):
         """GET template for prereq"""
 
-        print('\n\n\n\n')
-        print('#######################')
-        print(job_file_url)
-        print('\n\n\n\n')
+        # print('\n\n\n\n')
+        # print('#######################')
+        # print(job_file_url)
+        # print('\n\n\n\n')
 
         prereq_file = requests.get(\
         "https://s3.eu-central-1.amazonaws.com/tornado-app-emr/Templates/prereq_template_job_file.sh")\
@@ -55,7 +63,11 @@ class MLModelsAWSDeployHandler(BaseHandler):
 
         for stage in stages:
             self.db_cur.execute('SELECT code_content FROM code_block WHERE id=%s;', (stage, ))
-            full_job_file += self.db_cur.fetchone()['code_content']['code']
+            full_job_file_db = json.loads(self.db_cur.fetchone()['code_content'], strict=False)
+            # print('\n\n\n\n')
+            # print(full_job_file_db)
+            # print('\n\n\n\n')
+            full_job_file += full_job_file_db['code']
 
         # Output
         self.db_cur.execute('SELECT * FROM code_block_templates WHERE template_name=%s;', ('pipeline_execution', ))
@@ -113,15 +125,15 @@ class MLModelsAWSDeployHandler(BaseHandler):
 
         job_step_content = self._create_job_json_from_template(\
         elements_to_replace=elements_to_replace)
-        print('\n\n\n\n\n\n')
-        print('#########################')
-        import pprint
-        pprint.pprint(job_step_content)
-        print('#########################')
-        print('\n\n\n\n\n\n')
+        # print('\n\n\n\n\n\n')
+        # print('#########################')
+        # import pprint
+        # pprint.pprint(job_step_content)
+        # print('#########################')
+        # print('\n\n\n\n\n\n')
         emr_client = self.start_emr_connection()
         result = emr_client.run_job_flow(**job_step_content)
-        print("\n\n\n\n\n\n\n", result, "\n\n\n\n\n")
+        # print("\n\n\n\n\n\n\n", result, "\n\n\n\n\n")
 
     def _create_emr_files(self, application):
         """CREATE files and return content"""
