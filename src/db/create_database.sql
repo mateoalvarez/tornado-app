@@ -79,7 +79,6 @@ CREATE TABLE classification_criteria (
 -- Configuration:
 -- datasource_application_config: {
 --  keywords:
-    -
 -- }
 CREATE TABLE datasource_configurations (
   id SERIAL UNIQUE,
@@ -120,6 +119,8 @@ VALUES (1, 1, '{"TWITTER_CONSUMER_API_KEY":"qUBED8JONS1rdOXMGXxJw3KDK", "TWITTER
 -- CLASSIFICATION CRITERIA
 INSERT INTO classification_criteria (name, properties)
 VALUES ('', '{}');
+INSERT INTO engines (engine_name,engine_configuration)
+VALUES ('spark', '{}');
 -- MODELS
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
 VALUES ('initializer', 1, 'input', '{"code": "import nltk\nimport random\nfrom nltk.corpus import movie_reviews\nfrom nltk.classify.scikitlearn import SklearnClassifier\nfrom nltk.tokenize import word_tokenize\nimport pyspark\nfrom pyspark.sql import SparkSession\nspark = SparkSession.builder.appName(\"Basic template\").config(\"spark.jars.packages\",\"ml.combust.mleap:mleap-spark-base_2.11:0.7.0,ml.combust.mleap:mleap-spark_2.11:0.7.0\").getOrCreate()\nsc = spark.sparkContext\ninput_data = sc.textFile(\"full.txt\").map(lambda line: line.split(\"\t\"))\nfrom pyspark import Row\ninput_data_splitted = input_data.map(lambda line: Row(features=line[0], label=int(float(line[1]))))\nfrom pyspark.sql.types import StringType, IntegerType\nfrom pyspark.sql.types import *\nschema = StructType([StructField(\"label\", IntegerType(), False), StructField(\"features\", StringType(), False)])\ninput_data_df = spark.createDataFrame(input_data_splitted, schema=schema)\npipeline_preprocessing_stages = []\npipeline_models_stages = []\npipeline_stages = []", "params":"[<dataset>]"}');
