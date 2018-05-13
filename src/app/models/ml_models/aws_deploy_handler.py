@@ -80,7 +80,7 @@ class MLModelsAWSDeployHandler(BaseHandler):
         print('\n\n\n\n\n')
         print(output['code'])
         print('\n\n\n\n\n')
-        full_job_file += output['code'].format(user_email="user_"+str(self.current_user["id"]),  model_id="application_"+str(application["id"]), model_name="{model_name}")
+        full_job_file += output['code'].format(user_email="user_"+str(self.current_user["id"]),  application_id="application_"+str(application["id"]), model_name="{model_name}")
 
         return full_job_file
 
@@ -171,10 +171,10 @@ class MLModelsAWSDeployHandler(BaseHandler):
         job_file_url, prereq_file_url = self._upload_emr_files(\
         job_file, prereq_file, application_training_json, application_id)
         self._deploy_emr_application_training(application, job_file_url, prereq_file_url)
-        self.db_cur.execute\
-        (\
-            "UPDATE applications SET application_status=%s WHERE id=%s;",\
-            ("training", application_id)
-        )
-        self.db_conn.commit()
+        # self.db_cur.execute\
+        # (\
+        #     "UPDATE applications SET application_status=%s WHERE id=%s;",\
+        #     ("training", application_id)
+        # )
+        # self.db_conn.commit()
         self.redirect(self.get_argument("next", "/ml_models"))

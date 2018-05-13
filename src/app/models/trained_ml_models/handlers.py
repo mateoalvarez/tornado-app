@@ -41,7 +41,8 @@ class TrainedMLModelsHandler(BaseHandler):
         # self.db_cur.execute("SELECT * FROM datasource_settings WHERE user_id=%s;", (self.current_user["id"], ))
         # datasource_settings = self.db_cur.fetchone()
         datasource_settings_id = self.get_argument("datasource_settings_id", None)
-        if datasource_settings_id is None:
+
+        if datasource_settings_id == "None":
             # if datasource settings is not set, select default application configuration
             self.db_cur.execute("SELECT * FROM datasource_settings WHERE user_id=%s;", (1, ))
             datasource_settings_id = self.db_cur.fetchone()["id"]
@@ -66,12 +67,23 @@ class TrainedMLModelsHandler(BaseHandler):
 
         application_datasource_configuration = '\{"code":"codigo"\}'
         classification_configuration = '\{"code":"codigo"\}'
+        s3_client, s3_resource =  self.start_s3_connection()
+        model_urls = ['https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'+element["Key"] for element in s3_client.list_objects_v2(Bucket=self.BUCKET_SPARK_JOBS, StartAfter='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id))["Contents"][1:]]
+        print('\n\n\n\n\n\n')
+        print(model_urls)
+        print('\n\n\n\n\n\n')
+        preprocessing_url = 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/user_{user_id}/models/application_{application_id}/preprocessing.zip'.format(user_id=self.current_user["id"], application_id=application_id)
+        model_urls.remove(preprocessing_url)
+
         dispatcher_deployer.deploy_models(\
             application_id=application["id"],\
-            model_ids=application["application_models_ids"])
+            model_ids=application["application_models_ids"],\
+            model_urls=model_urls)
+
         dispatcher_deployer.deploy_preprocessing(\
             application_id=application["id"],\
-            preprocessing_ids=application["application_prep_stages_ids"])
+            preprocessing_ids=application["application_prep_stages_ids"],\
+            preprocessing_url=preprocessing_url)
         # dispatcher_deployer.deploy_dispatcher(\
         #     application_id=application["id"],\
         #     user_id=self.current_user["id"],\

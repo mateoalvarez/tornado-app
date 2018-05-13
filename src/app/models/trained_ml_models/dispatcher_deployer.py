@@ -50,7 +50,7 @@ class DispatcherDeployer():
         except Exception as e:
             print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
 
-    def deploy_models(self, application_id, model_ids):
+    def deploy_models(self, application_id, model_ids, model_urls):
         """Deploy all application's models"""
 
         deploy_template = requests.get(\
@@ -74,8 +74,8 @@ class DispatcherDeployer():
         model_deployment_templates = []
         model_service_templates = []
 
-        for model_id in model_ids:
-            model_deployment_templates.append(deploy_template.format(model_id=model_id, application_id=application_id))
+        for model_id, model_url in zip(model_ids, model_urls):
+            model_deployment_templates.append(deploy_template.format(model_id=model_id, application_id=application_id, model_url=model_url))
             model_service_templates.append(service_template.format(model_id=model_id, application_id=application_id))
 
         for model_template, model_service in zip(model_deployment_templates, model_service_templates):
@@ -90,7 +90,7 @@ class DispatcherDeployer():
             except Exception as e:
                 print("Exception when calling V1Api->create_service:%s\n" % e)
 
-    def deploy_preprocessing(self, application_id, preprocessing_ids):
+    def deploy_preprocessing(self, application_id, preprocessing_ids, preprocessing_url):
         """Deploy preprocessing stages"""
 
         deploy_template = requests.get(\
@@ -100,10 +100,16 @@ class DispatcherDeployer():
 
         prep_deployment_templates = []
         prep_service_templates = []
-
-        for preprocessing_id in preprocessing_ids:
-            prep_deployment_templates.append(deploy_template.format(application_id=application_id, preprocessing_id=preprocessing_id))
-            prep_service_templates.append(service_template.format(application_id=application_id, preprocessing_id=preprocessing_id))
+        # For now, just one preprocessing per application
+        prep_deployment_templates.append(deploy_template.format(\
+        application_id=application_id,\
+        preprocessing_id=application_id,\
+        preprocessing_url=preprocessing_url\
+        ))
+        prep_service_templates.append(service_template.format(application_id=application_id, preprocessing_id=application_id))
+        # for preprocessing_id in preprocessing_ids:
+        #     prep_deployment_templates.append(deploy_template.format(application_id=application_id, preprocessing_id=preprocessing_id))
+        #     prep_service_templates.append(service_template.format(application_id=application_id, preprocessing_id=preprocessing_id))
 
         for prep_deployment, prep_service in zip(prep_deployment_templates, prep_service_templates):
             # deployment
