@@ -10,5 +10,5 @@ spec:
     app: application-{application_id}
   ports:
   - name: model-port
-    port: 8000
-    targetPort: 8000
+    port: 65327
+    targetPort: 65327

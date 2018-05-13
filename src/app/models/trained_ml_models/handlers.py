@@ -68,33 +68,46 @@ class TrainedMLModelsHandler(BaseHandler):
         application_datasource_configuration = '\{"code":"codigo"\}'
         classification_configuration = '\{"code":"codigo"\}'
         s3_client, s3_resource =  self.start_s3_connection()
-        model_urls = ['https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'+element["Key"] for element in s3_client.list_objects_v2(Bucket=self.BUCKET_SPARK_JOBS, StartAfter='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id))["Contents"][1:]]
-        print('\n\n\n\n\n\n')
-        print(model_urls)
-        print('\n\n\n\n\n\n')
-        preprocessing_url = 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/user_{user_id}/models/application_{application_id}/preprocessing.zip'.format(user_id=self.current_user["id"], application_id=application_id)
-        model_urls.remove(preprocessing_url)
+        try:
+            model_urls = ['https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'+element["Key"] for element in s3_client.list_objects_v2(\
+            Bucket=self.BUCKET_SPARK_JOBS,\
+            Prefix='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id),\
+            StartAfter='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id))["Contents"][1:]]
 
-        dispatcher_deployer.deploy_models(\
-            application_id=application["id"],\
-            model_ids=application["application_models_ids"],\
-            model_urls=model_urls)
+            print('\n\n\n\n\n\n')
+            print('######################')
+            print(model_urls)
+            print('######################')
+            print('\n\n\n\n\n\n')
 
-        dispatcher_deployer.deploy_preprocessing(\
-            application_id=application["id"],\
-            preprocessing_ids=application["application_prep_stages_ids"],\
-            preprocessing_url=preprocessing_url)
-        # dispatcher_deployer.deploy_dispatcher(\
-        #     application_id=application["id"],\
-        #     user_id=self.current_user["id"],\
-        #     datasource_configuration=application_datasource_configuration)
-        dispatcher_deployer.deploy_dispatcher(\
-        **application,\
-        datasource_configuration=application_datasource_configuration,\
-        classification_configuration=classification_configuration\
-        )
-        dispatcher_deployer.deploy_kafka_producer(\
-            application_id=application["id"],\
-            keywords=datasource_keywords)
+            preprocessing_url = 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/user_{user_id}/models/application_{application_id}/preprocessing.zip'.format(user_id=self.current_user["id"], application_id=application_id)
+            model_urls.remove(preprocessing_url)
 
-        self.redirect(self.get_argument("next", "/trained_ml_models"))
+            dispatcher_deployer.deploy_models(\
+                application_id=application["id"],\
+                model_ids=application["application_models_ids"],\
+                model_urls=model_urls)
+
+            dispatcher_deployer.deploy_preprocessing(\
+                application_id=application["id"],\
+                preprocessing_ids=application["application_prep_stages_ids"],\
+                preprocessing_url=preprocessing_url)
+            # dispatcher_deployer.deploy_dispatcher(\
+            #     application_id=application["id"],\
+            #     user_id=self.current_user["id"],\
+            #     datasource_configuration=application_datasource_configuration)
+            dispatcher_deployer.deploy_dispatcher(\
+            **application,\
+            datasource_configuration=application_datasource_configuration,\
+            classification_configuration=classification_configuration\
+            )
+            dispatcher_deployer.deploy_kafka_producer(\
+                application_id=application["id"],\
+                keywords=datasource_keywords)
+
+            self.redirect(self.get_argument("next", "/trained_ml_models"))
+        except Exception as exception:
+            print('######## ERROR ########')
+            print(exception)
+            print('######## ERROR ########')
+            self.redirect(self.get_argument("next", "/trained_ml_models"))

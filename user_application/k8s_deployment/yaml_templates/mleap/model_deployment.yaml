@@ -20,4 +20,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 65327
-          hostPort: 8000
+          hostPort: 65327
+        env:
+          - name: MODEL_URL
+            value: {model_url}
