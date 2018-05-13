@@ -27,9 +27,9 @@ class MLModelsAWSDeployHandler(BaseHandler):
         # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
         template = json.loads(json_template_filled)
         from pprint import pprint
-        # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
-        # pprint(template)
-        # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+        print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+        pprint(template)
+        print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
         return template
 
     @staticmethod
@@ -77,7 +77,10 @@ class MLModelsAWSDeployHandler(BaseHandler):
         output = self.db_cur.fetchone()['code_content']
 
         full_job_file += pipeline_execution['code']
-        full_job_file += output['code']
+        print('\n\n\n\n\n')
+        print(output['code'])
+        print('\n\n\n\n\n')
+        full_job_file += output['code'].format(user_email="user_"+str(self.current_user["id"]),  model_id="application_"+str(application["id"]), model_name="{model_name}")
 
         return full_job_file
 
@@ -133,7 +136,7 @@ class MLModelsAWSDeployHandler(BaseHandler):
         # print('\n\n\n\n\n\n')
         emr_client = self.start_emr_connection()
         result = emr_client.run_job_flow(**job_step_content)
-        # print("\n\n\n\n\n\n\n", result, "\n\n\n\n\n")
+        print("\n\n\n\n\n\n\n", result, "\n\n\n\n\n")
 
     def _create_emr_files(self, application):
         """CREATE files and return content"""
@@ -168,5 +171,10 @@ class MLModelsAWSDeployHandler(BaseHandler):
         job_file_url, prereq_file_url = self._upload_emr_files(\
         job_file, prereq_file, application_training_json, application_id)
         self._deploy_emr_application_training(application, job_file_url, prereq_file_url)
-
+        self.db_cur.execute\
+        (\
+            "UPDATE applications SET application_status=%s WHERE id=%s;",\
+            ("training", application_id)
+        )
+        self.db_conn.commit()
         self.redirect(self.get_argument("next", "/ml_models"))
