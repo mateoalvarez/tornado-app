@@ -73,7 +73,7 @@ class DispatcherApplication():
         # print(data)
         # print('\n\n\n\n\n')
 
-        first_request_template = '''
+        first_request_template = json.dumps(
         {
           "schema": {
             "fields": [{
@@ -84,9 +84,9 @@ class DispatcherApplication():
               "type": "string"
             }]
           },
-          "rows": [[1.0,"tweet_text"]]
-        }
-        '''.replace("tweet_text", data).encode('utf-8')
+          "rows": [[1.0, data]]
+        })
+
 
         # print('\n\n\n\n')
         # print(first_request_template)
@@ -106,7 +106,11 @@ class DispatcherApplication():
 
     def get_responses_from_models(self, data):
         """Request to models and return predictions"""
-        second_request_template = '''
+        # print('\n\n\n')
+        # from pprint import pprint
+        # pprint(data)
+        # print('\n\n\n')
+        second_request_template = json.dumps(
         {
           "schema": {
             "fields": [{
@@ -117,20 +121,26 @@ class DispatcherApplication():
               "type": {
                 "type": "tensor",
                 "base": "double",
-                "dimensions": [{dimensions}]
+                "dimensions": [262144]
               }
             }]
           },
-          "rows": {rows}
-        }
-        '''
+          "rows": data
+        })
+
+        # print('\n\n\n')
+        # from pprint import pprint
+        # print("Second")
+        # pprint(second_request_template)
+        # print('\n\n\n')
+        # .replace("{rows}", data)
         response = []
         for model_id in self.models:
             model_url = "http://model-" + str(model_id) + ":65327/transform"
             response.append(requests.post(\
             model_url,\
-            data=second_request_template.format(rows=data, dimensions=str(262144))\
-            ).text)
+            data=second_request_template).encode('utf-8')\
+            .text)
         return response
 
     def get_classification_value(self, model_values, classification_code=None):
@@ -203,22 +213,33 @@ def run_application():
         LOGGER.info("  -> offset: {offset} ".format(offset=str(msg.offset)))
         LOGGER.info("  -> topic: {topic} ".format(topic=msg.offset))
         data_from_message = json.loads(msg.value)["text"]
-        print('\n\n\n\n')
-        print(data_from_message)
-        print('\n\n\n\n')
-        text = dispatcher_application.get_data_preprocessed(data_from_message)
-        print( " # Retrieve data --> " + text)
-        LOGGER.info(" Text extrated from data:")
-        LOGGER.info("  -> text: {text} ".format(text=text))
-        from pprint import pprint
-        print('\n\n\n\n')
-        pprint(text)
-        print('\n\n\n\n')
-        data = dispatcher_application.get_true_classification(json.loads(text)["rows"][0][-1])
+        # print('\n\n\n\n')
+        # print(data_from_message)
+        # print('\n\n\n\n')
+        try:
+            text = dispatcher_application.get_data_preprocessed(data_from_message)
+            # print(" # Retrieve data --> " + text)
+            LOGGER.info(" Text extrated from data:")
+            LOGGER.info("  -> text: {text} ".format(text=text))
+            # from pprint import pprint
+            # print('\n\n\n\n')
+            # pprint(text)
+            # print('\n\n\n\n')
+            data = dispatcher_application.get_true_classification(json.loads(text)["rows"][0][-1])
+            print('\n\n\n\n')
+            from pprint import pprint
+            pprint(data)
+            print('\n\n\n\n')
+            # make calling to models and generate json to be stored in mongo
+            # data = dispatcher_application.get_fake_classification(data_from_message)
+            dispatcher_application.store_in_mongo(data)
+            print('\n\n\n\n')
+            print('INSERTED')
 
-        # make calling to models and generate json to be stored in mongo
-        # data = dispatcher_application.get_fake_classification(data_from_message)
-        dispatcher_application.store_in_mongo(data)
+        except Exception as exception:
+            print("############ ERROR ############")
+            print(exception)
+            print("############ ERROR ############")
 
 
 
