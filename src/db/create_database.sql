@@ -1,7 +1,7 @@
 CREATE DATABASE twitter_app_db;
+\connect twitter_app_db
 CREATE TYPE application_status_enum AS ENUM ('untrained', 'training', 'trained', 'running', 'stopped', 'error');
 CREATE TYPE code_block_type AS ENUM ('input', 'output', 'preprocessing', 'model');
-\connect twitter_app_db
 
 CREATE TABLE users (
   id SERIAL UNIQUE,
@@ -70,6 +70,7 @@ CREATE TABLE classification_criteria (
   id SERIAL UNIQUE,
   name VARCHAR(20),
   properties JSONB,
+  description TEXT,
   PRIMARY KEY (id)
 );
 
@@ -77,8 +78,7 @@ CREATE TABLE classification_criteria (
 
 -- Configuration:
 -- datasource_application_config: {
---  filter:
-    -
+--  keywords:
 -- }
 CREATE TABLE datasource_configurations (
   id SERIAL UNIQUE,
@@ -98,36 +98,49 @@ CREATE TABLE  applications (
   application_models_ids INTEGER ARRAY NOT NULL,
   classification_criteria INTEGER NOT NULL,
   application_status application_status_enum,
-  datasource_configuration INTEGER,
+  datasource_configuration_id INTEGER,
   datasource_settings_id INTEGER,
   error_status TEXT,
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (application_dataset) REFERENCES datasets(id),
   FOREIGN KEY (datasource_settings_id) REFERENCES datasource_settings(id),
-  FOREIGN KEY (datasource_configuration) REFERENCES datasource_configurations(id)
+  FOREIGN KEY (datasource_configuration_id) REFERENCES datasource_configurations(id)
 );
 
 
 -- INSERT EXAMPLE code_block_templates
+-- FIRST USER ADMIN
+INSERT INTO users(email, hashed_password, name, type)
+VALUES ('admin@pyxisml.com','$2b$12$jzfu7DwswPSzBWV9tjHSpeBxuasg27M9Ho5Zw7yKPBekmCNm.F8OS','ADMIN',1);
+-- TWITTER API FOR ADMIN
+INSERT INTO datasource_settings (user_id, type, datasource_access_settings)
+VALUES (1, 1, '{"TWITTER_CONSUMER_API_KEY":"qUBED8JONS1rdOXMGXxJw3KDK", "TWITTER_CONSUMER_API_SECRET":"DUI0ICvIXTYE4SPxdBSRVlq3xEw1UDpcy6mZG2qWE1yyX3nH2M", "TWITTER_CONSUMER_TOKEN":"245605482-rajqw4klordPOid8izXvAHBc8DhU8QliOFraCFqM", "TWITTER_CONSUMER_SECRET":"kYalUO9SmnLvcjXPIrRE0dSEDd2LhQBSBMPD57UgLvzse"}');
+-- CLASSIFICATION CRITERIA
+INSERT INTO classification_criteria (name, properties)
+VALUES ('', '{}');
+-- ENGINE
+INSERT INTO engines (engine_name,engine_configuration)
+VALUES ('spark', '{}');
+-- MODELS
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
-VALUES ('initializer', 1, 'input', '{"code": "import nltk\nimport random\nfrom nltk.corpus import movie_reviews\nfrom nltk.classify.scikitlearn import SklearnClassifier\nfrom nltk.tokenize import word_tokenize\nimport pyspark\nfrom pyspark.sql import SparkSession\nspark = SparkSession.builder.appName(\"Basic template\").config(\"spark.jars.packages\",\"ml.combust.mleap:mleap-spark-base_2.11:0.7.0,ml.combust.mleap:mleap-spark_2.11:0.7.0\").getOrCreate()\nsc = spark.sparkContext\ninput_data = sc.textFile(\"full.txt\").map(lambda line: line.split(\"\t\"))\nfrom pyspark import Row\ninput_data_splitted = input_data.map(lambda line: Row(features=line[0], label=int(float(line[1]))))\nfrom pyspark.sql.types import StringType, IntegerType\nfrom pyspark.sql.types import *\nschema = StructType([StructField(\"label\", IntegerType(), False), StructField(\"features\", StringType(), False)])\ninput_data_df = spark.createDataFrame(input_data_splitted, schema=schema)\npipeline_preprocessing_stages = []\npipeline_models_stages = []\npipeline_stages = []", "params":"[<dataset>]"}');
+VALUES ('initializer', 1, 'input', '{"code": "import nltk\nimport random\nfrom nltk.corpus import movie_reviews\nfrom nltk.classify.scikitlearn import SklearnClassifier\nfrom nltk.tokenize import word_tokenize\nimport pyspark\nfrom pyspark.sql import SparkSession\nspark = SparkSession.builder.appName(\"Basic template\").config(\"spark.jars.packages\",\"ml.combust.mleap:mleap-spark-base_2.11:0.7.0,ml.combust.mleap:mleap-spark_2.11:0.7.0\").getOrCreate()\nsc = spark.sparkContext\ninput_data = sc.textFile(\"<dataset>\").map(lambda line: line.split(\"\t\"))\nfrom pyspark import Row\ninput_data_splitted = input_data.map(lambda line: Row(features=line[0], label=int(float(line[1]))))\nfrom pyspark.sql.types import StringType, IntegerType\nfrom pyspark.sql.types import *\nschema = StructType([StructField(\"label\", IntegerType(), False), StructField(\"features\", StringType(), False)])\ninput_data_df = spark.createDataFrame(input_data_splitted, schema=schema)\npipeline_preprocessing_stages = []\npipeline_models_stages = []\npipeline_stages = []\n", "params":"[<dataset>]"}');
 
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
-VALUES ('pos_tagger', 1, 'preprocessing', '{"code": "import nltk\nfrom pyspark import keyword_only\nfrom pyspark.ml import Transformer\nfrom pyspark.ml.param.shared import HasInputCol, HasOutputCol, Param\nfrom pyspark.sql.functions import udf\nfrom pyspark.sql.types import ArrayType, StringType, StructType, StructField\nclass NLTKPosTagger(Transformer, HasInputCol, HasOutputCol):\n\t@keyword_only\n\tdef __init__(self, inputCol=None, outputCol=None):\n\t\tsuper(NLTKPosTagger, self).__init__()\n\t\tkwargs = self._input_kwargs\n\t\tself.setParams(**kwargs)\n\t@keyword_only\n\tdef setParams(self, inputCol=None, outputCol=None):\n\t\tkwargs = self._input_kwargs\n\t\treturn self._set(**kwargs)\n\tdef _transform(self, dataset):\n\t\tdef tag_instance(tokenized_instance):\n\t\t\ttagged_tokens = nltk.pos_tag(tokenized_instance)\n\t\t\treturn tagged_tokens\n\t\ttypes = ArrayType(StructType([StructField(\"char\", dataType=StringType(), nullable=False),StructField(\"type\", dataType=StringType(), nullable=False)]))\n\t\tout_col = self.getOutputCol()\n\t\tin_col = dataset[self.getInputCol()]\n\t\treturn dataset.withColumn(out_col, udf(tag_instance, types)(in_col)).drop(\"features\").withColumnRenamed(\"features_output\", \"features\")\nif (bool(pipeline_preprocessing_stages)):\n\tNLTK_POS_TAGGER = NLTKPosTagger(inputCol=pipeline_stages[-1].getOutputCol(),outputCol=\"nltk_pos_tagger_col\")\nelse:\n\tNLTK_POS_TAGGER = NLTKPosTagger(inputCol=\"features\",outputCol=\"nltk_pos_tagger_col\")\npipeline_preprocessing_stages.append(NLTK_POS_TAGGER)", "params": "[]"}');
+VALUES ('pos_tagger', 1, 'preprocessing', '{"code": "import nltk\nfrom pyspark import keyword_only\nfrom pyspark.ml import Transformer\nfrom pyspark.ml.param.shared import HasInputCol, HasOutputCol, Param\nfrom pyspark.sql.functions import udf\nfrom pyspark.sql.types import ArrayType, StringType, StructType, StructField\nclass NLTKPosTagger(Transformer, HasInputCol, HasOutputCol):\n\t@keyword_only\n\tdef __init__(self, inputCol=None, outputCol=None):\n\t\tsuper(NLTKPosTagger, self).__init__()\n\t\tkwargs = self._input_kwargs\n\t\tself.setParams(**kwargs)\n\t@keyword_only\n\tdef setParams(self, inputCol=None, outputCol=None):\n\t\tkwargs = self._input_kwargs\n\t\treturn self._set(**kwargs)\n\tdef _transform(self, dataset):\n\t\tdef tag_instance(tokenized_instance):\n\t\t\ttagged_tokens = nltk.pos_tag(tokenized_instance)\n\t\t\treturn tagged_tokens\n\t\ttypes = ArrayType(StructType([StructField(\"char\", dataType=StringType(), nullable=False),StructField(\"type\", dataType=StringType(), nullable=False)]))\n\t\tout_col = self.getOutputCol()\n\t\tin_col = dataset[self.getInputCol()]\n\t\treturn dataset.withColumn(out_col, udf(tag_instance, types)(in_col)).drop(\"features\").withColumnRenamed(\"features_output\", \"features\")\nif (bool(pipeline_preprocessing_stages)):\n\tNLTK_POS_TAGGER = NLTKPosTagger(inputCol=pipeline_stages[-1].getOutputCol(),outputCol=\"nltk_pos_tagger_col\")\nelse:\n\tNLTK_POS_TAGGER = NLTKPosTagger(inputCol=\"features\",outputCol=\"nltk_pos_tagger_col\")\npipeline_preprocessing_stages.append(NLTK_POS_TAGGER)\n", "params": "[]"}');
 
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
-VALUES ('tokenizer', 1, 'preprocessing', '{"code": "from pyspark.ml.feature import Tokenizer\nif (bool(pipeline_preprocessing_stages)):\n\tTOKENIZER = Tokenizer(inputCol=pipeline_preprocessing_stages[-1].getOutputCol(), outputCol=\"tokenizer_col\")\nelse:\n\tTOKENIZER = Tokenizer(inputCol=\"features\", outputCol=\"tokenizer_col\")\npipeline_preprocessing_stages.append(TOKENIZER)", "params":"[]"}');
+VALUES ('tokenizer', 1, 'preprocessing', '{"code": "from pyspark.ml.feature import Tokenizer\nif (bool(pipeline_preprocessing_stages)):\n\tTOKENIZER = Tokenizer(inputCol=pipeline_preprocessing_stages[-1].getOutputCol(), outputCol=\"tokenizer_col\")\nelse:\n\tTOKENIZER = Tokenizer(inputCol=\"features\", outputCol=\"tokenizer_col\")\npipeline_preprocessing_stages.append(TOKENIZER)\n", "params":"[]"}');
 
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
-VALUES ('hashingtf', 1, 'preprocessing', '{"code": "from pyspark.ml.feature import HashingTF\nif (bool(pipeline_preprocessing_stages)):\n\tHASHINGTF = HashingTF(inputCol=pipeline_preprocessing_stages[-1].getOutputCol(), outputCol=\"hashingtf_col\")\nelse:\n\tHASHINGTF = HashingTF(inputCol=\"features\", outputCol=\"hashingtf_col\")\npipeline_preprocessing_stages.append(HASHINGTF)", "params":"[]"}');
+VALUES ('hashingtf', 1, 'preprocessing', '{"code": "from pyspark.ml.feature import HashingTF\nif (bool(pipeline_preprocessing_stages)):\n\tHASHINGTF = HashingTF(inputCol=pipeline_preprocessing_stages[-1].getOutputCol(), outputCol=\"hashingtf_col\")\nelse:\n\tHASHINGTF = HashingTF(inputCol=\"features\", outputCol=\"hashingtf_col\")\npipeline_preprocessing_stages.append(HASHINGTF)\n", "params":"[]"}');
 
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
-VALUES ('logistic_regression', 1, 'model', '{"code": "from pyspark.ml.classification import LogisticRegression\nlr = LogisticRegression(maxIter=10, regParam=0.001)\npipeline_models_stages.append((lr.uid, lr))", "params":"[<lr_max_iter>,<lr_reg_param>]"}');
+VALUES ('logistic_regression', 1, 'model', '{"code": "from pyspark.ml.classification import LogisticRegression\nlr = LogisticRegression(maxIter=10, regParam=0.001)\npipeline_models_stages.append((lr.uid, lr))\n", "params":"[<lr_max_iter>,<lr_reg_param>]"}');
 
 
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
-VALUES ('pipeline_execution', 1, 'output', '{"code": "from pyspark.ml import Pipeline, PipelineModel\nlast_column_name = pipeline_preprocessing_stages[-1].getOutputCol()\npreprocessing_pipeline = Pipeline(stages=pipeline_preprocessing_stages)\npreprocessing_pipeline_trained = preprocessing_pipeline.fit(input_data_df).transform(input_data_df)\nfor stage in pipeline_preprocessing_stages[:-1]:\n\tpreprocessing_pipeline_trained = preprocessing_pipeline_trained.drop(stage.getOutputColumn())\npreprocessing_pipeline_trained = preprocessing_pipeline_trained.drop(\"features\").withColumnRenamed(last_column_name, \"features\")\nmodels_pipelines = []\nfor model_name, model_pipeline in pipeline_models_stages:\n\tmodels_pipelines.append(model_pipeline.fit(preprocessing_pipeline_trained))", "params":"[]"}');
+VALUES ('pipeline_execution', 1, 'output', '{"code": "from pyspark.ml import Pipeline, PipelineModel\nlast_column_name = pipeline_preprocessing_stages[-1].getOutputCol()\npreprocessing_pipeline = Pipeline(stages=pipeline_preprocessing_stages)\npreprocessing_pipeline_trained = preprocessing_pipeline.fit(input_data_df).transform(input_data_df)\nmid_point = preprocessing_pipeline_trained\nfor stage in pipeline_preprocessing_stages[:-1]:\n\tpreprocessing_pipeline_trained = preprocessing_pipeline_trained.drop(stage.getOutputCol())\npreprocessing_pipeline_trained = preprocessing_pipeline_trained.drop(\"features\").withColumnRenamed(last_column_name, \"features\")\nmodels_pipelines = []\nfor model_name, model_pipeline in pipeline_models_stages:\n\tmodels_pipelines.append((model_name, model_pipeline.fit(preprocessing_pipeline_trained)))\n", "params":"[]"}');
 
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
-VALUES ('output', 1, 'output', '{"code": "from mleap import pyspark\nfrom mleap.pyspark.spark_support import SimpleSparkSerializer\npreprocessing_pipeline_serializable = preprocessing_pipeline.fit(input_data_df)\npreprocessing_pipeline_serializable.serializeToBundle(\"jar:file:s3:/{user_email}/models/{model_id}/preprocessing.zip\".format(user_email=user_email, model_id=model_id))\nfor model_name, model_pipeline in models_pipelines:\n\tmodel_pipeline.serializeToBundle(\"jar:file:s3:/{user_email}/models/{model_id}/{model_name}.zip\".format(user_email=user_email, model_id=model_id, model_name=model_name))", "params":"[]"}');
+VALUES ('output', 1, 'output', '{"code": "from mleap import pyspark\nfrom mleap.pyspark.spark_support import SimpleSparkSerializer\npreprocessing_pipeline_serializable = preprocessing_pipeline.fit(input_data_df)\npreprocessing_pipeline_serializable.serializeToBundle(\"jar:file:s3:/tornado-app-emr/{user_email}/models/{application_id}/preprocessing.zip\", dataset=mid_point)\nfor model_name, model_pipeline in models_pipelines:\n\toutput_sample = model_pipeline.transform(preprocessing_pipeline_trained)\n\tmodel_pipeline.serializeToBundle(\"jar:file:s3:/tornado-app-emr/{user_email}/models/{application_id}/{model_name}.zip\".format(model_name=model_name), output_sample)\n", "params":"[]"}');

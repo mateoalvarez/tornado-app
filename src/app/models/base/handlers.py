@@ -9,6 +9,8 @@ import os
 
 import tornado.web
 import boto3
+import requests
+import kubernetes
 # from tornado import gen
 
 LOGGER = logging.getLogger(__name__)
@@ -55,12 +57,35 @@ class BaseHandler(tornado.web.RequestHandler):
                 database_port=os.environ.get("DATABASE_PORT", "32769")))
         self.db_cur = self.db_conn.cursor(cursor_factory=RealDictCursor)
 
+        """S3 variables"""
+        self.AWS_REGION = os.environ.get("AWS_REGION", "eu-central-1")
+
+        self.BUCKET_DATASETS = os.environ.get("BUCKET_DATASET", "tornado-app-datasets")
+        self.BUCKET_DATASETS_REGION = os.environ.get("BUCKET_DATASETS_REGION", self.AWS_REGION)
+
+        self.BUCKET_YAML_TEMPLATES = os.environ.get("BUCKET_YAML_TEMPLATES", "tornado-app-k8s-templates")
+        self.BUCKET_YAML_TEMPLATES_REGION = os.environ.get("BUCKET_YAML_TEMPLATES_REGION", self.AWS_REGION)
+
+        self.BUCKET_SPARK_JOBS = os.environ.get("BUCKET_SPARK_JOBS", "tornado-app-emr")
+        self.BUCKET_SPARK_JOBS_REGION = os.environ.get("BUCKET_SPARK_JOBS_REGION", self.AWS_REGION)
+
+        k8s_config_file = open("k8s_config", "w")
+        k8s_config_file.write(requests.get("https://s3." + self.BUCKET_YAML_TEMPLATES_REGION + ".amazonaws.com/" + self.BUCKET_YAML_TEMPLATES + "/k8s-config/pyxis-k8s.config").content.decode("utf-8"))
+        k8s_config_file.close()
+        self.k8s_config = kubernetes.config.load_kube_config("k8s_config")
+        self.k8s_namespace = 'default'
+
     """S3 variables"""
+    AWS_REGION = os.environ.get("AWS_REGION", "eu-central-1")
 
     BUCKET_DATASETS = os.environ.get("BUCKET_DATASET", "tornado-app-datasets")
-    BUCKET_DATASETS_REGION = os.environ.get("BUCKET_DATASETS_REGION", "eu-central-1")
+    BUCKET_DATASETS_REGION = os.environ.get("BUCKET_DATASETS_REGION", AWS_REGION)
+
+    BUCKET_YAML_TEMPLATES = os.environ.get("BUCKET_YAML_TEMPLATES", "tornado-app-k8s-templates")
+    BUCKET_YAML_TEMPLATES_REGION = os.environ.get("BUCKET_YAML_TEMPLATES_REGION", AWS_REGION)
+
     BUCKET_SPARK_JOBS = os.environ.get("BUCKET_SPARK_JOBS", "tornado-app-emr")
-    BUCKET_SPARK_JOBS_REGION = os.environ.get("BUCKET_SPARK_JOBS_REGION", "eu-central-1")
+    BUCKET_SPARK_JOBS_REGION = os.environ.get("BUCKET_SPARK_JOBS_REGION", AWS_REGION)
 
     @staticmethod
     def start_s3_connection():
@@ -77,11 +102,3 @@ class BaseHandler(tornado.web.RequestHandler):
         emr_client = boto3.client("emr", region_name=os.environ.get("BUCKET_SPARK_JOBS_REGION", "eu-central-1"))
 
         return emr_client
-        # self.template_name = None
-
-        # def render(self, template, context=None):
-    #     """Renders template using jinja2"""
-    #     if not context:
-    #         context = {}
-    #     context.update(self.get_template_namespace())
-    #     self.write(jinja)

@@ -1,0 +1,30 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: kafka-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+      tier: server
+  template:
+    metadata:
+      labels:
+        app: kafka
+        tier: server
+    spec:
+      containers:
+      - name: kafka-server
+        image: spotify/kafka
+        imagePullPolicy: Always
+        env:
+          - name: ADVERTISED_HOST
+            value: kafka-server
+          - name: ADVERTISED_PORT
+            value: "9092"
+        ports:
+        - containerPort: 9092
+          hostPort: 9092
+        - containerPort: 2181
+          hostPort: 2181

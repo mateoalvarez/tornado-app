@@ -14,6 +14,6 @@ WORKDIR /usr/src/app
 COPY requirements.txt /usr/src/app/
 RUN pip install -r requirements.txt
 
-COPY exploiter_core/exploiter.py /usr/src/app/
+COPY pyxis-kafka-producer/pyxis-kafka-producer.py /usr/src/app/
 ENTRYPOINT ["/tini", "--"]
-CMD ["python", "/usr/src/app/exploiter.py"]
+CMD ["python", "/usr/src/app/pyxis-kafka-producer.py"]
