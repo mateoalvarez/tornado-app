@@ -106,6 +106,7 @@ class DispatcherApplication():
 
     def get_responses_from_models(self, data):
         """Request to models and return predictions"""
+        import ast # To convert string to list
         # print('\n\n\n')
         # from pprint import pprint
         # pprint(data)
@@ -125,7 +126,7 @@ class DispatcherApplication():
               }
             }]
           },
-          "rows": data
+          "rows": [[1.0, data]]
         })
 
         # print('\n\n\n')
@@ -133,14 +134,21 @@ class DispatcherApplication():
         # print("Second")
         # pprint(second_request_template)
         # print('\n\n\n')
-        # .replace("{rows}", data)
+
         response = []
-        for model_id in self.models:
+        headers = {'Content-type': 'application/json'}
+        for model_id in ast.literal_eval(self.models):
             model_url = "http://model-" + str(model_id) + ":65327/transform"
-            response.append(requests.post(\
+            response.append(float(json.loads(requests.post(\
             model_url,\
-            data=second_request_template).encode('utf-8')\
-            .text)
+            data=second_request_template,\
+            headers=headers\
+            ).text)["rows"][0][-1]))
+        # print('\n\n\n\n\n')
+        # from pprint import pprint
+        # print('RESPONSE')
+        # pprint(response)
+        # print('\n\n\n\n\n')
         return response
 
     def get_classification_value(self, model_values, classification_code=None):
@@ -154,16 +162,16 @@ class DispatcherApplication():
             if num_models>1:
                 tweet_classification = sum(model_values)/num_models
             else:
-                tweet_classification = model_values
+                tweet_classification = model_values[0]
 
         return round(tweet_classification)
 
-    def get_true_classification(self, data):
+    def get_true_classification(self, data, tweet):
         """True classification"""
         model_values = self.get_responses_from_models(data)
-        data["pyxis-classification"] = self.get_classification_value(model_values=model_values)
+        tweet["pyxis-classification"] = self.get_classification_value(model_values=model_values)
 
-        return data
+        return tweet
 
     def get_fake_classification(self, data):
         data["malaas_application_value"] = "inserted_with_malaas"
@@ -223,13 +231,15 @@ def run_application():
             LOGGER.info("  -> text: {text} ".format(text=text))
             # from pprint import pprint
             # print('\n\n\n\n')
-            # pprint(text)
+            # print('############data_from_message#########')
+            # pprint(msg.value)
             # print('\n\n\n\n')
-            data = dispatcher_application.get_true_classification(json.loads(text)["rows"][0][-1])
-            print('\n\n\n\n')
-            from pprint import pprint
-            pprint(data)
-            print('\n\n\n\n')
+            data = dispatcher_application.get_true_classification(json.loads(text)["rows"][0][-1], tweet=json.loads(msg.value))
+            # print('\n\n\n\n')
+            # print('########')
+            # from pprint import pprint
+            # pprint(data)
+            # print('\n\n\n\n')
             # make calling to models and generate json to be stored in mongo
             # data = dispatcher_application.get_fake_classification(data_from_message)
             dispatcher_application.store_in_mongo(data)
@@ -240,8 +250,6 @@ def run_application():
             print("############ ERROR ############")
             print(exception)
             print("############ ERROR ############")
-
-
 
 if __name__ == '__main__':
     run_application()
