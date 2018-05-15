@@ -96,11 +96,22 @@ class DispatcherApplication():
         headers = {'Content-type': 'application/json'}
         for preprocessing_id in [self.preprocessing]:
             preprocessing_url = "http://prepr-" + str(preprocessing_id) + ":65327/transform"
-            response.append(requests.post(\
-            preprocessing_url,\
-            data=first_request_template,\
-            headers=headers\
-            ).text)
+            for i in range(0,10):
+                while True:
+                    try:
+                        response.append(requests.post(\
+                        preprocessing_url,\
+                        data=first_request_template,\
+                        headers=headers\
+                        ).text)#["rows"][0][-1]
+                    except Exception as e:
+                        print('\n\n\n')
+                        print('### Exception calling model service [times:{i}]###'.format(i=i))
+                        print(e)
+                        print('\n\n\n')
+                        continue
+                    break
+
 
         return response[0]
 
@@ -139,11 +150,22 @@ class DispatcherApplication():
         headers = {'Content-type': 'application/json'}
         for model_id in ast.literal_eval(self.models):
             model_url = "http://model-" + str(model_id) + ":65327/transform"
-            response.append(float(json.loads(requests.post(\
-            model_url,\
-            data=second_request_template,\
-            headers=headers\
-            ).text)["rows"][0][-1]))
+            for i in range(0,10):
+                while True:
+                    try:
+                        response.append(float(json.loads(requests.post(\
+                        model_url,\
+                        data=second_request_template,\
+                        headers=headers\
+                        ).text)["rows"][0][-1]))
+                    except Exception as e:
+                        print('\n\n\n')
+                        print('### Exception calling model service ###')
+                        print(e)
+                        print('\n\n\n')
+                        continue
+                    break
+
         # print('\n\n\n\n\n')
         # from pprint import pprint
         # print('RESPONSE')
@@ -243,7 +265,7 @@ def run_application():
             # make calling to models and generate json to be stored in mongo
             # data = dispatcher_application.get_fake_classification(data_from_message)
             dispatcher_application.store_in_mongo(data)
-            print('\n\n\n\n')
+            print('\n\n')
             print('INSERTED')
 
         except Exception as exception:
