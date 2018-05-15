@@ -72,7 +72,7 @@ class TrainedMLModelsHandler(BaseHandler):
             model_urls = ['https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'+element["Key"] for element in s3_client.list_objects_v2(\
             Bucket=self.BUCKET_SPARK_JOBS,\
             Prefix='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id),\
-            StartAfter='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id))["Contents"][1:]]
+            StartAfter='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id))["Contents"]]
 
             print('\n\n\n\n\n\n')
             print('######################')

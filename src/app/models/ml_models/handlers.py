@@ -111,10 +111,10 @@ class MLModelsHandler(BaseHandler):
     def post(self):
         """CREATE and deploy training works"""
 
-        print('\n\n\n')
-        print('POST PARAMS')
-        print(self.request.arguments)
-        print('\n\n\n')
+        # print('\n\n\n')
+        # print('POST PARAMS')
+        # print(self.request.arguments)
+        # print('\n\n\n')
 
         dataset = self.get_argument('application_dataset', '')
         #
@@ -173,14 +173,14 @@ class MLModelsHandler(BaseHandler):
             model_block_full['id'], model_block_full['config']\
             )[0]["id"])
 
-        print("\n\n\n")
-        print('initializer blocks')
-        print(initializer_block_ids)
-        print('pp blocks')
-        print(preprocessing_block_ids)
-        print('model blocks')
-        print(model_block_ids)
-        print("\n\n\n")
+        # print("\n\n\n")
+        # print('initializer blocks')
+        # print(initializer_block_ids)
+        # print('pp blocks')
+        # print(preprocessing_block_ids)
+        # print('model blocks')
+        # print(model_block_ids)
+        # print("\n\n\n")
         self.db_cur.execute\
         (\
             "INSERT INTO applications (user_id, application_name, training_config_resources, application_dataset, application_prep_stages_ids, application_models_ids, classification_criteria, application_status, error_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);", \
