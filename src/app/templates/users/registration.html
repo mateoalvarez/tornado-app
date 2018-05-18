@@ -1,37 +1,65 @@
 {% extends "../base/base.html" %}
 
+{% block head %}
+  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+  <link rel="stylesheet" href="{{ static_url("css/base.css") }}" type="text/css">
+  <!-- <script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+  </script> -->
+{% end %}
+
 {% block body %}
-  <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-      <form action="/auth/register" method="post" id="registration_form">
-          <fieldset>
-              <label for="username">{{ _("registration.user.Email") }}</label>
-              <input class="text-input" id="email" name="email" type="email" value="">
-          </fieldset>
+  <div class="container-fluid">
+    <form class="needs-validation" action="/auth/register" method="post" id="registration_form">
+      <div class="form-group col-6 mx-auto mt-5 px-5 py-5 card transparent_light_background text-light">
+        <fieldset>
+            <label for="username">{{ _("registration.user.Email") }}</label>
+            <input class="text-input form-control" id="email" name="email" type="email" placeholder="Enter email" value="" required>
+        </fieldset>
 
-          <fieldset>
-              <label for="name">{{ _("registration.user.Username") }}</label>
-              <input class="text-input" id="username" name="username" type="text" value="">
-          </fieldset>
+        <fieldset>
+            <label for="name">{{ _("registration.user.Username") }}</label>
+            <input class="text-input form-control" id="username" name="username" type="text" value="" placeholder="Enter your name">
+        </fieldset>
 
-          <fieldset>
-              <label for="password">{{ _("registration.user.Password") }}</label>
-              <input class="text-input" id="password" name="password" type="password" value="">
-          </fieldset>
+        <fieldset>
+            <label for="password">{{ _("registration.user.Password") }}</label>
+            <input class="text-input form-control" id="password" name="password" type="password" value="" placeholder="Enter password" aria-describedby="passwordHelpInline" required>
+            <small id="passwordHelpInline" class="text-muted">
+              Must be 4-8 characters long.
+            </small>
+        </fieldset>
 
-          <fieldset>
-              <label for="password">{{ _("registration.user.Repeatpassword") }}</label>
-              <input class="text-input" id="password" name="password" type="password" value="">
-          </fieldset>
+        <fieldset>
+            <label for="password">{{ _("registration.user.Repeatpassword") }}</label>
+            <input class="text-input form-control" id="password" name="password" type="password" value="" placeholder="Repeat password" required>
+        </fieldset>
 
-          <fieldset>
-              <span class="errormessage"></span>
-          </fieldset>
+        <fieldset>
+            <span class="errormessage"></span>
+        </fieldset>
 
-          <div id="form_btn">
-              <input id="registration-btn" class="btn btn-blue" type="submit" value={{ _("registration.user.Register") }} tabindex="3">
-          </div>
-      </form>
-    </div>
+        <div id="form_btn" class="w-100 mx-auto mt-4">
+            <input id="registration-btn" class="btn btn-primary" type="submit" value={{ _("registration.user.Register") }} tabindex="3">
+        </div>
+      </div>
+    </form>
   </div>
 {% end %}
