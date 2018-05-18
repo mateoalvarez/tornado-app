@@ -1,23 +1,32 @@
 {% extends "../base/base.html" %}
 
+{% block head %}
+  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+  <link rel="stylesheet" href="{{ static_url("css/base.css") }}" type="text/css">
+{% end %}
+
 {% block body %}
-  <form action="/auth/login" method="post" id="login_form">
-      <fieldset>
-          <label for="email">{{ _("login.user.Email") }}</label>
-          <input class="text-input" id="email" name="email" type="text" value="">
-      </fieldset>
+  <div class="container-fluid">
+    <form action="/auth/login" method="post" id="login_form">
+      <div class="form-group col-6 mx-auto mt-5 px-5 py-5 card transparent_light_background text-light">
+        <fieldset>
+            <label for="email">{{ _("login.user.Email") }}</label>
+            <input class="text-input form-control" id="email" name="email" type="text" aria-describedby="emailHelp" placeholder="Enter email" required>
+        </fieldset>
 
-      <fieldset>
-          <label for="password">{{ _("login.user.Password") }}</label>
-          <input class="text-input" id="password" name="password" type="password" value="">
-      </fieldset>
+        <fieldset>
+            <label for="password">{{ _("login.user.Password") }}</label>
+            <input class="text-input form-control" id="password" name="password" type="password" placeholder="Enter email" required>
+        </fieldset>
 
-      <fieldset>
-          <span class="errormessage"></span>
-      </fieldset>
+        <fieldset>
+            <span class="errormessage"></span>
+        </fieldset>
 
-      <div id="form_btn">
-          <input id="signin-btn" class="btn btn-blue" type="submit" value={{ _("login.user.Login") }} tabindex="3">
+        <div id="form_btn" class="w-100 mx-auto mt-4">
+            <input id="signin-btn" class="btn btn-primary" type="submit" value={{ _("login.user.Login") }} tabindex="3">
+        </div>
       </div>
-  </form>
+    </form>
+  </div>
 {% end %}

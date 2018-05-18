@@ -19,6 +19,3 @@
 .linear_grad_background_green{
   background-color: linear-gradient(to right, #2ecc71 0%,#27aa6b 35%,#2ecc71 64%,#229379 100%);
 }
-.dark_background{
-  background-color: rgba(0, 0, 0, 0.3);
-}
