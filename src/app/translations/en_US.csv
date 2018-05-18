@@ -3,6 +3,8 @@
 "welcome","welcome"
 "Welcome","Welcome"
 "Sign out","Sign out"
+"home.cards.header.create_user", "Regístrate"
+"home.cards.text.create_user", "Crea una cuenta e introduce tus credenciales de twitter, más información en:"
 
 # Navbar
 

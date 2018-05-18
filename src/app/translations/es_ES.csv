@@ -3,13 +3,27 @@
 "welcome","bienvenido"
 "Welcome","Bienvenido"
 "Sign out","Cerrar sesión"
+"home.cards.header.create_user","Regístrate"
+"home_cards_text_create_user","Crea una cuenta e introduce tus credenciales de twitter. Para más información, visita este "
+
+"home.cards.header.upload_dataset","Usa tus datos"
+"home.cards.text.upload_dataset","Carga tus datasets en la plataforma para entrenar modelos o usa datasets públicos ya cargados."
+
+"home.cards.header.create_model","Entrena modelos"
+"home.cards.text.create_model","Entrena modelos en un cluster, en distribuído, a partir de los datos cargados."
+
+"home.cards.header.deploy_application","Despliega aplicaciones"
+"home.cards.text.deploy_application","Usa los modelos entrenados para desplegar aplicaciones conectadas al API de twitter para clasificar y almacenar tweets."
+
+"home.cards.header.visualize_data","Visualiza y descarga los datos"
+"home.cards.text.visualize_data","Analiza los gráficos de tendencia para ver la clasificación de los tweets y descarga los datos de tweets clasificados."
 
 # Navbar
 
-navbar.user.Login, Login
-navbar.user.Logout, Logout
-navbar.user.Register, Registro
-navbar.user.Settings, Configuración
+"navbar.user.Login","Login"
+"navbar.user.Logout","Logout"
+"navbar.user.Register","Registro"
+"navbar.user.Settings","Configuración"
 
 # Datasets
 
