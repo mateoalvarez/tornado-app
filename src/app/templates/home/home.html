@@ -1,25 +1,93 @@
 {% extends "../base/base.html" %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
-<link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
-<script src="{{ static_url("js/particles.js") }}"></script>
+  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+  <link rel="stylesheet" href="{{ static_url("css/home/home.css") }}" type="text/css">
+  <link rel="stylesheet" href="{{ static_url("css/base.css") }}" type="text/css">
+<!-- <link rel="stylesheet" href="./home.css" type="text/css" /> -->
+<!-- <script src="{{ static_url("js/particles.js") }}"></script> -->
 {% end %}
 {% block body %}
 
 
 
-<div id="particles"></div>
-<div style="background-color: linear-gradient(to right, #2ecc71 0%,#27aa6b 35%,#2ecc71 64%,#229379 100%);">
-
-
-  <h1>{{ _("welcome") }}</h1>
-  <ul>
-    {% for element in elementos %}
-      <li>
-        {{ escape(element) }}
-      </li>
-    {% end %}
-  </ul>
-{% end %}
+<!-- <div id="particles"></div> -->
+<!-- <div style="background-color: linear-gradient(to right, #2ecc71 0%,#27aa6b 35%,#2ecc71 64%,#229379 100%);"> -->
+<div class="dark_background">
+  <div class="container">
+    <center class="text-light mx-auto">
+      <!-- <div>
+        <h1>{{ _("Welcome") }}</h1>
+        <p>
+          Cosas
+        </p>
+      </div> -->
+      <div class="container-fluid">
+        <img src="{{ static_url("img/landing_description.png") }}"/>
+      </div>
+    </center>
+    <center>
+    <div class="container card-columns">
+      <!-- First card -->
+      <div class="card">
+        <div class="card-header bg-info">
+          <h4 class="card-title">{{ _("home.cards.header.create_user") }}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            {{ _("home_cards_text_create_user") }}
+            <a target="_blank" href="https://twitter.com/?lang=es">link</a>
+          </p>
+        </div>
+      </div>
+      <!-- Second card -->
+      <div class="card">
+        <div class="card-header bg-info">
+          <h4 class="card-title">{{ _("home.cards.header.upload_dataset") }}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            {{ _("home.cards.text.upload_dataset") }}
+          </p>
+        </div>
+      </div>
+      <!-- Third card -->
+      <div class="card">
+        <div class="card-header bg-info">
+          <h4 class="card-title">{{ _("home.cards.header.create_model") }}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            {{ _("home.cards.text.create_model") }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Fourth card -->
+      <div class="card col-5 mx-auto px-0">
+        <div class="card-header bg-info">
+          <h4 class="card-title">{{ _("home.cards.header.deploy_application") }}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            {{ _("home.cards.text.deploy_application") }}
+          </p>
+        </div>
+      </div>
+      <!-- Fifth card -->
+      <div class="card col-5 mx-auto px-0">
+        <div class="card-header bg-info">
+          <h4 class="card-title">{{ _("home.cards.header.visualize_data") }}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            {{ _("home.cards.text.visualize_data") }}
+          </p>
+        </div>
+      </div>
+    </div>
+    </center>
+  </div>
 </div>
+{% end %}

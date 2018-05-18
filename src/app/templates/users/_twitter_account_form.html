@@ -1,0 +1,24 @@
+<form action="datasource_settings" method="post">
+  <div class="form-group col-6 mx-auto mt-5 px-5 py-2 card transparent_light_background">
+    <fieldset>
+        <label for="TWITTER_CONSUMER_API_KEY">{{ _("user.config.TWITTER_CONSUMER_API_KEY") }}</label>
+        <input class="text-input form-control" id="TWITTER_CONSUMER_API_KEY" name="TWITTER_CONSUMER_API_KEY" type="text" placeholder="Enter CONSUMER_API_KEY" required>
+    </fieldset>
+    <fieldset>
+        <label for="TWITTER_CONSUMER_SECRET">{{ _("user.config.TWITTER_CONSUMER_SECRET") }}</label>
+        <input class="text-input form-control" id="TWITTER_CONSUMER_SECRET" name="TWITTER_CONSUMER_SECRET" type="text" placeholder="Enter CONSUMER_SECRET" required>
+    </fieldset>
+    <fieldset>
+        <label for="TWITTER_CONSUMER_API_SECRET">{{ _("user.config.TWITTER_CONSUMER_API_SECRET") }}</label>
+        <input class="text-input form-control" id="TWITTER_CONSUMER_API_SECRET" name="TWITTER_CONSUMER_API_SECRET" type="text" placeholder="Enter CONSUMER_API_SECRET" required>
+    </fieldset>
+    <fieldset>
+        <label for="TWITTER_CONSUMER_TOKEN">{{ _("user.config.TWITTER_CONSUMER_TOKEN") }}</label>
+        <input class="text-input form-control" id="TWITTER_CONSUMER_TOKEN" name="TWITTER_CONSUMER_TOKEN" type="text" placeholder="Enter CONSUMER_TOKEN" required>
+    </fieldset>
+
+    <div id="form_btn" class="w-100 mx-auto mt-4">
+        <input id="signin-btn" class="btn btn-primary" type="submit" value={{ _("user.config.twitter_config") }} tabindex="3">
+    </div>
+  </div>
+</form>

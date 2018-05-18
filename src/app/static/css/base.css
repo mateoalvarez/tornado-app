@@ -1,0 +1,13 @@
+.dark_background{
+  background-color: rgba(0, 0, 0, 0.3);
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: left top;
+  height: 100%;
+}
+.transparent_dark_background{
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.transparent_light_background{
+  background-color: rgba(255, 255, 255, 0.3);
+}

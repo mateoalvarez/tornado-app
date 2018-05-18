@@ -1,5 +1,6 @@
 """User handlers"""
 
+import json
 import logging
 import concurrent.futures
 import bcrypt
@@ -114,9 +115,19 @@ class UserSettingsHandler(BaseHandler):
         """GET user settings page"""
 
         self.db_cur.execute("SELECT name, email, type\
-         FROM users where id=%s;", (str(self.current_user["id"]),))
+         FROM users WHERE id=%s;", (str(self.current_user["id"]),))
         user_data = self.db_cur.fetchone()
-        self.render("users/settings.html", user_data=user_data)
+
+        self.db_cur.execute("SELECT * FROM datasource_settings WHERE user_id=%s;"\
+        , (str(self.current_user["id"])))
+        all_twitter_settings = self.db_cur.fetchall()
+
+        user_twitter_settings = []
+        for configuration in all_twitter_settings:
+            user_twitter_settings.append(configuration["datasource_access_settings"])
+
+        self.render("users/settings.html",\
+         user_data=user_data, user_twitter_settings=user_twitter_settings)
 
 class UserDatasourcesHandler(BaseHandler):
     """ Users DataSources page handler """

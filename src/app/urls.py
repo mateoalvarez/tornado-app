@@ -9,6 +9,7 @@ from models.ml_models.handlers import MLModelsHandler
 from models.ml_models.aws_deploy_handler import MLModelsAWSDeployHandler
 from models.trained_ml_models.handlers import TrainedMLModelsHandler
 from models.running_applications.handlers import RunningApplicationsHandler
+from models.datasource_settings.handlers import DataSourceSettingsHandler
 
 URL_PATTERNS = [
     # Home
@@ -36,4 +37,7 @@ URL_PATTERNS = [
 
     # User settings page
     url(r"/user_settings", UserSettingsHandler, name="user_settings"),
+
+    # User twitter settings
+    url(r"/datasource_settings", DataSourceSettingsHandler, name="datasource_settings")
 ]

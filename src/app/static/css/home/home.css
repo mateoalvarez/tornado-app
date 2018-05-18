@@ -1,0 +1,21 @@
+.background_teal{
+  background-color: #20C9C2;
+}
+.background_orange{
+  background-color: #fd7e14;
+}
+.background_yellow{
+  background-color: #ffc107;
+}
+.background_cyan{
+  background-color: #20c997;
+}
+.background_green{
+  background-color: #28a745;
+}
+.background_red{
+  background-color: #dc3545;
+}
+.linear_grad_background_green{
+  background-color: linear-gradient(to right, #2ecc71 0%,#27aa6b 35%,#2ecc71 64%,#229379 100%);
+}
