@@ -21,7 +21,41 @@
       </div>
     </div>
     <div class="col">
-      <h1>User Datasets</h1>
+      <h1>Twitter application configuration</h1>
+      <button type="button" class="btn btn-primary my-3" data-toggle="collapse" data-target="#twitter_credentials">{{ _("user.configuration.add_twitter_account") }}</button>
+      <div id="twitter_credentials" class="container collapse">
+        {% include "_twitter_account_form.html" %}
+      </div>
+      <table class="table-striped table-bordered table-hover">
+        <tr>
+          <th>
+            Index
+          </th>
+          <th>
+            key
+          </th>
+          <th>
+            value
+          </th>
+        </tr>
+        {% for index, twitter_config in enumerate(user_twitter_settings) %}
+          <tr>
+            <td rowspan={{ len(twitter_config) + 1 }}>
+              {{ index }}
+            </td>
+          </tr>
+          {% for key, value in twitter_config.items() %}
+            <tr>
+              <td>
+                {{ key }}
+              </td>
+              <td>
+                {{ value }}
+              </td>
+            </tr>
+          {% end %}
+        {% end %}
+      </table>
     </div>
   </div>
 </div>
