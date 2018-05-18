@@ -11,5 +11,4 @@ class HomeHandler(BaseHandler):
     @gen.coroutine
     def get(self):
         "GET method on home page"
-        elementos = ["aaaaaa", "bbbbbbb", "ccccc"]
-        self.render("home/home.html", elementos=elementos)
+        self.render("home/home.html")
