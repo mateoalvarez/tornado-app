@@ -3,15 +3,15 @@
 "welcome","welcome"
 "Welcome","Welcome"
 "Sign out","Sign out"
-"home.cards.header.create_user", "Regístrate"
-"home.cards.text.create_user", "Crea una cuenta e introduce tus credenciales de twitter, más información en:"
+"home.cards.header.create_user","Regístrate"
+"home.cards.text.create_user","Crea una cuenta e introduce tus credenciales de twitter. Para más información, visita este "
 
 # Navbar
 
-navbar.user.Login, Login
-navbar.user.Logout, Logout
-navbar.user.Register, Register
-navbar.user.Settings, Settings
+"navbar.user.Login","Login"
+"navbar.user.Logout","Logout"
+"navbar.user.Register","Register"
+"navbar.user.Settings","Settings"
 
 # Datasets
 
