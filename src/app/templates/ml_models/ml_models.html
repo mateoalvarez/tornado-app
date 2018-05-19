@@ -1,43 +1,54 @@
 {% extends "../base/base.html" %}
+
 {% block head %}
+  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+  <script src="{{ static_url("js/ml-models/ml-models.js") }}"></script>
 {% end %}
+
 {% block body %}
-  <div class="container container-fluid">
-    <ul class="nav nav-tabs" id="Tabs" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link active" id="list-datasets-tab" data-toggle="tab" href="#Datasets" role="tab" aria-controls="datasets" aria-selected="true">{{ _("mlmodels.tab.Datapreprocessing") }}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="upload-datasets-tab" data-toggle="tab" href="#Upload" role="tab" aria-controls="upload" aria-selected="false">{{ _("mlmodels.tab.Modelsselection") }}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="manage-datasets" data-toggle="tab" href="#Manage" role="tab" aria-controls="manage" aria-selected="false">{{ _("mlmodels.tab.applications") }}</a>
-      </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="Datasets" role="tabpanel" aria-labelledby="list-datasets-tab">
-        <div class="row">
-          <h1>{{ _("mlmodels.tab.data_preprocessing") }}</h1>
+  <div class="container-fluid transparent_lighter_background py-5">
+    <div class="container px-0">
+      <ul class="nav nav-tabs" id="Tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="list-datasets-tab" data-toggle="tab" href="#Datasets" role="tab" aria-controls="datasets" aria-selected="true">{{ _("mlmodels.tab.Datapreprocessing") }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="upload-datasets-tab" data-toggle="tab" href="#Upload" role="tab" aria-controls="upload" aria-selected="false">{{ _("mlmodels.tab.Modelsselection") }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="create-model" data-toggle="tab" href="#Create" role="tab" aria-controls="create" aria-selected="false">{{ _("mlmodels.tab.create_model") }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="manage-datasets" data-toggle="tab" href="#Manage" role="tab" aria-controls="manage" aria-selected="false">{{ _("mlmodels.tab.applications") }}</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="Datasets" role="tabpanel" aria-labelledby="list-datasets-tab">
+          <div class="row">
+            <h1>{{ _("mlmodels.tab.data_preprocessing") }}</h1>
+          </div>
+          {% include "_preprocessing_methods.html" %}
         </div>
-        {% include "_preprocessing_methods.html" %}
-      </div>
-      <div class="tab-pane fade" id="Upload" role="tabpanel" aria-labelledby="upload-datasets-tab">
-        <div class="row">
-          <h1>{{ _("mlmodels.tab.models") }}</h1>
+        <div class="tab-pane fade" id="Upload" role="tabpanel" aria-labelledby="upload-datasets-tab">
+          <div class="row">
+            <h1>{{ _("mlmodels.tab.models") }}</h1>
+          </div>
+          {% include "_models.html" %}
         </div>
-        {% include "_models.html" %}
-      </div>
-      <div class="tab-pane fade" id="Manage" role="tabpanel" aria-labelledby="manage-datasets-tab">
-        <div class="row">
-          <h1>{{ _("mlmodels.tab.applications") }}</h1>
+        <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="create-model-tab">
+          <div>
+            <h1>Pipeline creation</h1>
+            {% include "_pipeline_creation_form.html" %}
+          </div>
         </div>
-        {% include "_user_applications.html" %}
+        <div class="tab-pane fade" id="Manage" role="tabpanel" aria-labelledby="manage-datasets-tab">
+          <div class="row">
+            <h1>{{ _("mlmodels.tab.applications") }}</h1>
+          </div>
+          {% include "_user_applications.html" %}
+        </div>
       </div>
-    </div>
     <!-- Pipeline creation -->
-    <div>
-      <h1>Pipeline creation</h1>
-      {% include "_pipeline_creation_form.html" %}
-    </div>
+
   </div>
 {% end %}
