@@ -33,10 +33,10 @@
             {{ "https://s3.eu-central-1.amazonaws.com/tornado-app-datasets/" + dataset["Key"] }}
           </td>
           <td>
-            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ dataset["Key"] }}"/>{{ _("datasets.delete.button") + dataset["Key"] }}</button>
+            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ index }}"/>{{ _("datasets.delete.button") + dataset["Key"] }}</button>
           </td>
         </tr>
-        <div class="modal fade" id="{{ dataset["Key"] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="{{ index }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">

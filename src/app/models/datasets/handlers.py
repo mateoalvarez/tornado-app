@@ -80,6 +80,11 @@ class DatasetsHandler(BaseHandler):
                     Body=body,\
                     Key=self.current_user["email"] + "/" + filename
                 )
+                object_acl = self.S3_RESOURCE.ObjectAcl(\
+                bucket_name=self.BUCKET_DATASETS,\
+                object_key=self.current_user["email"] + "/" + filename
+                )
+                response = object_acl.put(ACL='public-read')
                 self._save_dataset_in_database(info['filename'], "s3://{bucket}/{directory}"\
                 .format(\
                     bucket=self.BUCKET_DATASETS,\
@@ -106,7 +111,6 @@ class DatasetsDeleteHandler(BaseHandler):
             (self.current_user["id"], dataset_id)
         )
         dataset = self.db_cur.fetchone()
-        print(dataset)
         return dataset
 
     @gen.coroutine
@@ -117,13 +121,13 @@ class DatasetsDeleteHandler(BaseHandler):
         # get information from database about dataset using dataset_id obtained from request
         dataset_from_db = self._get_dataset_from_database_by_id(self.current_user["id"], dataset_id_to_delete)
         if dataset_from_db != None:
+            self._delete_dataset(dataset_id_to_delete)
             s3_dataset_key = "{s3_bucket_prefix}/{s3_resource}".format(s3_bucket_prefix=self.current_user["email"], s3_resource=dataset_from_db["dataset_name"])
             self.S3_CLIENT.delete_object\
             (\
                 Bucket=self.BUCKET_DATASETS,
                 Key=s3_dataset_key \
             )
-            self._delete_dataset(dataset_id_to_delete)
         else:
             LOGGER.warning("There is any dataset in database with id {dataset_id} for user {user_id}".format(dataset_id=dataset_id_to_delete, user_id=self.current_user["id"]))
         self.redirect(self.get_argument("next", "/datasets"))
