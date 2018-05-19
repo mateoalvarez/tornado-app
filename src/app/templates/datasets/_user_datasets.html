@@ -1,6 +1,6 @@
 <div class="row">
   <div class="table-responsive text-center mx-auto">
-    <table class="table-striped table-bordered table-hover">
+    <table class="table-striped table-bordered table-hover table_spaced">
         <tr>
           <th>
             #
@@ -24,7 +24,7 @@
             {{ dataset["Key"] }}
           </td>
           <td>
-            {{ dataset["Size"] }} B
+            {{ "{:,.2f}".format(float(dataset["Size"])/1e6) }} MB
           </td>
           <td>
             {{ dataset["LastModified"] }}

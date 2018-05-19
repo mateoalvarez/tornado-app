@@ -1,11 +1,15 @@
-<div class="container">
+<div class="container my-3">
   <form enctype="multipart/form-data" action="/datasets" method="post" id="upload_dataset_form">
-    <fieldset>
-        <label for="dataset_file">{{ _("datasets.upload.dataset") }}</label>
-        <input class="text-input" id="dataset_file" name="dataset_file" type="file" value="">
-    </fieldset>
-    <div id="form_btn">
-        <input id="signin-btn" class="btn btn-blue" type="submit" value={{ _("datasets.upload.dataset") }} tabindex="3">
+    <div class="form-group">
+      <fieldset>
+          <label for="dataset_file">{{ _("datasets.upload.dataset") }}</label>
+          <br />
+          <input class="text-input" id="dataset_file" name="dataset_file" type="file" value="">
+      </fieldset>
+      <br />
+      <div id="form_btn">
+          <input id="signin-btn" class="btn btn-primary" type="submit" value={{ _("datasets.upload.dataset") }} tabindex="3">
+      </div>
     </div>
   </form>
 </div>
