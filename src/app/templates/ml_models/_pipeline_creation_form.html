@@ -1,112 +1,99 @@
-{% block head %}
-  <script src="{{ static_url("js/ml-models/ml-models.js") }}"></script>
-{% end %}
-<input type="button" onclick="show_test()" value="alert" />
-    <script type="application/javascript">
-        set_test("{{ data_prep_methods[0] }}");
-    </script>
+<!-- 
+
+<ul id="sortable" ondrop="drop(event)" ondragover="allowDrop(event)">
+  <li draggable="true" ondragover="" ondragstart="drag(event)" id="drag1" class="card ui-state-default">
+    <img src="{{ static_url("img/ml-models/img_w3slogo.gif") }}" width="88" height="31">
+    <input type="text" />
+  </li>
+  <li draggable="true" ondragover="" ondragstart="drag(event)" id="drag2" class="card ui-state-default">
+    <img src="{{ static_url("img/ml-models/img_w3slogo.gif") }}" width="88" height="31">
+    <input type="text" />
+  </li>
+</ul>
+<ul id="sortable" ondrop="drop(event)" ondragover="allowDrop(event)">
+</ul> -->
+
 <form method='post' action='/ml_models'>
-  <div class="form-group mx-auto mt-1 px-5 py-5">
-
-    <div class="dropdown">
-      <fieldset>
-        <label for="application_dataset">{{ _("models.application_creation.select.dataset") }}</label>
-        <select class="form-control" id="application_dataset" name="application_dataset">
-          {% for dataset in datasets %}
-            <option value="{{ dataset["id"] }}">{{ dataset["storage_url"] }}</option>
-          {% end %}
-        </select>
-      </fieldset>
-    </div>
-    <div class="input-group">
-      <div name="preprocessing">
-        <div id="field">
-          <div id="field0">
-            <fieldset>
-              <label for="application_prep_stages_ids">{{ _("models.application_creation.select.preprocessing") }}</label>
-              <select class="form-control" id="application" name="application_prep_stages_ids">
-                {% for method in data_prep_methods %}
-                  <option value={{ str(method["id"]) }}>{{ method["template_name"] }}</option>
-                {% end %}
-              </select>
-            </fieldset>
-            <fieldset>
-              <input class="text-input" id="{{ 'application_prep_stages_config_1' }}" name="{{ 'application_prep_stages_config_1' }}"></input>
-            </fieldset>
-            <br>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-md-4">
-            <button id="add-more-preprocessing" name="add-more-preprocessing" class="btn btn-primary">{{ _("models.application_creation.add_more.preprocessing") }}</button>
-          </div>
-        </div>
-      </div>
-      <!-- <div name="">
-        <div id="field">
-        </div>
-        <div id="field0">
-        </div>
-      </div> -->
-      <!-- <table>
+  <div class="dropdown">
+    <label for="application_dataset">{{ _("models.application_creation.select.dataset") }}</label>
+    <select class="form-control" id="application_dataset" name="application_dataset">
+      {% for dataset in datasets %}
+        <option value="{{ dataset["id"] }}">{{ dataset["storage_url"] }}</option>
+      {% end %}
+    </select>
+    <!-- <select class="form-control" id="application_input" name="application_input">
+      {% for input_method in input_methods %}
+        <option value="{{ input_method["id"] }}">{{ input_method["template_name"] }}</option>
+      {% end %}
+    </select> -->
+  </div>
+  <div class="input-group">
+    <label for="application_prep_stages_ids">{{ _("models.application_creation.select.preprocessing") }}</label>
+    <br>
+    <table>
+      <tr>
+        <th>
+          method
+        </th>
+        <th>
+          params
+        </th>
+      </tr>
+      {% for method in data_prep_methods %}
         <tr>
-          <th>
-            method
-          </th>
-          <th>
-            params
-          </th>
+          <td>
+            <input type="checkbox" name="application_prep_stages_ids" value="{{ method["id"] }}">{{ method["template_name"] }}</input>
+          </td>
+          <td>
+            <input class="text-input" id="{{ 'application_prep_stages_config_' + str(model["id"]) }}" name="{{ 'application_prep_stages_config_' + str(method["id"]) }}"></input>
+          </td>
         </tr>
-        {% for method in data_prep_methods %}
-          <tr>
-            <td>
-              <input type="checkbox" name="application_prep_stages_ids" value="{{ method["id"] }}">{{ method["template_name"] }}</input>
-            </td>
-            <td>
-              <input class="text-input" id="{{ 'application_prep_stages_config_' + str(model["id"]) }}" name="{{ 'application_prep_stages_config_' + str(method["id"]) }}"></input>
-            </td>
-          </tr>
-        {% end %}
-      </table> -->
-    </div>
-    <!-- <div class="input-group">
-      <label for="application_models_ids">{{ _("models.application_creation.select.model") }}</label>
-      <br>
-      <table>
+      {% end %}
+    </table>
+  </div>
+  <div class="input-group">
+    <label for="application_models_ids">{{ _("models.application_creation.select.model") }}</label>
+    <br>
+    <table>
+      <tr>
+        <th>
+          model
+        </th>
+        <th>
+          params
+        </th>
+      </tr>
+      {% for model in models %}
         <tr>
-          <th>
-            model
-          </th>
-          <th>
-            params
-          </th>
+          <td>
+            <input type="checkbox" name="application_models_ids" value="{{ model["id"] }}">{{ model["template_name"] }}</input>
+          </td>
+          <td>
+            <input class="text-input" id="{{ 'application_models_config_' + str(model["id"]) }}" name="{{ 'application_models_config_' + str(model["id"]) }}"></input>
+          </td>
         </tr>
-        {% for model in models %}
-          <tr>
-            <td>
-              <input type="checkbox" name="application_models_ids" value="{{ model["id"] }}">{{ model["template_name"] }}</input>
-            </td>
-            <td>
-              <input class="text-input" id="{{ 'application_models_config_' + str(model["id"]) }}" name="{{ 'application_models_config_' + str(model["id"]) }}"></input>
-            </td>
-          </tr>
-        {% end %}
-      </table>
-    </div> -->
-
-    <!-- <div>
-      <label for="classification_criteria">{{ _("models.application_creation.select.classification_criteria") }}</label>
-      <select id="classification_criteria" name="classification_criteria">
-        {% for criteria in classification_criteria %}
-          <option value="{{ criteria["id"] }}">{{ criteria["name"] }}</option>
-        {% end %}
-      </select>
-    </div> -->
-    <div>
-      <input class="text-input" id="application_name" name="application_name" type="text" value="" />
-    </div>
-    <div>
-      <button class="btn btn-primary" type='submit'>{{ _("models.application_creation.submit") }}</button>
-    </div>
+      {% end %}
+    </table>
+  </div>
+  <!-- <div class="dropdown">
+    <select class="form-control" id="application_output" name="application_output">
+      {% for output_method in output_methods %}
+        <option value="{{ output_method["id"] }}">{{ output_method["template_name"] }}</option>
+      {% end %}
+    </select>
+  </div> -->
+  <div>
+    <label for="classification_criteria">{{ _("models.application_creation.select.classification_criteria") }}</label>
+    <select id="classification_criteria" name="classification_criteria">
+      {% for criteria in classification_criteria %}
+        <option value="{{ criteria["id"] }}">{{ criteria["name"] }}</option>
+      {% end %}
+    </select>
+  </div>
+  <div>
+    <input class="text-input" id="application_name" name="application_name" type="text" value="" />
+  </div>
+  <div>
+    <button class="btn btn-primary" type='submit'>{{ _("models.application_creation.submit") }}</button>
   </div>
 </form>

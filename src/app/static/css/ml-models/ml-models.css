@@ -1,0 +1,24 @@
+#sortable, #div2 {
+  width: 40vmax;
+  height: 12vmax;
+  margin: 0px;
+  padding: 1vmax;
+  border: 1px solid black;
+}
+#sortable{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+#sortable div {
+  margin: 5px 5px 5px 5px;
+  padding: 0px;
+  font-size: 1.2em;
+}
+html>body #sortable div {
+}
+.ui-state-highlight {
+  height: 1.5em;
+  line-height: 1.2em;
+}
