@@ -27,9 +27,13 @@
 
 # Datasets
 
-"datasets.header.dataset_name","Dataset"
 "datasets.tab.Existingdatasets","Datasets cargados"
 "datasets.tab.Uploaddataset","Cargar nuevo dataset"
+"datasets.tab.Managedatasets","Gestionar datasets"
+"datasets.header.dataset_name","Dataset"
+"datasets.header.dataset_size","Tamaño"
+"datasets.header.dataset_download_link","Link de descraga"
+"datasets.header.metrics","Métricas"
 
 ## Upload Datasets
 
@@ -55,15 +59,52 @@
 
 # User registration
 
-registration.user.Email, Email
-registration.user.Username, Nombre
-registration.user.Password, Password
-registration.user.Repeatpassword, Repetir password
-registration.user.Register, Registrarse
+"registration.user.Email","Email"
+"registration.user.Username","Nombre"
+"registration.user.Password","Password"
+"registration.user.Repeatpassword","Repetir password"
+"registration.user.Register","Registrarse"
 
 # User settings page
 
-user.settings.title, Configuración
-user.settings.name, Nombre
-user.settings.email, Email
-user.settings.type, Tipo
+"user.settings.title","Configuración"
+"user.settings.name","Nombre"
+"user.settings.email","Email"
+"user.settings.type","Tipo"
+
+# ML Models
+
+## Tabs
+"mlmodels.tab.Datapreprocessing","Preprocesamiento"
+"mlmodels.tab.Modelsselection","Modelos"
+"mlmodels.tab.create_application","Crear aplicación"
+"mlmodels.tab.applications","Aplicaciones"
+
+### Preprocessing tab
+"mlmodels.tab.data_preprocessing","Etapas de preprocesamiento"
+"models.header.preprocessing_name","Nombre"
+"models.header.preprocessing_code","Código"
+"models.header.preprocessing_description","Descripción"
+
+### Models tab
+"mlmodels.tab.models","Modelos"
+"models.header.model_name","Nombre"
+"models.header.model_code","Código"
+"models.header.model_description","Descripción"
+
+### Pipeline creation tab
+"mlmodels.tab.pipeline_creation","Crear nuevo pipeline"
+"models.application_creation.select.dataset","Seleccionar dataset"
+"models.application_creation.select.preprocessing","Añadir etapas de preprocesamiento"
+"models.application_creation.select.model","Añadir modelos"
+"models.application_creation.select.classification_criteria","Seleccionar criterio de clasificación"
+"models.application_creation.select.pipeline_name","Nombre del pipeline"
+
+### Application status tab
+"models.header.application_name","Nombre"
+"models.header.dataset","Dataset"
+"models.header.preprocessing_stages","Etapas de preprocesamiento"
+"models.header.models","Modelos"
+"models.header.classification_criteria","Criterio de clasificación"
+"models.header.status","Estado"
+"models.header.start_training","Empezar entrenamiento"

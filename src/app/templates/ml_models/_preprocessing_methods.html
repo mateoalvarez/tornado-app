@@ -9,10 +9,10 @@
             {{ _("models.header.preprocessing_name") }}
           </th>
           <th>
-            {{ _("models.header.preprocessing_name") }}
+            {{ _("models.header.preprocessing_description") }}
           </th>
           <th>
-            {{ _("models.header.preprocessing_description") }}
+            {{ _("models.header.preprocessing_code") }}
           </th>
         </tr>
       {% for index, method in enumerate(data_prep_methods) %}
@@ -24,7 +24,10 @@
             {{ method["template_name"] }}
           </td>
           <td>
-            {{ method }}
+
+          </td>
+          <td>
+            {{ method["code_content"]["code"] }}
           </td>
         </tr>
       {% end %}

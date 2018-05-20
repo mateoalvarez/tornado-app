@@ -9,7 +9,10 @@
             {{ _("models.header.model_name") }}
           </th>
           <th>
-            {{ _("models.header.model_properties") }}
+            {{ _("models.header.model_description") }}
+          </th>
+          <th>
+            {{ _("models.header.model_code") }}
           </th>
         </tr>
       {% for index, model in enumerate(models) %}
@@ -21,7 +24,10 @@
             {{ model["template_name"] }}
           </td>
           <td>
-            {{ model }}
+
+          </td>
+          <td>
+            {{ model["code_content"]["code"] }}
           </td>
         </tr>
       {% end %}

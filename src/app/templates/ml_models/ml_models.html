@@ -17,7 +17,7 @@
           <a class="nav-link" id="upload-datasets-tab" data-toggle="tab" href="#Upload" role="tab" aria-controls="upload" aria-selected="false">{{ _("mlmodels.tab.Modelsselection") }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="create-model" data-toggle="tab" href="#Create" role="tab" aria-controls="create" aria-selected="false">{{ _("mlmodels.tab.create_model") }}</a>
+          <a class="nav-link" id="create-model" data-toggle="tab" href="#Create" role="tab" aria-controls="create" aria-selected="false">{{ _("mlmodels.tab.create_application") }}</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="manage-datasets" data-toggle="tab" href="#Manage" role="tab" aria-controls="manage" aria-selected="false">{{ _("mlmodels.tab.applications") }}</a>
@@ -38,7 +38,7 @@
         </div>
         <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="create-model-tab">
           <div>
-            <h1>Pipeline creation</h1>
+            <h1>{{ _("mlmodels.tab.pipeline_creation") }}</h1>
             {% include "_pipeline_creation_form.html" %}
           </div>
         </div>
