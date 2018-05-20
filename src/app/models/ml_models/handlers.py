@@ -94,6 +94,11 @@ class MLModelsHandler(BaseHandler):
         output_methods = self._get_outputs()
         classification_criteria = self._get_classification_criteria()
 
+        model_names = ','.join([model["template_name"] for model in models])
+        model_ids = ','.join([str(model["id"]) for model in models])
+        preprocessing_names = ','.join([prep["template_name"] for prep in data_prep_methods])
+        preprocessing_ids = ','.join([str(prep["id"]) for prep in data_prep_methods])
+
         self.render\
         (\
             "ml_models/ml_models.html",\
@@ -103,7 +108,12 @@ class MLModelsHandler(BaseHandler):
             user_applications=user_applications,\
             models=models,\
             output_methods=output_methods,\
-            classification_criteria=classification_criteria
+            classification_criteria=classification_criteria,\
+            # model_ids=json.dumps({"model_ids":1}),\
+            model_names=model_names,\
+            model_ids=model_ids,\
+            preprocessing_names=preprocessing_names,\
+            preprocessing_ids=preprocessing_ids
         )
 
     @gen.coroutine
@@ -116,15 +126,11 @@ class MLModelsHandler(BaseHandler):
         # print(self.request.arguments)
         # print('\n\n\n')
 
+        print('\n\n\n')
+        print('\n\n\n')
+        print(self.request.arguments)
+        print('\n\n\n')
         dataset = self.get_argument('application_dataset', '')
-        #
-        # # Get input code
-        # self.db_cur.execute("SELECT * FROM code_block WHERE Type=input;")
-        # input_template = self.db_cur.fetchone()
-        # # replace input dataset
-        # self.db_cur.execute("SELECT * FROM datasets WHERE id=%s;", (dataset, ))
-        # input_dataset = self.db_cur.fetchone()
-        # input_template_filled = input_template["code_content"]["code"].replace("<dataset>", input_dataset)
 
         preprocessing_blocks = list(map(int, self.request.arguments['application_prep_stages_ids']))
         preprocessing_blocks_full = []
