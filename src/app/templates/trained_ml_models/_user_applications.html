@@ -24,7 +24,7 @@
             {{ _("models.header.status") }}
           </th>
           <th>
-            {{ _("models.header.start_training") }}
+            {{ _("applications.header.deploy") }}
           </th>
         </tr>
       {% for index, application in enumerate(user_applications) %}
@@ -52,9 +52,9 @@
           </td>
           <td>
             {% if application["application_status"] == "untrained" %}
-              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("models.content.start_training") }}</button>
+              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("applications.content.deploy") }}</button>
             {% else %}
-              <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("models.content.start_training") }}</button>
+              <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("applications.content.deploy") }}</button>
             {% end %}
           </td>
         </tr>
@@ -62,20 +62,20 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ _("models.content.start_training") }}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{ _("applications.content.deploy") }} {{ application["application_name"] }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                {{ _("models.deploy.confirm.confirmation_text") }} {{ application["id"] }}
+                {{ _("applications.deploy.confirm.confirmation_text") }} {{ application["application_name"] }}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>
                 <form method='post' action='/trained_ml_models/deploy'>
                   <input class="text-input" name="keywords"/>
                   <input class="text-input" type="hidden" name="datasource_settings_id" value={{ application["datasource_settings_id"] }} />
-                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ application["id"] }}" type='submit' value={{ application["id"] }} name="application_id" id="application">{{ _("models.content.start_training") }}</button>
+                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ application["id"] }}" type='submit' value={{ application["id"] }} name="application_id" id="application">{{ _("applications.content.deploy") }} {{ application["application_name"] }}</button>
                 </form>
               </div>
             </div>
