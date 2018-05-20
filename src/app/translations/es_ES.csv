@@ -99,6 +99,12 @@
 "models.application_creation.select.model","Añadir modelos"
 "models.application_creation.select.classification_criteria","Seleccionar criterio de clasificación"
 "models.application_creation.select.pipeline_name","Nombre del pipeline"
+"models.application_creation.select.preprocessing.stage.preprocessing","Etapa número: "
+"models.application_creation.select.preprocessing.stage.config","Configuración"
+"models.application_creation.select.preprocessing.stage.add_more","Añadir más etapas de preprocesamiento"
+"models.application_creation.select.preprocessing.stage.delete_current","Eliminar etapa de preprocesamiento"
+"models.application_creation.select.model.stage.add_more","Añadir más modelos"
+"models.application_creation.select.model.stage.delete_current","Borrar modelo"
 
 ### Application status tab
 "models.header.application_name","Nombre"

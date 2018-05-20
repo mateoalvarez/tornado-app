@@ -1,17 +1,13 @@
-<!--
-
-<ul id="sortable" ondrop="drop(event)" ondragover="allowDrop(event)">
-  <li draggable="true" ondragover="" ondragstart="drag(event)" id="drag1" class="card ui-state-default">
-    <img src="{{ static_url("img/ml-models/img_w3slogo.gif") }}" width="88" height="31">
-    <input type="text" />
-  </li>
-  <li draggable="true" ondragover="" ondragstart="drag(event)" id="drag2" class="card ui-state-default">
-    <img src="{{ static_url("img/ml-models/img_w3slogo.gif") }}" width="88" height="31">
-    <input type="text" />
-  </li>
-</ul>
-<ul id="sortable" ondrop="drop(event)" ondragover="allowDrop(event)">
-</ul> -->
+{% block head %}
+  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+  <link rel="stylesheet" href="{{ static_url("css/ml-models/ml-models.css") }}" type="text/css">
+  <script src="{{ static_url("js/ml-models/ml-models.js") }}"></script>
+<!-- javascript variables -->
+  <script type="text/javascript">
+    var deletePreprocessingButtonText = String('{{ _("models.application_creation.select.preprocessing.stage.delete_current") }}')
+    // var preprocessingMethods = {{ str(data_prep_methods) }}
+  </script>
+{% end %}
 
 <form method='post' action='/ml_models'>
   <div class="dropdown">
@@ -21,15 +17,38 @@
         <option value="{{ dataset["id"] }}">{{ dataset["storage_url"] }}</option>
       {% end %}
     </select>
-    <!-- <select class="form-control" id="application_input" name="application_input">
-      {% for input_method in input_methods %}
-        <option value="{{ input_method["id"] }}">{{ input_method["template_name"] }}</option>
-      {% end %}
-    </select> -->
   </div>
+  <hr />
   <div class="input-group">
     <label for="application_prep_stages_ids">{{ _("models.application_creation.select.preprocessing") }}</label>
-    <br>
+    <br />
+    <div class="container card-deck">
+      <div class="container card-group my-3 px-0">
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.application_creation.select.preprocessing.stage.preprocessing") }} 1</h4>
+          <div class="card-body">
+            <select class="form-control" id="application_prepr_stages_ids" name="application_prepr_stages_ids">
+              {% for method in data_prep_methods %}
+                <option value="{{ method["id"] }}">{{ method["template_name"] }}</option>
+              {% end %}
+            </select>
+          </div>
+        </div>
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.application_creation.select.preprocessing.stage.config") }}</h4>
+          <div class="card-body">
+            <input class="text-input card-body w-100" id="application_prepr_stages_ids_0" name="application_prepr_stages_ids_config_0" />
+          </div>
+        </div>
+      </div>
+      <!-- Add more cards -->
+      <div id="preprocessing-element-to-replace-0"> </div>
+
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addNewPreprocessing()">{{ _("models.application_creation.select.preprocessing.stage.add_more") }}</button>
+    <br />
+  </div>
+  <div class="input-group">
     <table>
       <tr>
         <th>
@@ -51,6 +70,7 @@
       {% end %}
     </table>
   </div>
+  <hr />
   <div class="input-group">
     <label for="application_models_ids">{{ _("models.application_creation.select.model") }}</label>
     <br>
@@ -75,6 +95,7 @@
       {% end %}
     </table>
   </div>
+  <hr />
   <div>
     <label for="classification_criteria">{{ _("models.application_creation.select.classification_criteria") }}</label>
     <select id="classification_criteria" name="classification_criteria">
@@ -83,11 +104,13 @@
       {% end %}
     </select>
   </div>
+  <hr />
   <div>
     <label for="application_name">{{ _("models.application_creation.select.pipeline_name") }}</label>
     <input class="text-input" id="application_name" name="application_name" type="text" value="" />
   </div>
-  <div>
+  <hr />
+  <div class="container">
     <button class="btn btn-primary" type='submit'>{{ _("models.application_creation.submit") }}</button>
   </div>
 </form>
