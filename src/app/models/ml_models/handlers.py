@@ -126,35 +126,36 @@ class MLModelsHandler(BaseHandler):
         # print(self.request.arguments)
         # print('\n\n\n')
 
-        print('\n\n\n')
-        print('\n\n\n')
-        print(self.request.arguments)
-        print('\n\n\n')
         dataset = self.get_argument('application_dataset', '')
 
         preprocessing_blocks = list(map(int, self.request.arguments['application_prep_stages_ids']))
+        preprocessing_blocks_config = self.get_arguments("application_prep_stages_ids_config")
+
+        preprocessing_blocks_config = ["{}" if element == '' else element for element in preprocessing_blocks_config]
+
         preprocessing_blocks_full = []
-        for block in preprocessing_blocks:
+        for block, block_config in zip(preprocessing_blocks, preprocessing_blocks_config):
             preprocessing_blocks_full.append\
                 (\
                     {
                         "id": block,
-                        "config": json.loads(self.get_argument('application_prep_stages_config_{block_id}'.\
-                        format(block_id=block), '{}'))
+                        "config": json.loads(block_config)
                     }
                 )
 
         model_blocks = list(map(int, self.request.arguments['application_models_ids']))
+        model_blocks_config = self.get_arguments("application_models_config")
+        model_blocks_config = ["{}" if element == '' else element for element in model_blocks_config]
+
         model_blocks_full = []
-        for block in model_blocks:
+        for block, block_config in zip(model_blocks, model_blocks_config):
             model_blocks_full.append\
-            (\
-                {
-                    "id": block,
-                    "config": json.loads(self.get_argument('application_models_config_{block_id}'.\
-                    format(block_id=block), '{}'))
-                }
-            )
+                (\
+                    {
+                        "id": block,
+                        "config": json.loads(block_config)
+                    }
+                )
 
         # Create block codes
 

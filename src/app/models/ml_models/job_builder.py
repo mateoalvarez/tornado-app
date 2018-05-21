@@ -61,11 +61,10 @@ class JobAssemblerHandler():
         # Now create a new code block filled with user's params
 
         code_content_json = '{"code": "%s", "params": "%s"}' % (code_content.replace('"', '\\"'), replace_dict)
-        print("\n\n\n\n\n")
-        from pprint import pprint
-        print(code_content_json)
-        # print(json.loads(code_content_json))
-        print("\n\n\n\n\n")
+        # print("\n\n\n\n\n")
+        # from pprint import pprint
+        # print(code_content_json)
+        # print("\n\n\n\n\n")
         self.db_cur.execute\
         (\
             "INSERT INTO code_block (user_id, code_block_template_id, code_content) VALUES (%s, %s, %s) returning id;",

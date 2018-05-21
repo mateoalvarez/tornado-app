@@ -25,24 +25,24 @@
       </ul>
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="Datasets" role="tabpanel" aria-labelledby="list-datasets-tab">
-          <div class="row">
+          <div class="row my-3">
             <h1>{{ _("mlmodels.tab.data_preprocessing") }}</h1>
           </div>
           {% include "_preprocessing_methods.html" %}
         </div>
         <div class="tab-pane fade" id="Upload" role="tabpanel" aria-labelledby="upload-datasets-tab">
-          <div class="row">
+          <div class="row my-3">
             <h1>{{ _("mlmodels.tab.models") }}</h1>
           </div>
           {% include "_models.html" %}
         </div>
         <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="create-model-tab">
-          <div class="row mb-1">
+          <div class="row my-3">
             <h1>{{ _("mlmodels.tab.pipeline_creation") }}</h1>
             {% include "_pipeline_creation_form.html" %}
           </div>
         </div>
-        <div class="tab-pane fade" id="Manage" role="tabpanel" aria-labelledby="manage-datasets-tab">
+        <div class="tab-pane fade my-3" id="Manage" role="tabpanel" aria-labelledby="manage-datasets-tab">
           <div class="row">
             <h1>{{ _("mlmodels.tab.applications") }}</h1>
           </div>

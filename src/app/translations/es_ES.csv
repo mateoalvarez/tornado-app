@@ -77,8 +77,8 @@
 ## Tabs
 "mlmodels.tab.Datapreprocessing","Preprocesamiento"
 "mlmodels.tab.Modelsselection","Modelos"
-"mlmodels.tab.create_application","Crear aplicación"
-"mlmodels.tab.applications","Aplicaciones"
+"mlmodels.tab.create_application","Crear pipeline"
+"mlmodels.tab.applications","Pipelines"
 
 ### Preprocessing tab
 "mlmodels.tab.data_preprocessing","Etapas de preprocesamiento"
