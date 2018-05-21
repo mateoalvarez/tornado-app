@@ -242,7 +242,10 @@ def run_application():
         LOGGER.info(" Retrieved message from queue")
         LOGGER.info("  -> offset: {offset} ".format(offset=str(msg.offset)))
         LOGGER.info("  -> topic: {topic} ".format(topic=msg.offset))
-        data_from_message = json.loads(msg.value)["text"]
+        try:
+            data_from_message = json.loads(msg.value)["full_text"]
+        except Exception as exception:
+            data_from_message = json.loads(msg.value)["text"]
         # print('\n\n\n\n')
         # print(data_from_message)
         # print('\n\n\n\n')
