@@ -26,6 +26,9 @@
           <th>
             {{ _("models.header.start_training") }}
           </th>
+          <th>
+            {{ _("models.header.delete") }}
+          </th>
         </tr>
       {% for index, application in enumerate(user_applications) %}
         <tr>
@@ -57,6 +60,9 @@
               <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("models.content.start_training") }}</button>
             {% end %}
           </td>
+          <td>
+            <button class="btn btn-danger" type="button">{{ _("models.content.delete_model") }}</button>
+          </td>
         </tr>
         <div class="modal fade" id="{{ application["id"] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -68,7 +74,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                {{ _("models.deploy.confirm.confirmation_text") }} {{ application["id"] }}
+                {{ _("models.deploy.confirm.confirmation_text") }}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>

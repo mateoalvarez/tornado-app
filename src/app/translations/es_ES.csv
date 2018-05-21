@@ -77,8 +77,8 @@
 ## Tabs
 "mlmodels.tab.Datapreprocessing","Preprocesamiento"
 "mlmodels.tab.Modelsselection","Modelos"
-"mlmodels.tab.create_application","Crear aplicación"
-"mlmodels.tab.applications","Aplicaciones"
+"mlmodels.tab.create_application","Crear pipeline"
+"mlmodels.tab.applications","Pipelines"
 
 ### Preprocessing tab
 "mlmodels.tab.data_preprocessing","Etapas de preprocesamiento"
@@ -99,6 +99,15 @@
 "models.application_creation.select.model","Añadir modelos"
 "models.application_creation.select.classification_criteria","Seleccionar criterio de clasificación"
 "models.application_creation.select.pipeline_name","Nombre del pipeline"
+"models.application_creation.select.preprocessing.stage.preprocessing","Plantilla"
+"models.application_creation.select.preprocessing.stage.config","Configuración"
+"models.application_creation.select.preprocessing.stage.add_more","Añadir más etapas de preprocesamiento"
+"models.application_creation.select.preprocessing.stage.delete_current","Eliminar etapa de preprocesamiento"
+"models.application_creation.select.model.stage.model","Plantilla"
+"models.application_creation.select.model.stage.config","Configuración"
+"models.application_creation.select.model.stage.add_more","Añadir más modelos"
+"models.application_creation.select.model.stage.delete_current","Borrar modelo"
+"models.application_creation.submit","Crear pipeline"
 
 ### Application status tab
 "models.header.application_name","Nombre"
@@ -108,3 +117,15 @@
 "models.header.classification_criteria","Criterio de clasificación"
 "models.header.status","Estado"
 "models.header.start_training","Empezar entrenamiento"
+"models.content.start_training","Empezar entrenamiento"
+"models.header.delete","Borrar"
+"models.content.delete_model","Borrar"
+
+"models.deploy.confirm.confirmation_text","La aplicación desplegará un trabajo de spark en un cluster distribuido, lo que generará costes adicionales, ¿Está seguro de que quiere continuar?"
+
+# APPLICATION DEPLOY
+
+## Application deploy
+"applications.header.deploy","Desplegar "
+"applications.content.deploy","Desplegar "
+"applications.deploy.confirm.confirmation_text","La aplicación se desplegará en el cluster, clasificando los tweets que reciba de Twitter. Introduzca las palabras clave (hashtags) que quiera monitorizar. Las palabras deben ir separadas por comas (,), no se admiten espacios, y se procesan como filtros 'OR'."

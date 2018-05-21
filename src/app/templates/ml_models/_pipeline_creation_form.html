@@ -1,93 +1,111 @@
-<!--
+{% block head %}
+  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+  <link rel="stylesheet" href="{{ static_url("css/ml-models/ml-models.css") }}" type="text/css">
+  <script src="{{ static_url("js/ml-models/ml-models.js") }}"></script>
+<!-- javascript variables -->
+  <script type="text/javascript">
+    var deletePreprocessingButtonText = String('{{ _("models.application_creation.select.preprocessing.stage.delete_current") }}')
+    var modelsApplication_creationSelectPreprocessingStagePreprocessing = String('{{ _("models.application_creation.select.preprocessing.stage.preprocessing") }}')
+    var modelsApplication_creationSelectPreprocessingStageConfig = String('{{ _("models.application_creation.select.preprocessing.stage.config") }}')
+    var preprocessingMethodNames = ("{{preprocessing_names}}").split(',')
+    var preprocessingMethodIds = ("{{preprocessing_ids}}").split(',')
 
-<ul id="sortable" ondrop="drop(event)" ondragover="allowDrop(event)">
-  <li draggable="true" ondragover="" ondragstart="drag(event)" id="drag1" class="card ui-state-default">
-    <img src="{{ static_url("img/ml-models/img_w3slogo.gif") }}" width="88" height="31">
-    <input type="text" />
-  </li>
-  <li draggable="true" ondragover="" ondragstart="drag(event)" id="drag2" class="card ui-state-default">
-    <img src="{{ static_url("img/ml-models/img_w3slogo.gif") }}" width="88" height="31">
-    <input type="text" />
-  </li>
-</ul>
-<ul id="sortable" ondrop="drop(event)" ondragover="allowDrop(event)">
-</ul> -->
+    var deleteModelButtonText = String('{{ _("models.application_creation.select.model.stage.delete_current") }}')
+    var modelsApplication_creationSelectModelStageModel = String('{{ _("models.application_creation.select.model.stage.model") }}')
+    var modelsApplication_creationSelectModelStageConfig = String('{{ _("models.application_creation.select.model.stage.config") }}')
+    var modelMethodNames = ("{{model_names}}").split(',')
+    var modelMethodIds = ("{{model_ids}}").split(',')
+
+  </script>
+  <script type="text/javascript">
+    function someFunction(value){console.log(value);}
+  </script>
+{% end %}
 
 <form method='post' action='/ml_models'>
   <div class="dropdown">
     <label for="application_dataset">{{ _("models.application_creation.select.dataset") }}</label>
-    <select class="form-control" id="application_dataset" name="application_dataset">
+    <select class="form-control" id="application_dataset" name="application_dataset" required>
       {% for dataset in datasets %}
         <option value="{{ dataset["id"] }}">{{ dataset["storage_url"] }}</option>
       {% end %}
     </select>
-    <!-- <select class="form-control" id="application_input" name="application_input">
-      {% for input_method in input_methods %}
-        <option value="{{ input_method["id"] }}">{{ input_method["template_name"] }}</option>
-      {% end %}
-    </select> -->
   </div>
+  <hr />
+  <!-- PREPROCESSING STAGES -->
   <div class="input-group">
     <label for="application_prep_stages_ids">{{ _("models.application_creation.select.preprocessing") }}</label>
-    <br>
-    <table>
-      <tr>
-        <th>
-          method
-        </th>
-        <th>
-          params
-        </th>
-      </tr>
-      {% for method in data_prep_methods %}
-        <tr>
-          <td>
-            <input type="checkbox" name="application_prep_stages_ids" value="{{ method["id"] }}">{{ method["template_name"] }}</input>
-          </td>
-          <td>
-            <input class="text-input" id="{{ 'application_prep_stages_config_' + str(model["id"]) }}" name="{{ 'application_prep_stages_config_' + str(method["id"]) }}"></input>
-          </td>
-        </tr>
-      {% end %}
-    </table>
+    <br />
+    <div class="container card-deck">
+      <div class="container card-group my-3 px-0 w-100">
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.application_creation.select.preprocessing.stage.preprocessing") }}</h4>
+          <div class="card-body">
+            <select class="form-control" id="application_prep_stages_ids" name="application_prep_stages_ids" required>
+              {% for method in data_prep_methods %}
+                <option value="{{ method["id"] }}">{{ method["template_name"] }}</option>
+              {% end %}
+            </select>
+          </div>
+        </div>
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.application_creation.select.preprocessing.stage.config") }}</h4>
+          <div class="card-body">
+            <input class="text-input card-body w-100" id="application_prep_stages_ids_config" name="application_prep_stages_ids_config" />
+          </div>
+        </div>
+      </div>
+      <!-- Add more cards -->
+      <div id="preprocessing-element-to-replace-1"> </div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addNewPreprocessing()">{{ _("models.application_creation.select.preprocessing.stage.add_more") }}</button>
+    <br />
   </div>
+  <hr />
+  <!-- MODELS -->
   <div class="input-group">
     <label for="application_models_ids">{{ _("models.application_creation.select.model") }}</label>
     <br>
-    <table>
-      <tr>
-        <th>
-          model
-        </th>
-        <th>
-          params
-        </th>
-      </tr>
-      {% for model in models %}
-        <tr>
-          <td>
-            <input type="checkbox" name="application_models_ids" value="{{ model["id"] }}">{{ model["template_name"] }}</input>
-          </td>
-          <td>
-            <input class="text-input" id="{{ 'application_models_config_' + str(model["id"]) }}" name="{{ 'application_models_config_' + str(model["id"]) }}"></input>
-          </td>
-        </tr>
-      {% end %}
-    </table>
+    <div class="container card-deck">
+      <div class="container card-group my-3 px-0 w-100">
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.application_creation.select.model.stage.model") }}</h4>
+          <div class="card-body">
+            <select class="form-control" id="application_models_ids" name="application_models_ids" required>
+              {% for method in models %}
+                <option value="{{ method["id"] }}">{{ method["template_name"] }}</option>
+              {% end %}
+            </select>
+          </div>
+        </div>
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.application_creation.select.model.stage.config") }}</h4>
+          <div class="card-body">
+            <input class="text-input card-body w-100" id="application_models_config" name="application_models_config" />
+          </div>
+        </div>
+      </div>
+      <!-- Add more cards -->
+      <div id="model-element-to-replace-1"> </div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addNewModel()">{{ _("models.application_creation.select.model.stage.add_more") }}</button>
   </div>
+  <hr />
   <div>
     <label for="classification_criteria">{{ _("models.application_creation.select.classification_criteria") }}</label>
-    <select id="classification_criteria" name="classification_criteria">
+    <select id="classification_criteria" name="classification_criteria" required>
       {% for criteria in classification_criteria %}
         <option value="{{ criteria["id"] }}">{{ criteria["name"] }}</option>
       {% end %}
     </select>
   </div>
+  <hr />
   <div>
     <label for="application_name">{{ _("models.application_creation.select.pipeline_name") }}</label>
     <input class="text-input" id="application_name" name="application_name" type="text" value="" />
   </div>
-  <div>
-    <button class="btn btn-primary" type='submit'>{{ _("models.application_creation.submit") }}</button>
+  <hr />
+  <div class="container">
+    <button class="btn btn-primary float-right" type='submit'>{{ _("models.application_creation.submit") }}</button>
   </div>
 </form>
