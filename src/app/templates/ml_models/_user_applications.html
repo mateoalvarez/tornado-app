@@ -61,7 +61,14 @@
             {% end %}
           </td>
           <td>
-            <button class="btn btn-danger" type="button">{{ _("models.content.delete_model") }}</button>
+            {% if application["application_status"] /= "untrained" %}
+              <form action="/ml_models_delete" method="post">
+                <input type=hidden name="id" value="{{ application["id"] }}" />
+                <button class="btn btn-danger" type="submit">{{ _("models.content.delete_model") }}</button>
+              </form>
+            {% else %}
+              <button class="btn btn-danger" disabled>{{ _("models.content.delete_model") }}</button>
+            {% end %}
           </td>
         </tr>
         <div class="modal fade" id="{{ application["id"] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

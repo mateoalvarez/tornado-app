@@ -111,3 +111,13 @@ class TrainedMLModelsHandler(BaseHandler):
             print(exception)
             print('######## ERROR ########')
             self.redirect(self.get_argument("next", "/trained_ml_models"))
+
+
+class ApplicationDeletionHandler(BaseHandler):
+    """Handler to delete applications deployment"""
+
+    @gen.coroutine
+    @tornado.web.authenticated
+    def post(self):
+        """Delete method to destroy apps"""
+        

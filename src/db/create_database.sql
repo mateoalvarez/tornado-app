@@ -102,6 +102,7 @@ CREATE TABLE  applications (
   datasource_configuration_id INTEGER,
   datasource_settings_id INTEGER,
   error_status TEXT,
+  artifacts_download_url JSONB,
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (application_dataset) REFERENCES datasets(id),
