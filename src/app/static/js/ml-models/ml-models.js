@@ -63,7 +63,7 @@ function addNewModel(){
       <div class="card mx-0">
         <h4 class="card-header">` + modelsApplication_creationSelectModelStageModel + `</h4>
         <div class="card-body">
-          <select class="form-control" id="application_prep_stages_ids" name="application_prep_stages_ids">
+          <select class="form-control" id="application_models_ids" name="application_models_ids">
             ` + modelNameOptions + `
           </select>
         </div>
@@ -71,7 +71,7 @@ function addNewModel(){
       <div class="card mx-0">
         <h4 class="card-header">` + modelsApplication_creationSelectModelStageConfig + `</h4>
         <div class="card-body">
-          <input class="text-input card-body w-100" id="application_prep_stages_ids_` + modelCounterNext + `" name="application_prep_stages_ids_config" />
+          <input class="text-input card-body w-100" id="application_prep_stages_ids_config_` + modelCounterNext + `" name="application_models_config" />
         </div>
       </div>
     </div>
