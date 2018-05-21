@@ -37,9 +37,6 @@ class TrainedMLModelsHandler(BaseHandler):
         self.db_cur.execute("SELECT * FROM applications WHERE id=%s;", (application_id, ))
         application = self.db_cur.fetchone()
 
-        # Create datasource_configurations
-        # self.db_cur.execute("SELECT * FROM datasource_settings WHERE user_id=%s;", (self.current_user["id"], ))
-        # datasource_settings = self.db_cur.fetchone()
         datasource_settings_id = self.get_argument("datasource_settings_id", None)
 
         if datasource_settings_id == "None":
@@ -81,6 +78,15 @@ class TrainedMLModelsHandler(BaseHandler):
             print('\n\n\n\n\n\n')
 
             preprocessing_url = 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/user_{user_id}/models/application_{application_id}/preprocessing.zip'.format(user_id=self.current_user["id"], application_id=application_id)
+
+# SET PUBLIC PERMISSIONS TO FILES
+
+            preprocessing_acl = self.S3_RESOURCE.ObjectAcl(preprocessing_url)
+            response = preprocessing_acl.put(ACL='public-read')
+            for model_url in model_urls:
+                model_acl = self.S3_RESOURCE.ObjectAcl(model_url)
+                response = model_acl.put(ACL='public-read')
+
             model_urls.remove(preprocessing_url)
 
             dispatcher_deployer.deploy_models(\
@@ -92,10 +98,7 @@ class TrainedMLModelsHandler(BaseHandler):
                 application_id=application["id"],\
                 preprocessing_ids=application["application_prep_stages_ids"],\
                 preprocessing_url=preprocessing_url)
-            # dispatcher_deployer.deploy_dispatcher(\
-            #     application_id=application["id"],\
-            #     user_id=self.current_user["id"],\
-            #     datasource_configuration=application_datasource_configuration)
+
             dispatcher_deployer.deploy_dispatcher(\
             **application,\
             datasource_configuration=application_datasource_configuration,\
@@ -120,4 +123,3 @@ class ApplicationDeletionHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         """Delete method to destroy apps"""
-        
