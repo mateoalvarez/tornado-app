@@ -206,3 +206,19 @@ class MLModelsHandler(BaseHandler):
         self.db_conn.commit()
 
         self.redirect(self.get_argument("next", "/ml_models"))
+
+class MLModelsHandlerDelete(BaseHandler):
+    """Handler for delete method in models"""
+    def post(self):
+        """DELETE applications"""
+        id = self.get_argument("id", '')
+        try:
+            self.db_cur.execute\
+            (\
+                "DELETE FROM applications WHERE id=%s;",\
+                (id,)
+            )
+            self.db_conn.commit()
+        except Exception as exception:
+            print(exception)
+        self.redirect(self.get_argument("next", "/ml_models"))
