@@ -61,7 +61,7 @@
             {% end %}
           </td>
           <td>
-            {% if application["application_status"] /= "untrained" %}
+            {% if application["application_status"] != "untrained" %}
               <form action="/ml_models_delete" method="post">
                 <input type=hidden name="id" value="{{ application["id"] }}" />
                 <button class="btn btn-danger" type="submit">{{ _("models.content.delete_model") }}</button>
