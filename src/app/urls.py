@@ -36,7 +36,7 @@ URL_PATTERNS = [
 
     # running Applications
     url(r"/running_applications", RunningApplicationsHandler, name="running_applications"),
-    url(r"/running_applications/visalize", VisualizeApplicationsHandler, name="visualize_running_applications"),
+    url(r"/running_applications/visualize", VisualizeApplicationsHandler, name="visualize_running_applications"),
 
     # User settings page
     url(r"/user_settings", UserSettingsHandler, name="user_settings"),

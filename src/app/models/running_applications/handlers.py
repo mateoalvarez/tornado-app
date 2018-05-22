@@ -62,7 +62,9 @@ class RunningApplicationsHandler(BaseHandler):
     def get(self):
         """GET method
         This method will have an parameter to discover in case it is GET running_application/{id_application}"""
-        running_apps = self._get_running_applications(self.db_cur, self.current_user)
+
+        user = self.current_user
+        running_apps = self._get_running_applications(self.db_cur, user)
 
         print(" -> running_apps ---- ")
         print(running_apps)
@@ -78,19 +80,13 @@ class VisualizeApplicationsHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         LOGGER.info("Going to retrieve information from MongoDB in order to render it in client browser")
-        application_name = self.get_argument("app_name", "aaa")
+        application_id = self.get_argument("app_id", "aaa")
         last_elements = self.get_argument("elements", "0")
-        LOGGER.debug("Application name: {name}".format(name=application_name))
+        LOGGER.debug("Application id: {name}".format(name=application_id))
         LOGGER.debug("Elements to show: {elements}".format(elements=last_elements))
-        if application_name == "":
+        if application_id == "":
             self.render("running_applications/ml_models_visualization.html", records=[])
         else:
-            ############################################################
-            # Overriding application name only for development purposes,
-            # it should be changed before to open PR
-            ############################################################
-            application_name = "mock_collection"
-            ############################################################
             # TODO Filter for those that match with timestamp filter
-            records_to_show = list(self._mongo_database[application_name].find())
-            self.render("running_applications/ml_models_visualization.html", records=records_to_show)
+            records_to_show = list(self._mongo_client["user_" + str(self.current_user["id"])]["application_" + str(application_id)].find().sort([("_id", -1)]).limit(int(last_elements)))
+            self.render("running_applications/ml_models_visualization.html", records=records_to_show, app_id=application_id)
