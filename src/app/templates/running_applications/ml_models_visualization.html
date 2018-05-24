@@ -1,0 +1,25 @@
+{% extends "../base/base.html" %}
+{% block head %}
+<meta charset="utf-8">
+<link rel="stylesheet" href="{{ static_url("css/visualize-applications/visualize-applications.css") }}" type="text/css">
+{% end %}
+{% block body %}
+
+  <script src="https://d3js.org/d3.v3.js"></script>
+  <script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="{{ static_url("js/visualize-applications/visualize-applications.js") }}"></script>
+
+  <script>
+  $(document).ready(function(){
+      var data = new Array();
+      var parseDate  = d3.utcParse('%a %b %d %H:%M:%S %Z %Y');
+      {% for index, tweet in enumerate(records) %}
+        data = data.concat({date: parseDate("{{ tweet["created_at"] }}"), aggregated: {{ tweet["aggregated"] }} });
+      {% end %}
+      console.log(data);
+      makeChart(data, []);
+  });
+  </script>
+
+{% end %}

@@ -7,6 +7,9 @@ import requests
 
 LOGGER = logging.getLogger(__name__)
 
+AGGREGATED_KEY = "aggregated"
+PYXIS_CLASSFICATION_KEY= "pyxis-classification"
+_AGGREGATED = 0
 
 class DispatcherApplication():
 
@@ -191,7 +194,7 @@ class DispatcherApplication():
     def get_true_classification(self, data, tweet):
         """True classification"""
         model_values = self.get_responses_from_models(data)
-        tweet["pyxis-classification"] = self.get_classification_value(model_values=model_values)
+        tweet[PYXIS_CLASSFICATION_KEY] = self.get_classification_value(model_values=model_values)
 
         return tweet
 
@@ -210,6 +213,25 @@ class DispatcherApplication():
             LOGGER.error("Something went wrong while data were being inserted into mongo database")
             LOGGER.error(e)
         return False
+
+    def get_latest_aggregated_value(self):
+        LOGGER.info("Restoring aggregated value from database")
+        aggregated = 0;
+        try:
+            elements = list(self._mongo_collection.find().sort([("_id", -1)]).limit(1))
+            if len(elements) == 0:
+                aggregated = 0
+            else:
+                try:
+                    # in case AGGREGATED_KEY is not present in stored data
+                    aggregated = elements[0][AGGREGATED_KEY]
+                except Exception as e:
+                    aggregated = 0
+        except Exception as e:
+            LOGGER.error("Something went wrong while data were being inserted into mongo database")
+            LOGGER.error(e)
+        return round(aggregated)
+
 
 
 def run_application():
@@ -236,6 +258,8 @@ def run_application():
         return None
     dispatcher_application = DispatcherApplication(mongo_host, mongo_port, mongo_dbname, mongo_collectionname)
     consumer = dispatcher_application.get_kafka_consumer(kafka_topic, kafka_bootstrap_server)
+
+    _AGGREGATED = dispatcher_application.get_latest_aggregated_value()
 
     for msg in consumer:
         # msg is string type, it should be transformed to json and send to be preprocessed
@@ -267,6 +291,11 @@ def run_application():
             # print('\n\n\n\n')
             # make calling to models and generate json to be stored in mongo
             # data = dispatcher_application.get_fake_classification(data_from_message)
+
+            _AGGREGATED = _AGGREGATED + data[PYXIS_CLASSFICATION_KEY]
+            data[AGGREGATED_KEY] = _AGGREGATED
+
+            # store data in mongo
             dispatcher_application.store_in_mongo(data)
             print('\n\n')
             print('INSERTED')
