@@ -222,7 +222,11 @@ class DispatcherApplication():
             if len(elements) == 0:
                 aggregated = 0
             else:
-                aggregated = elements[0][AGGREGATED_KEY]
+                try:
+                    # in case AGGREGATED_KEY is not present in stored data
+                    aggregated = elements[0][AGGREGATED_KEY]
+                except Exception as e:
+                    aggregated = 0
         except Exception as e:
             LOGGER.error("Something went wrong while data were being inserted into mongo database")
             LOGGER.error(e)
