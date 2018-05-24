@@ -81,10 +81,10 @@ class TrainedMLModelsHandler(BaseHandler):
 
 # SET PUBLIC PERMISSIONS TO FILES
 
-            preprocessing_acl = self.S3_RESOURCE.ObjectAcl(preprocessing_url)
+            preprocessing_acl = self.S3_RESOURCE.ObjectAcl(self.BUCKET_SPARK_JOBS, preprocessing_url)
             response = preprocessing_acl.put(ACL='public-read')
             for model_url in model_urls:
-                model_acl = self.S3_RESOURCE.ObjectAcl(model_url)
+                model_acl = self.S3_RESOURCE.ObjectAcl(self.BUCKET_SPARK_JOBS, model_url)
                 response = model_acl.put(ACL='public-read')
 
             model_urls.remove(preprocessing_url)
@@ -107,6 +107,10 @@ class TrainedMLModelsHandler(BaseHandler):
             dispatcher_deployer.deploy_kafka_producer(\
                 application_id=application["id"],\
                 keywords=datasource_keywords)
+
+            # Update application status -> to 'running'
+            self.db_cur.execute("UPDATE applications SET application_status='running' WHERE id=(%s);", (application_id,))
+            self.db_conn.commit()
 
             self.redirect(self.get_argument("next", "/trained_ml_models"))
         except Exception as exception:
