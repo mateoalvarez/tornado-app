@@ -60,9 +60,9 @@ class BaseHandler(tornado.web.RequestHandler):
 
         # init mongo client. It is lazy.
         LOGGER.info("Setting Mongo Client to retrieve results")
-        mongo_client = MongoClient(host=os.environ.get("MONGO_HOST", "192.168.240.2"),
-                                   port=int(os.environ.get("MONGO_PORT", "27017")))
-        self._mongo_database = mongo_client[os.environ.get("MONGO_DBNAME", "pyxis_db")]
+        mongo_client = MongoClient(host=os.environ.get("MONGODB_HOST", "192.168.240.2"),
+                                   port=int(os.environ.get("MONGODB_PORT", "27017")))
+        self._mongo_database = mongo_client[os.environ.get("MONGODB_DBNAME", "pyxis_db")]
         self._mongo_client = mongo_client
         LOGGER.info("Mongo Client has been set")
 
