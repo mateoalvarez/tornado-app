@@ -140,6 +140,14 @@ VALUES ('hashingtf', 1, 'preprocessing', '{"code": "from pyspark.ml.feature impo
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
 VALUES ('logistic_regression', 1, 'model', '{"code": "from pyspark.ml.classification import LogisticRegression\nlr = LogisticRegression(maxIter=10, regParam=0.001)\npipeline_models_stages.append((lr.uid, lr))\n", "params":"[<lr_max_iter>,<lr_reg_param>]"}');
 
+INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
+VALUES ('naive_bayes', 1, 'model', '{"code": "from pyspark.ml.classification import NaiveBayes\nnb = NaiveBayes(smoothing=1.0, modelType="multinomial")\npipeline_models_stages.append((nb.uid, nb))\n", "params":"[<smoothing>,<modelType>]"}');
+
+INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
+VALUES ('lineal_svm', 1, 'model', '{"code": "from from pyspark.ml.classification import LinearSVC\nlsvc = LinearSVC(maxIter=10, regParam=0.1)\npipeline_models_stages.append((lsvc.uid, lsvc))\n", "params":"[<maxIter>,<regParam>]"}');
+
+INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
+VALUES ('decision_tree', 1, 'model', '{"code": "from from pyspark.ml.classification import DecisionTreeClassifier\ndt = DecisionTreeClassifier(maxDepth=3, labelCol="label")\npipeline_models_stages.append((dt.uid, dt))\n", "params":"[<maxDepth>,<labelCol>]"}');
 
 INSERT INTO code_block_templates(template_name, model_engine, type, code_content)
 VALUES ('pipeline_execution', 1, 'output', '{"code": "from pyspark.ml import Pipeline, PipelineModel\nlast_column_name = pipeline_preprocessing_stages[-1].getOutputCol()\npreprocessing_pipeline = Pipeline(stages=pipeline_preprocessing_stages)\npreprocessing_pipeline_trained = preprocessing_pipeline.fit(input_data_df).transform(input_data_df)\nmid_point = preprocessing_pipeline_trained\nfor stage in pipeline_preprocessing_stages[:-1]:\n\tpreprocessing_pipeline_trained = preprocessing_pipeline_trained.drop(stage.getOutputCol())\npreprocessing_pipeline_trained = preprocessing_pipeline_trained.drop(\"features\").withColumnRenamed(last_column_name, \"features\")\nmodels_pipelines = []\nfor model_name, model_pipeline in pipeline_models_stages:\n\tmodels_pipelines.append((model_name, model_pipeline.fit(preprocessing_pipeline_trained)))\n", "params":"[]"}');
