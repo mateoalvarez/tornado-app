@@ -64,9 +64,9 @@ class TrainedMLModelsHandler(BaseHandler):
 
         application_datasource_configuration = '\{"code":"codigo"\}'
         classification_configuration = '\{"code":"codigo"\}'
-        s3_client, s3_resource =  self.start_s3_connection()
+        S3_CLIENT, S3_RESOURCE =  self.start_s3_connection()
         try:
-            model_urls = ['https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'+element["Key"] for element in s3_client.list_objects_v2(\
+            model_urls = ['https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'+element["Key"] for element in S3_CLIENT.list_objects_v2(\
             Bucket=self.BUCKET_SPARK_JOBS,\
             Prefix='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id),\
             StartAfter='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id))["Contents"]]
@@ -80,11 +80,16 @@ class TrainedMLModelsHandler(BaseHandler):
             preprocessing_url = 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/user_{user_id}/models/application_{application_id}/preprocessing.zip'.format(user_id=self.current_user["id"], application_id=application_id)
 
 # SET PUBLIC PERMISSIONS TO FILES
-
-            preprocessing_acl = self.S3_RESOURCE.ObjectAcl(preprocessing_url)
+            print("#############################")
+            print("#############################")
+            print(preprocessing_url.replace('https://s3.' + self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
+            print("#############################")
+            print("#############################")
+            preprocessing_acl = S3_RESOURCE.ObjectAcl(self.BUCKET_SPARK_JOBS, preprocessing_url.replace('https://s3.' + self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
             response = preprocessing_acl.put(ACL='public-read')
+            print("######### HASTA AQUI BIEN #########")
             for model_url in model_urls:
-                model_acl = self.S3_RESOURCE.ObjectAcl(model_url)
+                model_acl = S3_RESOURCE.ObjectAcl(self.BUCKET_SPARK_JOBS, model_url.replace('https://s3.' + self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
                 response = model_acl.put(ACL='public-read')
 
             model_urls.remove(preprocessing_url)
@@ -107,6 +112,10 @@ class TrainedMLModelsHandler(BaseHandler):
             dispatcher_deployer.deploy_kafka_producer(\
                 application_id=application["id"],\
                 keywords=datasource_keywords)
+
+            # Update application status -> to 'running'
+            self.db_cur.execute("UPDATE applications SET application_status='running' WHERE id=(%s);", (application_id,))
+            self.db_conn.commit()
 
             self.redirect(self.get_argument("next", "/trained_ml_models"))
         except Exception as exception:
