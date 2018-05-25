@@ -75,6 +75,21 @@ spec:
               secretKeyRef:
                 name: postgres-secrets
                 key: DATABASE_PORT
+          - name: MONGO_HOST
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secrets
+                key: MONGO_HOST
+          - name: MONGO_PORT
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secrets
+                key: MONGO_PORT
+          - name: MONGO_DBNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secrets
+                key: MONGO_DBNAME
         ports:
         - containerPort: 8888
           hostPort: 8888
