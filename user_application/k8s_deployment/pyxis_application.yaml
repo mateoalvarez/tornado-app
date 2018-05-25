@@ -78,17 +78,17 @@ spec:
           - name: MONGO_HOST
             valueFrom:
               secretKeyRef:
-                name: mongo-secrets
+                name: mongodb-secrets
                 key: MONGO_HOST
           - name: MONGO_PORT
             valueFrom:
               secretKeyRef:
-                name: mongo-secrets
+                name: mongodb-secrets
                 key: MONGO_PORT
           - name: MONGO_DBNAME
             valueFrom:
               secretKeyRef:
-                name: mongo-secrets
+                name: mongodb-secrets
                 key: MONGO_DBNAME
         ports:
         - containerPort: 8888
