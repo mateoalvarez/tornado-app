@@ -71,23 +71,22 @@ class TrainedMLModelsHandler(BaseHandler):
             Prefix='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id),\
             StartAfter='user_{user_id}/models/application_{application_id}'.format(user_id=self.current_user["id"], application_id=application_id))["Contents"]]
 
-            print('\n\n\n\n\n\n')
-            print('######################')
-            print(model_urls)
-            print('######################')
-            print('\n\n\n\n\n\n')
+            # print('\n\n\n\n\n\n')
+            # print('######################')
+            # print(model_urls)
+            # print('######################')
+            # print('\n\n\n\n\n\n')
 
             preprocessing_url = 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/user_{user_id}/models/application_{application_id}/preprocessing.zip'.format(user_id=self.current_user["id"], application_id=application_id)
 
 # SET PUBLIC PERMISSIONS TO FILES
-            print("#############################")
-            print("#############################")
-            print(preprocessing_url.replace('https://s3.' + self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
-            print("#############################")
-            print("#############################")
+            # print("#############################")
+            # print("#############################")
+            # print(preprocessing_url.replace('https://s3.' + self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
+            # print("#############################")
+            # print("#############################")
             preprocessing_acl = S3_RESOURCE.ObjectAcl(self.BUCKET_SPARK_JOBS, preprocessing_url.replace('https://s3.' + self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
             response = preprocessing_acl.put(ACL='public-read')
-            print("######### HASTA AQUI BIEN #########")
             for model_url in model_urls:
                 model_acl = S3_RESOURCE.ObjectAcl(self.BUCKET_SPARK_JOBS, model_url.replace('https://s3.' + self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
                 response = model_acl.put(ACL='public-read')
@@ -132,3 +131,16 @@ class ApplicationDeletionHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         """Delete method to destroy apps"""
+
+        application_id = self.get_argument("application_id", None)
+        self.db_cur.execute("SELECT * FROM applications WHERE id=%s;", (application_id, ))
+        application = self.db_cur.fetchone()
+
+        self.db_cur.execute("UPDATE FROM applications SET application_status='stopped' WHERE id=%s", (application["id"], ))
+
+        dispatcher_deployer = DispatcherDeployer(\
+        k8s_config=self.k8s_config,\
+        k8s_namespace=self.k8s_namespace,\
+        BUCKET_YAML_TEMPLATES=self.BUCKET_YAML_TEMPLATES,\
+        BUCKET_YAML_TEMPLATES_REGION=self.BUCKET_YAML_TEMPLATES_REGION\
+        )
