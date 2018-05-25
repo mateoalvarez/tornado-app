@@ -143,15 +143,16 @@ class DispatcherDeployer():
                 grace_period_seconds=5)\
             )
 
-        preprocessing_deployment_name = 'prep-' + application_id
-        self.k8s_deployment.delete_namespaced_deployment\
-            (\
-                namespace=self.k8s_namespace,\
-                name=preprocessing_deployment_name,\
-                body=self.k8s_client.V1DeleteOptions(\
-                propagation_policy='Foreground',\
-                grace_period_seconds=5)\
-            )
+        for preprocessing_id in preprocessing_ids:
+            preprocessing_deployment_name = 'prep-' + preprocessing_id
+            self.k8s_deployment.delete_namespaced_deployment\
+                (\
+                    namespace=self.k8s_namespace,\
+                    name=preprocessing_deployment_name,\
+                    body=self.k8s_client.V1DeleteOptions(\
+                    propagation_policy='Foreground',\
+                    grace_period_seconds=5)\
+                )
 
         for model_id in model_ids:
             model_name = 'model-' + model_id

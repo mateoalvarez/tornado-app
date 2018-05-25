@@ -136,11 +136,18 @@ class ApplicationDeletionHandler(BaseHandler):
         self.db_cur.execute("SELECT * FROM applications WHERE id=%s;", (application_id, ))
         application = self.db_cur.fetchone()
 
-        self.db_cur.execute("UPDATE FROM applications SET application_status='stopped' WHERE id=%s", (application["id"], ))
+        self.db_cur.execute(\
+        "UPDATE FROM applications SET application_status='stopped' WHERE id=%s",\
+        (application["id"], ))
 
         dispatcher_deployer = DispatcherDeployer(\
         k8s_config=self.k8s_config,\
         k8s_namespace=self.k8s_namespace,\
         BUCKET_YAML_TEMPLATES=self.BUCKET_YAML_TEMPLATES,\
         BUCKET_YAML_TEMPLATES_REGION=self.BUCKET_YAML_TEMPLATES_REGION\
+        )
+        dispatcher_deployer.delete_deployments(\
+            application_id=application["id"],\
+            preprocessing_ids=application["application_prep_stages_ids"],\
+            model_ids=["application_models_ids"]\
         )
