@@ -10,6 +10,9 @@ class DispatcherDeployer():
     def __init__(self, k8s_config, k8s_namespace, BUCKET_YAML_TEMPLATES, BUCKET_YAML_TEMPLATES_REGION):
         """Initializer"""
 
+        self.delete_body = kubernetes.client.V1DeleteOptions(\
+            propagation_policy='Foreground',\
+            grace_period_seconds=5)
         self.k8s_config_map = kubernetes.client.CoreV1Api(kubernetes.client.ApiClient(k8s_config))
         self.k8s_service = kubernetes.client.CoreV1Api(kubernetes.client.ApiClient(k8s_config))
         self.k8s_deployment = kubernetes.client.ExtensionsV1beta1Api(kubernetes.client.ApiClient(k8s_config))
@@ -127,3 +130,55 @@ class DispatcherDeployer():
                 self.k8s_service.create_namespaced_service(namespace=self.k8s_namespace, body=yaml.load(prep_service), pretty=True)
             except Exception as e:
                 print("Exception when calling V1Api->create_service:%s\n" % e)
+
+    def delete_deployments(self, application_id, preprocessing_ids, model_ids):
+        """DELETE kubernetes deployment"""
+
+        application_deployment_name = 'dispatcher-' + str(application_id)
+
+        try:
+
+            self.k8s_deployment.delete_namespaced_deployment\
+                (\
+                    namespace=self.k8s_namespace,\
+                    name=application_deployment_name,\
+                    body=self.delete_body\
+                )
+
+            for preprocessing_id in preprocessing_ids:
+                preprocessing_deployment_name = 'prep-' + str(preprocessing_id)
+                self.k8s_deployment.delete_namespaced_deployment\
+                    (\
+                        namespace=self.k8s_namespace,\
+                        name=preprocessing_deployment_name,\
+                        body=self.delete_body\
+                    )
+
+            for model_id in model_ids:
+                model_name = 'model-' + str(model_id)
+                self.k8s_deployment.delete_namespaced_deployment\
+                    (\
+                        namespace=self.k8s_namespace,\
+                        name=model_name,\
+                        body=self.delete_body\
+                    )
+
+            kafka_producer_name = 'kafka-producer-' + str(application_id)
+            self.k8s_deployment.delete_namespaced_deployment\
+                (\
+                    namespace=self.k8s_namespace,\
+                    name=kafka_producer_name,\
+                    body=self.delete_body\
+                )
+
+            dispatcher_config_map_name = "application-" + str(application_id) + "-config-map"
+            self.k8s_deployment.delete_namespaced_deployment\
+                (\
+                    namespace=self.k8s_namespace,\
+                    name=dispatcher_config_map_name,
+                    body=self.delete_body\
+                )
+        except kubernetes.client.rest.ApiException as exception:
+            print("### Error ###")
+            print(exception)
+        return

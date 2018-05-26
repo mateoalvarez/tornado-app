@@ -26,6 +26,9 @@
           <th>
             {{ _("applications.header.deploy") }}
           </th>
+          <th>
+            {{ _("applications.header.stop") }}
+          </th>
         </tr>
       {% for index, application in enumerate(user_applications) %}
         <tr>
@@ -51,13 +54,21 @@
             {{ application["application_status"] }}
           </td>
           <td>
-            {% if application["application_status"] == "untrained" %}
+            {% if application["application_status"] in ["untrained", "stopped"]  %}
               <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("applications.content.deploy") }}</button>
             {% else %}
               <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("applications.content.deploy") }}</button>
             {% end %}
           </td>
+          <td>
+            {% if application["application_status"] == "running" %}
+              <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#{{ application["id"] }}_delete">{{ _("applications.content.delete") }}</button>
+            {% else %}
+              <button disabled class="btn btn-danger" type="button">{{ _("applications.content.delete") }}</button>
+            {% end %}
+          </td>
         </tr>
+        <!-- First modal -->
         <div class="modal fade" id="{{ application["id"] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -76,6 +87,28 @@
                   <input class="text-input" name="keywords"/>
                   <input class="text-input" type="hidden" name="datasource_settings_id" value={{ application["datasource_settings_id"] }} />
                   <button class="btn btn-primary" data-toggle="modal" data-target="{{ application["id"] }}" type='submit' value={{ application["id"] }} name="application_id" id="application">{{ _("applications.content.deploy") }} {{ application["application_name"] }}</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Second modal -->
+        <div class="modal fade" id="{{ application["id"] }}_delete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">{{ _("applications.content.deploy") }} {{ application["application_name"] }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {{ _("applications.delete.confirm.confirmation_text") }} {{ application["application_name"] }}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>
+                <form method='post' action='/trained_ml_models/delete'>
+                  <button class="btn btn-danger" data-toggle="modal" data-target="{{ application["id"] }}" type='submit' value={{ application["id"] }} name="application_id" id="application">{{ _("applications.content.delete") }} {{ application["application_name"] }}</button>
                 </form>
               </div>
             </div>
