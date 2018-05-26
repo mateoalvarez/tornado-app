@@ -30,6 +30,8 @@
 "datasets.tab.Existingdatasets","Datasets cargados"
 "datasets.tab.Uploaddataset","Cargar nuevo dataset"
 "datasets.tab.Managedatasets","Gestionar datasets"
+"datasets.headers.public_datasets","Datasets Públicos"
+"datasets.headers.user_datasets","Datasets Privados"
 "datasets.header.dataset_name","Dataset"
 "datasets.header.dataset_size","Tamaño"
 "datasets.header.dataset_download_link","Link de descraga"
@@ -128,4 +130,7 @@
 ## Application deploy
 "applications.header.deploy","Desplegar "
 "applications.content.deploy","Desplegar "
+"applications.header.delete","Parar"
+"applications.content.delete","Parar"
 "applications.deploy.confirm.confirmation_text","La aplicación se desplegará en el cluster, clasificando los tweets que reciba de Twitter. Introduzca las palabras clave (hashtags) que quiera monitorizar. Las palabras deben ir separadas por comas (,), no se admiten espacios, y se procesan como filtros 'OR'."
+"applications.delete.confirm.confirmation_text","La aplicación se dentendrá, y se parará el procesamiento de datos nuevos. Los datos ya procesados seguirán estando disponibles"

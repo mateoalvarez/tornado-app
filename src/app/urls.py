@@ -8,6 +8,7 @@ from models.datasets.handlers import DatasetsHandler, DatasetsDeleteHandler
 from models.ml_models.handlers import MLModelsHandler, MLModelsHandlerDelete
 from models.ml_models.aws_deploy_handler import MLModelsAWSDeployHandler
 from models.trained_ml_models.handlers import TrainedMLModelsHandler
+from models.trained_ml_models.handlers import ApplicationDeletionHandler
 from models.running_applications.handlers import RunningApplicationsHandler
 from models.running_applications.handlers import VisualizeApplicationsHandler
 from models.datasource_settings.handlers import DataSourceSettingsHandler
@@ -33,6 +34,7 @@ URL_PATTERNS = [
     # trained_ml_models
     url(r"/trained_ml_models", TrainedMLModelsHandler, name="trained_ml_models"),
     url(r"/trained_ml_models/deploy", TrainedMLModelsHandler, name="trained_ml_models"),
+    url(r"/trained_ml_models/delete", ApplicationDeletionHandler, name="trained_ml_models"),
 
     # running Applications
     url(r"/running_applications", RunningApplicationsHandler, name="running_applications"),

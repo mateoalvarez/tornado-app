@@ -137,9 +137,10 @@ class ApplicationDeletionHandler(BaseHandler):
         application = self.db_cur.fetchone()
 
         self.db_cur.execute(\
-        "UPDATE FROM applications SET application_status='stopped' WHERE id=%s",\
+        "UPDATE applications SET application_status='stopped' WHERE id=%s;",\
         (application["id"], ))
-
+        self.db_conn.commit()
+        
         dispatcher_deployer = DispatcherDeployer(\
         k8s_config=self.k8s_config,\
         k8s_namespace=self.k8s_namespace,\
@@ -151,3 +152,4 @@ class ApplicationDeletionHandler(BaseHandler):
             preprocessing_ids=application["application_prep_stages_ids"],\
             model_ids=["application_models_ids"]\
         )
+        self.redirect(self.get_argument("next", "/trained_ml_models"))
