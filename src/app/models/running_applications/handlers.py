@@ -1,7 +1,8 @@
 """Runnning applications handlers"""
 import logging
+import json
+from bson import ObjectId
 import tornado
-import tempfile
 from tornado import gen
 from ..base.handlers import BaseHandler
 
@@ -96,6 +97,8 @@ class VisualizeApplicationsHandler(BaseHandler):
             self.render("running_applications/ml_models_visualization.html",\
              records=records_to_show, app_id=application_id)
 
+class DownloadDataHandler(BaseHandler):#, tornado.web.StaticFileHandler):
+    """Handler to download data"""
     @gen.coroutine
     @tornado.web.authenticated
     def post(self):
@@ -104,4 +107,24 @@ class VisualizeApplicationsHandler(BaseHandler):
         data = list(self._mongo_client[\
         "user_" + str(self.current_user["id"])]["application_" +\
          str(application_id)].find().sort([("_id", -1)]))
-        self.tempfile.write(data)
+        print('\n\n\n\n')
+        # print(json.dumps(data[0]))
+        print('\n\n\n\n')
+        self.set_header('Content-Type', 'text/json')
+        self.set_header('Content-Disposition', 'attachment; filename=export.json')
+        try:
+            for element in data:
+                self.write(JSONEncoder().encode(element))
+            self.flush()
+            self.finish()
+            return
+        except Exception as exception:
+            print("### ERROR ###")
+            print(exception)
+
+class JSONEncoder(json.JSONEncoder):
+    """Class to decode json"""
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)

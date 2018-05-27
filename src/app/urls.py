@@ -10,7 +10,7 @@ from models.ml_models.aws_deploy_handler import MLModelsAWSDeployHandler
 from models.trained_ml_models.handlers import TrainedMLModelsHandler
 from models.trained_ml_models.handlers import ApplicationDeletionHandler
 from models.running_applications.handlers import RunningApplicationsHandler
-from models.running_applications.handlers import VisualizeApplicationsHandler
+from models.running_applications.handlers import VisualizeApplicationsHandler, DownloadDataHandler
 from models.datasource_settings.handlers import DataSourceSettingsHandler
 
 URL_PATTERNS = [
@@ -39,6 +39,7 @@ URL_PATTERNS = [
     # running Applications
     url(r"/running_applications", RunningApplicationsHandler, name="running_applications"),
     url(r"/running_applications/visualize", VisualizeApplicationsHandler, name="visualize_running_applications"),
+    url(r"/running_applications/download", DownloadDataHandler, name="download_processed_data"),
 
     # User settings page
     url(r"/user_settings", UserSettingsHandler, name="user_settings"),
