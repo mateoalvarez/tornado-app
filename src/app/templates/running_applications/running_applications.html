@@ -24,8 +24,10 @@
               </div>
             </div>
           </div>
-          <button type="button" class="btn btn-primary" value={{ application["id"] }} onclick="downloadData(this)">Download</button>
-          <button type="button" class="btn btn-primary" value={{ application["id"] }} onclick="document.location.href='/running_applications/visualize?app_id={{ application["id"] }}&elements=100';">Visualize</button>
+          <form method="post" action="/running_applications/download">
+            <button type="submit" class="btn btn-primary mx-1" value={{ application["id"] }} name="application_id">Download</button>
+          </form>
+          <button type="button" class="btn btn-primary mx-1" value={{ application["id"] }} onclick="document.location.href='/running_applications/visualize?app_id={{ application["id"] }}&elements=100';">Visualize</button>
         </div>
       {% end %}
     </div>

@@ -177,4 +177,9 @@ class MLModelsAWSDeployHandler(BaseHandler):
         #     ("training", application_id)
         # )
         # self.db_conn.commit()
+# UPDATE APPLICATION STATUS
+        self.db_cur.execute(\
+        "UPDATE applications SET application_status='training' WHERE id=%s;",\
+        (application_id, ))
+        self.db_conn.commit()
         self.redirect(self.get_argument("next", "/ml_models"))
