@@ -80,6 +80,7 @@ class VisualizeApplicationsHandler(BaseHandler):
     @gen.coroutine
     @tornado.web.authenticated
     def get(self):
+        """GET visualize data"""
         LOGGER.info("Going to retrieve information from MongoDB in order to render it in client browser")
         application_id = self.get_argument("app_id", "aaa")
         last_elements = self.get_argument("elements", "0")
@@ -89,13 +90,18 @@ class VisualizeApplicationsHandler(BaseHandler):
             self.render("running_applications/ml_models_visualization.html", records=[])
         else:
             # TODO Filter for those that match with timestamp filter
-            records_to_show = list(self._mongo_client["user_" + str(self.current_user["id"])]["application_" + str(application_id)].find().sort([("_id", -1)]).limit(int(last_elements)))
-            self.render("running_applications/ml_models_visualization.html", records=records_to_show, app_id=application_id)
+            records_to_show = list(self._mongo_client[\
+            "user_" + str(self.current_user["id"])]["application_" +\
+             str(application_id)].find().sort([("_id", -1)]).limit(int(last_elements)))
+            self.render("running_applications/ml_models_visualization.html",\
+             records=records_to_show, app_id=application_id)
 
     @gen.coroutine
     @tornado.web.authenticated
     def post(self):
         """POST TO DOWNLOAD DATA FROM MONGODB"""
         application_id = self.get_argument("application_id")
-        data = list(self._mongo_client["user_" + str(self.current_user["id"])]["application_" + str(application_id)].find().sort([("_id", -1)]))
+        data = list(self._mongo_client[\
+        "user_" + str(self.current_user["id"])]["application_" +\
+         str(application_id)].find().sort([("_id", -1)]))
         self.tempfile.write(data)
