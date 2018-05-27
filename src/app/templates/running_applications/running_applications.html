@@ -24,7 +24,7 @@
               </div>
             </div>
           </div>
-          <button type="button" class="btn btn-primary mx-1" value={{ application["id"] }} onclick="downloadData("{{ application['id'] }}")">Download</button>
+          <button type="button" class="btn btn-primary mx-1" value={{ application["id"] }} onclick="downloadData('{{application['id']}}')">Download</button>
           <button type="button" class="btn btn-primary mx-1" value={{ application["id"] }} onclick="document.location.href='/running_applications/visualize?app_id={{ application["id"] }}&elements=100';">Visualize</button>
         </div>
       {% end %}

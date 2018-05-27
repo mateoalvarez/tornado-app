@@ -54,7 +54,7 @@
             {{ application["application_status"] }}
           </td>
           <td>
-            {% if application["application_status"] in ["untrained", "stopped"]  %}
+            {% if application["application_status"] in ["trained", "stopped"]  %}
               <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("applications.content.deploy") }}</button>
             {% else %}
               <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("applications.content.deploy") }}</button>
