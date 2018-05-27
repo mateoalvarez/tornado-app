@@ -5,7 +5,7 @@ function downloadData(button){
         url: "/running_applications/visualize",
         type: "POST",
         data: {
-            app_name:$('button').val()
+            application_id:$('button').val()
         }
     })
 }

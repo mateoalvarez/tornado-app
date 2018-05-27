@@ -1,10 +1,10 @@
 """Home page handlers"""
 import logging
 import tornado
-import tornado
 from tornado import gen
 import json
 import requests
+import botocore
 from .aws_deploy_handler import MLModelsAWSDeployHandler
 from .job_builder import JobAssemblerHandler
 from ..base.handlers import BaseHandler
@@ -26,6 +26,16 @@ class MLModelsHandler(BaseHandler):
         )
         applications = self.db_cur.fetchall()
         return applications
+
+    def _get_user_applications_ids(self):
+        """GET user's pipelines"""
+        self.db_cur.execute\
+        (\
+            "SELECT 'id' FROM applications WHERE user_id=%s;", (self.current_user["id"],)\
+        )
+        application_ids = self.db_cur.fetchall()
+        return application_ids
+
     def _get_initializers(self):
         """GET initializer code blocks"""
         self.db_cur.execute\
@@ -79,6 +89,27 @@ class MLModelsHandler(BaseHandler):
         )
         classification_criteria = self.db_cur.fetchall()
         return classification_criteria
+
+    def _update_application_training_status(self, application_id):
+        """GET to S3 to check finished application training"""
+        _, s3_resource = self.start_s3_connection()
+
+        application_results_url = "user_" + str(self.current_user["id"]) +\
+        "/models/application_" + str(application_id) + "/preprocessing.zip"
+        print('RESULTS ##########')
+        print(application_results_url)
+        try:
+            s3_resource.Object(self.BUCKET_SPARK_JOBS, application_results_url).load()
+            self.db_cur.execute(\
+            "UPDATE applications SET application_status='trained' WHERE id=%s;",\
+            (application_id,))
+            self.db_conn.commit()
+        except botocore.exceptions.ClientError as exception:
+            if exception.response['Error']['Code'] == "404":
+                pass
+            else:
+                # Throw error
+                pass
 # Handler methods
 
     @gen.coroutine
@@ -88,7 +119,7 @@ class MLModelsHandler(BaseHandler):
 
         data_prep_methods = self._get_data_prep_methods()
         models = self._get_models()
-        user_applications = self._get_user_applications()
+        user_application_ids = self._get_user_applications()
         datasets = self._get_datasets()
         input_methods = self._get_initializers()
         output_methods = self._get_outputs()
@@ -98,6 +129,11 @@ class MLModelsHandler(BaseHandler):
         model_ids = ','.join([str(model["id"]) for model in models])
         preprocessing_names = ','.join([prep["template_name"] for prep in data_prep_methods])
         preprocessing_ids = ','.join([str(prep["id"]) for prep in data_prep_methods])
+
+        for application_id in user_application_ids:
+            self._update_application_training_status(application_id["id"])
+
+        user_applications = self._get_user_applications()
 
         self.render\
         (\
@@ -109,7 +145,6 @@ class MLModelsHandler(BaseHandler):
             models=models,\
             output_methods=output_methods,\
             classification_criteria=classification_criteria,\
-            # model_ids=json.dumps({"model_ids":1}),\
             model_names=model_names,\
             model_ids=model_ids,\
             preprocessing_names=preprocessing_names,\

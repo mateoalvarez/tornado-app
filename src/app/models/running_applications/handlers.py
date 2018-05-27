@@ -1,6 +1,7 @@
 """Runnning applications handlers"""
 import logging
 import tornado
+import tempfile
 from tornado import gen
 from ..base.handlers import BaseHandler
 
@@ -90,3 +91,11 @@ class VisualizeApplicationsHandler(BaseHandler):
             # TODO Filter for those that match with timestamp filter
             records_to_show = list(self._mongo_client["user_" + str(self.current_user["id"])]["application_" + str(application_id)].find().sort([("_id", -1)]).limit(int(last_elements)))
             self.render("running_applications/ml_models_visualization.html", records=records_to_show, app_id=application_id)
+
+    @gen.coroutine
+    @tornado.web.authenticated
+    def post(self):
+        """POST TO DOWNLOAD DATA FROM MONGODB"""
+        application_id = self.get_argument("application_id")
+        data = list(self._mongo_client["user_" + str(self.current_user["id"])]["application_" + str(application_id)].find().sort([("_id", -1)]))
+        self.tempfile.write(data)
