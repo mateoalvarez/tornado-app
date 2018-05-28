@@ -3,3 +3,4 @@ src/app/logs/
 src/db/__pycache__
 *.pyc
 .idea/
+.DS_Store
