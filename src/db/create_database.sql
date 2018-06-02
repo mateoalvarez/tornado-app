@@ -1,6 +1,7 @@
 CREATE DATABASE twitter_app_db;
 \connect twitter_app_db
-CREATE TYPE application_status_enum AS ENUM ('untrained', 'training', 'trained', 'running', 'stopped', 'error');
+CREATE TYPE application_status_enum AS ENUM ('running', 'stopped', 'error');
+CREATE TYPE pipeline_status_enum AS ENUM ('untrained', 'training', 'trained');
 CREATE TYPE code_block_type AS ENUM ('input', 'output', 'preprocessing', 'model');
 
 CREATE TABLE users (
@@ -96,7 +97,7 @@ CREATE TABLE pipelines (
   training_config_resources JSONB,
   pipeline_dataset INTEGER NOT NULL,
   classification_criteria INTEGER NOT NULL,
-  pipeline_status application_status_enum,
+  pipeline_status pipeline_status_enum,
   pipeline_prep_stages_ids INTEGER ARRAY NOT NULL,
   pipeline_models_ids INTEGER ARRAY NOT NULL,
   error_status TEXT,
@@ -111,9 +112,6 @@ CREATE TABLE  applications (
   user_id INTEGER NOT NULL,
   application_name VARCHAR(20),
   application_pipeline INTEGER NOT NULL,
-  application_prep_stages_ids INTEGER ARRAY NOT NULL,
-  application_models_ids INTEGER ARRAY NOT NULL,
-  classification_criteria INTEGER NOT NULL,
   application_status application_status_enum,
   datasource_configuration_id INTEGER,
   datasource_settings_id INTEGER,

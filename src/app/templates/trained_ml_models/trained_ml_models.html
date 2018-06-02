@@ -7,9 +7,12 @@
 {% block body %}
   <div class="container-fluid transparent_lighter_background py-5">
     <div class="container">
-      <div class="row">
-        <h1>{{ _("mlmodels.tab.applications") }}</h1>
-      </div>
+      <h1>{{ _("mlmodels.tab.applications") }}</h1>
+    </div>
+    <div class="container my-5">
+      {% include "_create_application.html" %}
+    </div>
+    <div class="container">
       {% include "_user_applications.html" %}
     </div>
   </div>

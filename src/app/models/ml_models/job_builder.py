@@ -1,10 +1,6 @@
 """Class to assemble block codes to create spark job"""
 import logging
-# import tornado
-# from tornado import gen
 import json
-# import requests
-# from ..base.handlers import BaseHandler
 
 LOGGER = logging.getLogger(__name__)
 

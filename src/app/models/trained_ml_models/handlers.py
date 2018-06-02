@@ -24,53 +24,71 @@ class TrainedMLModelsHandler(BaseHandler):
         self.db_cur.execute(
             "SELECT * FROM applications WHERE user_id=%s;",
             (self.current_user["id"], )
-            )
+        )
         user_applications = self.db_cur.fetchall()
+        self.db_cur.execute(
+            "SELECT * FROM pipelines WHERE user_id=%s;",
+            (self.current_user["id"], )
+        )
+        user_pipelines = self.db_cur.fetchall()
+        self.db_cur.execute(
+            "SELECT * FROM pipelines WHERE user_id=1;"
+        )
+        public_pipelines = self.db_cur.fetchall()
+
         self.render("trained_ml_models/trained_ml_models.html",
-                    user_applications=user_applications
+                    user_applications=user_applications,
+                    user_pipelines=user_pipelines,
+                    public_pipelines=public_pipelines
                     )
 
     @gen.coroutine
     @tornado.web.authenticated
     def post(self):
-        "Create application and start running"
-
-        application_id = self.get_argument("application_id", None)
-        self.db_cur.execute(
-            "SELECT * FROM applications WHERE id=%s;", (application_id, )
-            )
-        application = self.db_cur.fetchone()
+        "Create application"
 
         datasource_settings_id = self.get_argument("datasource_settings_id",
-                                                   None)
-
-        if datasource_settings_id == "None":
-            # if datasource settings is not set, select default application configuration
+                                                   None, False)
+        if datasource_settings_id is None or datasource_settings_id == "None":
+            # default application configuration
             self.db_cur.execute(
-                "SELECT * FROM datasource_settings WHERE user_id=%s;", (1, ))
+                "SELECT id FROM datasource_settings WHERE user_id=%s;", (1, ))
 
             datasource_settings_id = self.db_cur.fetchone()["id"]
-            self.db_cur.execute(
-                "UPDATE applications SET datasource_settings_id=(%s) WHERE id=(%s);",
-                (datasource_settings_id, application_id, )
-                )
-            self.db_conn.commit()
 
-        datasource_keywords = str(self.get_argument("keywords", "big data, ai"))
+        datasource_keywords = str(
+            self.get_argument("keywords", "big data, ai", True)).replace(" ", "")
 
         self.db_cur.execute(
             "INSERT INTO datasource_configurations \
             (datasource_settings_id, datasource_application_config)\
-            VALUES (%s, %s) returning id;",
-            (datasource_settings_id,
-            '{"keywords":"' + datasource_keywords + '"}', ))
+            VALUES (%s, %s) returning id;", (
+                datasource_settings_id,
+                '{"keywords":"' + datasource_keywords + '"}', )
+            )
         datasource_configuration_id = self.db_cur.fetchone()["id"]
         self.db_conn.commit()
 
-        # Update application configuration
+        application_pipeline = self.get_argument("pipeline_id", "")
+        application_name = self.get_argument("application_name", "")
+        # Create application
         self.db_cur.execute(
-            "UPDATE applications SET datasource_configuration_id=(%s) WHERE id=(%s);",
-            (datasource_configuration_id, application_id, ))
+            "INSERT INTO applications(application_pipeline, application_name, \
+            application_status, datasource_configuration_id,\
+            datasource_settings_id, user_id) VALUES (%s, %s, %s, %s, %s, %s);",
+            (application_pipeline, application_name, "stopped",
+             datasource_configuration_id, datasource_settings_id,
+             str(self.current_user["id"]))
+        )
+        self.db_conn.commit()
+        self.redirect(self.get_argument("next", "/trained_ml_models"))
+
+
+class ApplicationDeployer(BaseHandler):
+    """Handler to deploy created applications"""
+
+    def post(self):
+        "Deploy application"
 
         dispatcher_deployer = DispatcherDeployer(
             k8s_config=self.k8s_config,
@@ -82,6 +100,9 @@ class TrainedMLModelsHandler(BaseHandler):
         application_datasource_configuration = '\{"code":"codigo"\}'
         classification_configuration = '\{"code":"codigo"\}'
         S3_CLIENT, S3_RESOURCE = self.start_s3_connection()
+
+        application_id = self.get_argument("application_id", "", False)
+        pipeline_id = self.get_argument("pipeline_id", "", False)
 
         try:
             model_urls = [
@@ -106,11 +127,6 @@ class TrainedMLModelsHandler(BaseHandler):
             preprocessing_url = 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/user_{user_id}/models/application_{application_id}/preprocessing.zip'.format(user_id=self.current_user["id"], application_id=application_id)
 
 # SET PUBLIC PERMISSIONS TO FILES
-            # print("#############################")
-            # print("#############################")
-            # print(preprocessing_url.replace('https://s3.' + self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
-            # print("#############################")
-            # print("#############################")
 
             preprocessing_acl = S3_RESOURCE.ObjectAcl(
                 self.BUCKET_SPARK_JOBS,

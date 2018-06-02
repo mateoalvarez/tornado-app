@@ -1,120 +1,71 @@
-<div class="row">
-  <div class="table-responsive text-center mx-auto">
-    <table class="table-striped table-bordered table-hover table_spaced">
-        <tr>
-          <th>
-            #
-          </th>
-          <th>
-            {{ _("models.header.application_name") }}
-          </th>
-          <th>
-            {{ _("models.header.dataset") }}
-          </th>
-          <th>
-            {{ _("models.header.preprocessing_stages") }}
-          </th>
-          <th>
-            {{ _("models.header.models") }}
-          </th>
-          <th>
-            {{ _("models.header.classification_criteria") }}
-          </th>
-          <th>
-            {{ _("models.header.status") }}
-          </th>
-          <th>
-            {{ _("applications.header.deploy") }}
-          </th>
-          <th>
-            {{ _("applications.header.stop") }}
-          </th>
-        </tr>
-      {% for index, application in enumerate(user_applications) %}
-        <tr>
-          <td>
-            {{ index }}
-          </td>
-          <td>
-            {{ application["application_name"] }}
-          </td>
-          <td>
-            {{ application["application_dataset"] }}
-          </td>
-          <td>
-            {{ application["application_prep_stages_ids"] }}
-          </td>
-          <td>
-            {{ application["application_models_ids"] }}
-          </td>
-          <td>
-            {{ application["classification_criteria"] }}
-          </td>
-          <td>
-            {{ application["application_status"] }}
-          </td>
-          <td>
-            {% if application["application_status"] in ["trained", "stopped"]  %}
-              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("applications.content.deploy") }}</button>
-            {% else %}
-              <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ application["id"] }}"/>{{ _("applications.content.deploy") }}</button>
-            {% end %}
-          </td>
-          <td>
+<div class="card-deck">
+  <div class="row">
+    {% for application in user_applications %}
+      <div class="col-6 my-3">
+        <div class="card shadow rounded">
+          <div class="card-header">
+            <h2 class="card-title">{{ application["application_name"] }}</h2>
+            <ul class="nav nav-tabs card-header-tabs" id="tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="home_{{ application["id"] }}-tab" data-toggle="tab" href="#home_{{ application["id"] }}" role="tab" aria-controls="home_{{ application["id"] }}" aria-selected="true">{{ _("applications.user_applications.card_navbar.application_status") }}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="home_{{ application["id"] }}-tab" data-toggle="tab" href="#visualization_{{ application["id"] }}"  role="tab" aria-controls="home_{{ application["id"] }}" aria-selected="false">{{ _("applications.user_applications.card_navbar.application_visualization") }}</a>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body tab-content" id="tabContent">
+            <div class="tab-pane fade show active" id="home_{{ application["id"] }}" role="tabpanel" aria-labelledby="home_{{ application["id"] }}-tab">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{ application["datasource_configuration_id"] }}</li>
+                <li class="list-group-item">{{ application["datasource_settings_id"] }}</li>
+                <li class="list-group-item">
+                  <form method="post" action="#">
+                    <button type="submit" class="btn btn-primary" value={{ application["id"] }} name="application_id"></button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-pane fade show" id="visualization_{{ application["id"] }}" role="tabpanel" aria-labelledby="visualization_{{ application["id"] }}-tab">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <a class="btn btn-primary" href="/running_applications/visualize?app_id={{ application["id"] }}&elements=100">{{ _("applications.user_applications.card_body.visualize") }}</a>
+                </li>
+                <li class="list-group-item">
+                  <form method="post" action="/running_applications/download">
+                    <button type="submit" class="btn btn-primary" value={{ application["id"] }} name="application_id">{{ _("applications.user_applications.card_body.download") }}</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-footer text-white">
             {% if application["application_status"] == "running" %}
-              <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#{{ application["id"] }}_delete">{{ _("applications.content.delete") }}</button>
+              <li class="list-group-item bg-success">
+            {% elif application["application_status"] == "error" %}
+              <li class="list-group-item bg-danger">
             {% else %}
-              <button disabled class="btn btn-danger" type="button">{{ _("applications.content.delete") }}</button>
+              <li class="list-group-item bg-warning">
             {% end %}
-          </td>
-        </tr>
-        <!-- First modal -->
-        <div class="modal fade" id="{{ application["id"] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ _("applications.content.deploy") }} {{ application["application_name"] }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                {{ _("applications.deploy.confirm.confirmation_text") }} {{ application["application_name"] }}
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>
-                <form method='post' action='/trained_ml_models/deploy'>
-                  <input class="text-input" name="keywords"/>
-                  <input class="text-input" type="hidden" name="datasource_settings_id" value={{ application["datasource_settings_id"] }} />
-                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ application["id"] }}" type='submit' value={{ application["id"] }} name="application_id" id="application">{{ _("applications.content.deploy") }} {{ application["application_name"] }}</button>
-                </form>
-              </div>
-            </div>
+              {{ application["application_status"] }}
+            </li>
           </div>
         </div>
-        <!-- Second modal -->
-        <div class="modal fade" id="{{ application["id"] }}_delete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">{{ _("applications.content.deploy") }} {{ application["application_name"] }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                {{ _("applications.delete.confirm.confirmation_text") }} {{ application["application_name"] }}
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>
-                <form method='post' action='/trained_ml_models/delete'>
-                  <button class="btn btn-danger" data-toggle="modal" data-target="{{ application["id"] }}" type='submit' value={{ application["id"] }} name="application_id" id="application">{{ _("applications.content.delete") }} {{ application["application_name"] }}</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      {% end %}
-    </table>
+      </div>
+    {% end %}
   </div>
 </div>
+
+{% if user_applications == [] %}
+<div class="card shadow">
+  <div class="card-header">
+    <h2 class="card-title">{{ _("mlmodels.user_applications.no_applications.header") }}</h2>
+  </div>
+  <div class="card-body">
+    {{ _("mlmodels.user_applications.no_applications.body") }}
+  </div>
+  <div class="card-footer">
+    {{ _("mlmodels.user_applications.no_applications.footer") }}
+  </div>
+</div>
+{% end %}
