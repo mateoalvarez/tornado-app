@@ -6,32 +6,14 @@
 
 {% block body %}
   <div class="container-fluid transparent_lighter_background py-5">
-    <div class="card-deck">
-      <div class="card">
-        <div class="card-header text-center">
-          <h1>{{ _("applications.create_application.header") }}</h1>
-        </div>
-        <div class="card-body text-center">
-          {{ _("applications.create_application.body") }}
-        </div>
-        <div class="card-footer text-center">
-          <a href="/trained_ml_models" class="btn btn-primary">{{ _("applications.create_application.button") }}</a>
-        </div>
-      </div>
-      <div>
-        <img src="{{ static_url("img/arrows.svg") }}" style="width:6vmax;margin-left:-2vmax;margin-right:-2vmax;margin-top:7.5vmax;z-index: 1;position: relative;"/>
-      </div>
-      <div class="card">
-        <div class="card-header text-center">
-          <h1>{{ _("applications.running_applications.header") }}</h1>
-        </div>
-        <div class="card-body text-center">
-          {{ _("applications.running_applications.body") }}
-        </div>
-        <div class="card-footer text-center">
-          <a href="/running_applications" class="btn btn-primary">{{ _("applications.running_applications.button") }}</a>
-        </div>
-      </div>
+    <div class="container">
+      <h1>{{ _("mlmodels.tab.applications") }}</h1>
+    </div>
+    <div class="container my-5">
+      {% include "_create_application.html" %}
+    </div>
+    <div class="container">
+      {% include "_user_applications.html" %}
     </div>
   </div>
 {% end %}

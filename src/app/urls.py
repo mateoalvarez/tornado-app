@@ -4,13 +4,11 @@ from tornado.web import url
 
 from models.home.handlers import HomeHandler
 from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler, UserSettingsHandler
-from models.pipelines.handlers import PipelinesHandler
 from models.applications.handlers import ApplicationsHandler
 from models.datasets.handlers import DatasetsHandler, DatasetsDeleteHandler
-from models.ml_models.handlers import MLModelsHandler, MLModelsHandlerDelete
-from models.ml_models.aws_deploy_handler import MLModelsAWSDeployHandler
-from models.trained_ml_models.handlers import TrainedMLModelsHandler
-from models.trained_ml_models.handlers import ApplicationDeletionHandler
+from models.pipelines.handlers import MLModelsHandler, MLModelsHandlerDelete
+from models.pipelines.aws_deploy_handler import MLModelsAWSDeployHandler
+from models.applications.handlers import ApplicationDeletionHandler
 from models.running_applications.handlers import RunningApplicationsHandler
 from models.running_applications.handlers import VisualizeApplicationsHandler, DownloadDataHandler
 from models.datasource_settings.handlers import DataSourceSettingsHandler
@@ -24,25 +22,19 @@ URL_PATTERNS = [
     url(r"/auth/login", LoginHandler, name="login"),
     url(r"/auth/logout", LogoutHandler, name="logout"),
 
-    # Pipelines
-    url(r"/pipelines", PipelinesHandler, name="pipelines"),
-
-    # Applications
-    url(r"/applications", ApplicationsHandler, name="applications"),
-
     # datasets
     url(r"/datasets", DatasetsHandler, name="datasets"),
     url(r"/datasets/delete", DatasetsDeleteHandler, name="datasets_delete"),
 
-    # ml_models
-    url(r"/ml_models", MLModelsHandler, name="ml_models"),
-    url(r"/ml_models_delete", MLModelsHandlerDelete, name="ml_models"),
-    url(r"/ml_models/deploy", MLModelsAWSDeployHandler, name="ml_models_deploy"),
+    # Pipelines
+    url(r"/pipelines", MLModelsHandler, name="pipelines"),
+    url(r"/pipelines_delete", MLModelsHandlerDelete, name="pipelines_delete"),
+    url(r"/pipelines/deploy", MLModelsAWSDeployHandler, name="pipelines_deploy"),
 
-    # trained_ml_models
-    url(r"/trained_ml_models", TrainedMLModelsHandler, name="trained_ml_models"),
-    url(r"/trained_ml_models/deploy", TrainedMLModelsHandler, name="trained_ml_models"),
-    url(r"/trained_ml_models/delete", ApplicationDeletionHandler, name="trained_ml_models"),
+    # Applications
+    url(r"/applications", ApplicationsHandler, name="applications"),
+    url(r"/applications/deploy", ApplicationsHandler, name="applications_deploy"),
+    url(r"/applications/delete", ApplicationDeletionHandler, name="applications_delete"),
 
     # running Applications
     url(r"/running_applications", RunningApplicationsHandler, name="running_applications"),

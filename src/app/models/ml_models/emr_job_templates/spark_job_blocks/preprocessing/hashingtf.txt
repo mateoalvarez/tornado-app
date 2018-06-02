@@ -1,8 +1,0 @@
-from pyspark.ml.feature import HashingTF
-
-if (bool(pipeline_preprocessing_stages)):
-    hashingTF = HashingTF(inputCol=pipeline_preprocessing_stages[-1].getOutputCol(), outputCol="hashinfTF_col")
-else:
-    hashingTF = HashingTF(inputCol="input_features", outputCol="hashinfTF_col")
-
-pipeline_preprocessing_stages.append(hashingTF)

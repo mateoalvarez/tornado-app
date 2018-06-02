@@ -1,8 +1,0 @@
-from pyspark.ml.feature import Tokenizer
-
-if (bool(pipeline_preprocessing_stages)):
-    tokenizer = Tokenizer(inputCol=pipeline_preprocessing_stages[-1].getOutputCol(), outputCol="tokenizer_col")
-else:
-    tokenizer = Tokenizer(inputCol="input_features", outputCol="tokenizer_col")
-
-pipeline_preprocessing_stages.append(tokenizer)

@@ -1,5 +1,0 @@
-nltk
-pandas
-scipy
-numpy
-mleap
