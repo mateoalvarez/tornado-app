@@ -24,9 +24,8 @@
 "navbar.user.Logout","Logout"
 "navbar.user.Register","Registro"
 "navbar.user.Settings","Configuración"
-"navbar.create_pipelines","Nuevo Pipeline"
-"navbar.create_application","Nueva Aplicación"
-"navbar.running_applications","Aplicaciones activas"
+"navbar.create_pipelines","Pipelines"
+"navbar.applications","Aplicaciones"
 
 # Pipelines
 

@@ -5,6 +5,7 @@ from tornado.web import url
 from models.home.handlers import HomeHandler
 from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler, UserSettingsHandler
 from models.pipelines.handlers import PipelinesHandler
+from models.applications.handlers import ApplicationsHandler
 from models.datasets.handlers import DatasetsHandler, DatasetsDeleteHandler
 from models.ml_models.handlers import MLModelsHandler, MLModelsHandlerDelete
 from models.ml_models.aws_deploy_handler import MLModelsAWSDeployHandler
@@ -25,6 +26,9 @@ URL_PATTERNS = [
 
     # Pipelines
     url(r"/pipelines", PipelinesHandler, name="pipelines"),
+
+    # Applications
+    url(r"/applications", ApplicationsHandler, name="applications"),
 
     # datasets
     url(r"/datasets", DatasetsHandler, name="datasets"),

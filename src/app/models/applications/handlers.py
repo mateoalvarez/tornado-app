@@ -7,11 +7,11 @@ from ..base.handlers import BaseHandler
 LOGGER = logging.getLogger(__name__)
 
 
-class PipelinesHandler(BaseHandler):
+class ApplicationsHandler(BaseHandler):
     """ Home page pipeline """
 
     @gen.coroutine
     @tornado.web.authenticated
     def get(self):
         """GET method on pipeline page"""
-        self.render("pipelines/pipelines.html",)
+        self.render("applications/applications.html",)
