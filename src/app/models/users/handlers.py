@@ -72,23 +72,19 @@ class LoginHandler(BaseHandler):
         """User login page"""
         if self.get_current_user():
             self.redirect(self.get_argument("next", "/"))
-        self.render("users/login.html", next=self.get_argument("next"))
+        self.render("users/login.html", next=self.get_argument("next", "/"))
 
     @gen.coroutine
     def post(self):
         """User login post"""
         user = get_user(self.db_cur, self.get_argument("email", ""))
-        if user and bcrypt.checkpw(
-        self.get_argument("password").encode(),\
-        user["hashed_password"].encode()):
+        if user and bcrypt.checkpw(self.get_argument("password").encode(), user["hashed_password"].encode()):
             self.set_current_user(str(user["id"]))
             self.redirect(self.get_argument("next", "/"))
         else:
-            self.render("users/login.html", error="Incorrect email or password")
-            print("error login")
-            return
-
-
+            self.render("users/login.html",
+                        next=self.get_argument("next", "/"),
+                        error="Incorrect email or password")
 
 
 class LogoutHandler(BaseHandler):
