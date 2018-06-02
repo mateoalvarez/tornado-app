@@ -84,6 +84,20 @@ class ApplicationsHandler(BaseHandler):
         self.redirect(self.get_argument("next", "/applications"))
 
 
+class ApplicationDeletionHandler(BaseHandler):
+    """Handler to deploy applications"""
+    @gen.coroutine
+    @tornado.web.authenticated
+    def post(self):
+        "Delete application"
+        application_id = self.get_argument("application_id", "", True)
+        self.db_cur.execute(
+            "DELETE FROM applications WHERE id=%s;", (application_id, )
+        )
+        self.db_conn.commit()
+        self.redirect(self.get_argument("next", "/applications"))
+
+
 class ApplicationDeployer(BaseHandler):
     """Handler to deploy created applications"""
 
@@ -173,7 +187,7 @@ class ApplicationDeployer(BaseHandler):
             self.redirect(self.get_argument("next", "/applications"))
 
 
-class ApplicationDeletionHandler(BaseHandler):
+class ApplicationDeploymentDeletionHandler(BaseHandler):
     """Handler to delete applications deployment"""
 
     @gen.coroutine

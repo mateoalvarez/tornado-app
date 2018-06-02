@@ -21,6 +21,7 @@ CREATE TABLE datasource_settings (
   user_id INTEGER NOT NULL,
   type INTEGER NOT NULL DEFAULT(1),
   datasource_access_settings JSONB,
+  creation_date DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -32,6 +33,7 @@ CREATE TABLE datasets (
   storage_url VARCHAR NOT NULL,
   dataset_description TEXT,
   dataset_properties JSONB, -- {columns:# , rows:# , labels:# }
+  creation_date DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -40,6 +42,7 @@ CREATE TABLE engines (
   id SERIAL UNIQUE,
   engine_name VARCHAR(20),
   engine_configuration JSONB,
+  creation_date DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id)
 );
 
@@ -52,6 +55,7 @@ CREATE TABLE code_block_templates (
   description TEXT,
   type code_block_type,
   code_content JSONB,
+  creation_date DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id),
   FOREIGN KEY (model_engine) REFERENCES engines(id)
 );
@@ -63,6 +67,7 @@ CREATE TABLE code_block (
   user_id INTEGER NOT NULL,
   code_block_template_id INTEGER NOT NULL,
   code_content JSONB,
+  creation_date DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id),
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (code_block_template_id) REFERENCES code_block_templates(id)
@@ -73,6 +78,7 @@ CREATE TABLE classification_criteria (
   name VARCHAR(20),
   properties JSONB,
   description TEXT,
+  creation_date DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id)
 );
 
@@ -101,6 +107,7 @@ CREATE TABLE pipelines (
   pipeline_prep_stages_ids INTEGER ARRAY NOT NULL,
   pipeline_models_ids INTEGER ARRAY NOT NULL,
   error_status TEXT,
+  creation_date DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (pipeline_dataset) REFERENCES datasets(id),
@@ -116,6 +123,7 @@ CREATE TABLE  applications (
   datasource_configuration_id INTEGER,
   datasource_settings_id INTEGER,
   artifacts_download_url JSONB,
+  creation_date DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id, user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (application_pipeline) REFERENCES pipelines(id),

@@ -20,8 +20,26 @@
                 <li class="list-group-item">{{ application["datasource_configuration_id"] }}</li>
                 <li class="list-group-item">{{ application["datasource_settings_id"] }}</li>
                 <li class="list-group-item">
-                  <form method="post" action="#">
-                    <button type="submit" class="btn btn-primary" value={{ application["id"] }} name="application_id"></button>
+                  <form method="post" action="/applications/deploy">
+                    {% if application["application_status"] == "stopped" %}
+                      <button type="submit" class="btn btn-primary" value={{ application["id"] }} name="application_id">{{ _("applications.user_applications.deploy_application") }}</button>
+                    {% else %}
+                      <button class="btn btn-primary" disabled>{{ _("applications.user_applications.deploy_application") }}</button>
+                    {% end %}
+                  </form>
+                  <form method="post" action="/applications/stop">
+                    {% if application["application_status"] == "running" %}
+                      <button type="submit" class="btn btn-danger" value={{ application["id"] }} name="application_id">{{ _("applications.user_applications.delete_application_deployment") }}</button>
+                    {% else %}
+                      <button class="btn btn-danger" disabled>{{ _("applications.user_applications.delete_application_deployment") }}</button>
+                    {% end %}
+                  </form>
+                  <form method="post" action="/applications/delete">
+                    {% if application["application_status"] != "running" %}
+                      <button type="submit" class="btn btn-danger" value={{ application["id"] }} name="application_id">{{ _("applications.user_applications.delete_application") }}</button>
+                    {% else %}
+                      <button class="btn btn-danger" disabled>{{ _("applications.user_applications.delete_application") }}</button>
+                    {% end %}
                   </form>
                 </li>
               </ul>

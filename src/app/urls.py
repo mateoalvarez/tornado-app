@@ -4,11 +4,11 @@ from tornado.web import url
 
 from models.home.handlers import HomeHandler
 from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler, UserSettingsHandler
-from models.applications.handlers import ApplicationsHandler
+from models.applications.handlers import ApplicationsHandler, ApplicationDeletionHandler
+from models.applications.handlers import ApplicationDeploymentDeletionHandler
 from models.datasets.handlers import DatasetsHandler, DatasetsDeleteHandler
 from models.pipelines.handlers import MLModelsHandler, MLModelsHandlerDelete
 from models.pipelines.aws_deploy_handler import MLModelsAWSDeployHandler
-from models.applications.handlers import ApplicationDeletionHandler
 from models.running_applications.handlers import RunningApplicationsHandler
 from models.running_applications.handlers import VisualizeApplicationsHandler, DownloadDataHandler
 from models.datasource_settings.handlers import DataSourceSettingsHandler
@@ -28,12 +28,13 @@ URL_PATTERNS = [
 
     # Pipelines
     url(r"/pipelines", MLModelsHandler, name="pipelines"),
-    url(r"/pipelines_delete", MLModelsHandlerDelete, name="pipelines_delete"),
+    url(r"/pipelines/delete", MLModelsHandlerDelete, name="pipelines_delete"),
     url(r"/pipelines/deploy", MLModelsAWSDeployHandler, name="pipelines_deploy"),
 
     # Applications
     url(r"/applications", ApplicationsHandler, name="applications"),
     url(r"/applications/deploy", ApplicationsHandler, name="applications_deploy"),
+    url(r"/applications/stop", ApplicationDeploymentDeletionHandler, name="applications_stop"),
     url(r"/applications/delete", ApplicationDeletionHandler, name="applications_delete"),
 
     # running Applications

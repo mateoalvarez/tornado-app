@@ -62,7 +62,7 @@
           </td>
           <td>
             {% if pipeline["pipeline_status"] in ["untrained", "stopped", "error"] %}
-              <form action="/pipelines_delete" method="post">
+              <form action="/pipelines/delete" method="post">
                 <input type=hidden name="id" value="{{ pipeline["id"] }}" />
                 <button class="btn btn-danger" type="submit">{{ _("models.content.delete_model") }}</button>
               </form>

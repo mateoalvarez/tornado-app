@@ -245,7 +245,7 @@ class MLModelsHandlerDelete(BaseHandler):
     """Handler for delete method in models"""
 
     def post(self):
-        """DELETE applications"""
+        """DELETE pipeline"""
         id = self.get_argument("id", '')
         try:
             self.db_cur.execute(
@@ -253,6 +253,8 @@ class MLModelsHandlerDelete(BaseHandler):
                 (id,)
             )
             self.db_conn.commit()
+            error = None
         except Exception as exception:
+            error = exception
             print(exception)
-        self.redirect(self.get_argument("next", "/pipelines"))
+        self.redirect(self.get_argument("next", "/pipelines"), error=error)
