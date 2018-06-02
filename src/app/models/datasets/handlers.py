@@ -2,7 +2,6 @@
 import logging
 import tornado
 from tornado import gen
-import boto3
 from ..base.handlers import BaseHandler
 
 LOGGER = logging.getLogger(__name__)

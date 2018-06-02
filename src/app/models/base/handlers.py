@@ -3,18 +3,16 @@
 import logging
 import psycopg2
 from psycopg2.extras import RealDictCursor
-# import json
-# import jinja2 as jinja
-
-import tornado.web
 import boto3
+import tornado.web
 import requests
 import kubernetes
 from pymongo import MongoClient
 import os
-# from tornado import gen
 
 LOGGER = logging.getLogger(__name__)
+logging.getLogger('boto3').setLevel(logging.WARNING)
+logging.getLogger('botocore').setLevel(logging.WARNING)
 
 class BaseHandler(tornado.web.RequestHandler):
     """
@@ -44,7 +42,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def initialize(self, **kwargs):
         """Start database"""
         super(BaseHandler, self).initialize(**kwargs)
-        # self.db = self.settings['db']
+        boto3.set_stream_logger('boto3.resources', logging.INFO)
         self.db_conn = psycopg2.connect(\
             "dbname={database_name} \
             user={database_user} \

@@ -7,23 +7,23 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse">
+      <a href="" class="navbar-brand">
+        <img src="https://image.flaticon.com/icons/svg/653/653469.svg" width="50" height="50" alt="">
+        <h3 class="d-inline align-middle">Pyxisml</h3>
+      </a>
+
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/pipelines">{{ _("navbar.create_pipelines") }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/datasets">Datasets</a>
+          <a class="nav-link" href="/trained_ml_models">{{ _("navbar.create_application") }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/ml_models">ML Models</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/trained_ml_models">Trained ML Models</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/running_applications">Running Applications</a>
+          <a class="nav-link" href="/running_applications">{{ _("navbar.running_applications") }}</a>
         </li>
       </ul>
+
       <ul class="navbar-nav navbar-right">
         {% if current_user %}
           <li class="nav-item">

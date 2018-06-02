@@ -4,6 +4,7 @@ from tornado.web import url
 
 from models.home.handlers import HomeHandler
 from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler, UserSettingsHandler
+from models.pipelines.handlers import PipelinesHandler
 from models.datasets.handlers import DatasetsHandler, DatasetsDeleteHandler
 from models.ml_models.handlers import MLModelsHandler, MLModelsHandlerDelete
 from models.ml_models.aws_deploy_handler import MLModelsAWSDeployHandler
@@ -22,6 +23,9 @@ URL_PATTERNS = [
     url(r"/auth/login", LoginHandler, name="login"),
     url(r"/auth/logout", LogoutHandler, name="logout"),
 
+    # Pipelines
+    url(r"/pipelines", PipelinesHandler, name="pipelines"),
+
     # datasets
     url(r"/datasets", DatasetsHandler, name="datasets"),
     url(r"/datasets/delete", DatasetsDeleteHandler, name="datasets_delete"),
@@ -38,7 +42,8 @@ URL_PATTERNS = [
 
     # running Applications
     url(r"/running_applications", RunningApplicationsHandler, name="running_applications"),
-    url(r"/running_applications/visualize", VisualizeApplicationsHandler, name="visualize_running_applications"),
+    url(r"/running_applications/visualize", VisualizeApplicationsHandler,
+        name="visualize_running_applications"),
     url(r"/running_applications/download", DownloadDataHandler, name="download_processed_data"),
 
     # User settings page

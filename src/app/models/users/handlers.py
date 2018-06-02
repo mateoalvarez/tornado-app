@@ -10,14 +10,17 @@ from ..base.handlers import BaseHandler
 
 LOGGER = logging.getLogger(__name__)
 
+
 def user_exists(db_cur, email):
     """Check if user exists on database"""
     return bool(get_user(db_cur, email))
+
 
 def get_user(db_cur, email):
     """GET user from database"""
     db_cur.execute("SELECT * FROM users WHERE email=%s;", (email,))
     return db_cur.fetchone()
+
 
 class RegisterHandler(BaseHandler):
     """User Registration Handler"""
@@ -31,7 +34,6 @@ class RegisterHandler(BaseHandler):
         """User registration creation"""
         email = self.get_argument("email", "")
         if user_exists(self.db_cur, email):
-            # self.render("users/registration.html", error="400, User already exists")
             raise tornado.web.HTTPError(400, "User already exists")
 
         executor = concurrent.futures.ThreadPoolExecutor(2)
@@ -42,7 +44,7 @@ class RegisterHandler(BaseHandler):
         user_type = 1
         self.db_cur.execute(
             "INSERT INTO users (email, name, hashed_password, type)\
-                VALUES (%s, %s, %s, %s);", (\
+                VALUES (%s, %s, %s, %s);", (
                 email,
                 self.get_argument("username"),
                 hashed_password.decode('utf-8'),
@@ -53,9 +55,6 @@ class RegisterHandler(BaseHandler):
         self.set_current_user(str(user["id"]))
         print(self.current_user)
         self.redirect(self.get_argument("next", "/"))
-
-
-
 
 
 class LoginHandler(BaseHandler):
@@ -73,20 +72,16 @@ class LoginHandler(BaseHandler):
         """User login page"""
         if self.get_current_user():
             self.redirect(self.get_argument("next", "/"))
-            return
-        self.render("users/login.html")
+        self.render("users/login.html", next=self.get_argument("next"))
 
     @gen.coroutine
     def post(self):
         """User login post"""
-
         user = get_user(self.db_cur, self.get_argument("email", ""))
-
-        if user and bcrypt.checkpw(\
+        if user and bcrypt.checkpw(
         self.get_argument("password").encode(),\
         user["hashed_password"].encode()):
             self.set_current_user(str(user["id"]))
-            # print("#########{}".format(self.path_kwargs))
             self.redirect(self.get_argument("next", "/"))
         else:
             self.render("users/login.html", error="Incorrect email or password")
