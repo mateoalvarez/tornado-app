@@ -97,8 +97,14 @@ CREATE TABLE pipelines (
   pipeline_dataset INTEGER NOT NULL,
   classification_criteria INTEGER NOT NULL,
   pipeline_status application_status_enum,
+  pipeline_prep_stages_ids INTEGER ARRAY NOT NULL,
+  pipeline_models_ids INTEGER ARRAY NOT NULL,
   error_status TEXT,
-)
+  PRIMARY KEY (id, user_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (pipeline_dataset) REFERENCES datasets(id),
+  FOREIGN KEY (classification_criteria) REFERENCES classification_criteria(id)
+);
 
 CREATE TABLE  applications (
   id SERIAL UNIQUE,

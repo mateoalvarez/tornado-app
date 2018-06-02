@@ -2,9 +2,7 @@ import logging
 import tornado
 from tornado import gen
 import json
-# import requests
 import botocore
-# from .aws_deploy_handler import MLModelsAWSDeployHandler
 from .job_builder import JobAssemblerHandler
 from ..base.handlers import BaseHandler
 
@@ -19,7 +17,7 @@ class MLModelsHandler(BaseHandler):
     def _get_user_pipelines(self):
         """GET user's pipelines"""
         self.db_cur.execute(
-            "SELECT * FROM pipeline WHERE user_id=%s;",
+            "SELECT * FROM pipelines WHERE user_id=%s;",
             (self.current_user["id"],)
         )
         pipelines = self.db_cur.fetchall()
@@ -88,8 +86,8 @@ class MLModelsHandler(BaseHandler):
 
         pipeline_results_url = "user_" + str(self.current_user["id"]) + \
             "/models/pipeline_" + str(pipeline_id) + "/preprocessing.zip"
-        print('RESULTS ##########')
-        print(pipeline_results_url)
+        # print('RESULTS ##########')
+        # print(pipeline_results_url)
         try:
             s3_resource.Object(
                 self.BUCKET_SPARK_JOBS, pipeline_results_url).load()
@@ -126,7 +124,7 @@ class MLModelsHandler(BaseHandler):
                                       for prep in data_prep_methods])
 
         for pipeline in user_pipelines:
-            self._update_pipeline_training_status(pipeline_id["id"])
+            self._update_pipeline_training_status(pipeline["id"])
 
         self.render(
             "ml_models/ml_models.html",
@@ -149,11 +147,8 @@ class MLModelsHandler(BaseHandler):
         """CREATE and deploy training works"""
 
         # print('\n\n\n')
-        # print('POST PARAMS')
-        # print(self.request.arguments)
-        # print('\n\n\n')
 
-        dataset = self.get_argument('application_dataset', '')
+        dataset = self.get_argument('pipeline_dataset', '')
 
         preprocessing_blocks = list(map(
             int, self.request.arguments['pipeline_prep_stages_ids']))
@@ -173,8 +168,8 @@ class MLModelsHandler(BaseHandler):
                 )
 
         model_blocks = list(map(
-            int, self.request.arguments['application_models_ids']))
-        model_blocks_config = self.get_arguments("application_models_config")
+            int, self.request.arguments['pipeline_models_ids']))
+        model_blocks_config = self.get_arguments("pipeline_models_config")
         model_blocks_config = ["{}" if element == '' else element
                                for element in model_blocks_config]
 
@@ -189,14 +184,16 @@ class MLModelsHandler(BaseHandler):
 
         # Create block codes
 
-        assembler_class = JobAssemblerHandler(self.db_cur, self.db_conn, self.current_user)
+        assembler_class = JobAssemblerHandler(
+            self.db_cur, self.db_conn, self.current_user)
 
         dataset_url = assembler_class._get_dataset_from_db(dataset)[0]["storage_url"]
         initializer_ids = assembler_class._get_code_block_template_by_type("input")
         initializer_configs = [{"dataset": dataset_url}]
         initializer_block_ids = []
         for initializer, initializer_config in zip(initializer_ids, initializer_configs):
-            initializer_block_ids.append(assembler_class._create_code_block(initializer["id"], initializer_config)[0]["id"])
+            initializer_block_ids.append(assembler_class._create_code_block(
+                initializer["id"], initializer_config)[0]["id"])
 
         preprocessing_block_ids = []
         for preprocessing_block_full in preprocessing_blocks_full:
@@ -219,16 +216,17 @@ class MLModelsHandler(BaseHandler):
         # print('model blocks')
         # print(model_block_ids)
         # print("\n\n\n")
+
         self.db_cur.execute(
-            """INSERT INTO applications(
-            user_id, application_name,
-            training_config_resources, application_dataset,
-            application_prep_stages_ids, application_models_ids,
-            classification_criteria, application_status, error_status)
+            """INSERT INTO pipelines(
+            user_id, pipeline_name,
+            training_config_resources, pipeline_dataset,
+            pipeline_prep_stages_ids, pipeline_models_ids,
+            classification_criteria, pipeline_status, error_status)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);""",
             (
                 self.current_user['id'],
-                self.get_argument('application_name', ''),
+                self.get_argument('pipeline_name', ''),
                 self.get_argument('training_config_resources', '{}'),
                 dataset,
                 preprocessing_block_ids,
@@ -251,7 +249,7 @@ class MLModelsHandlerDelete(BaseHandler):
         id = self.get_argument("id", '')
         try:
             self.db_cur.execute(
-                "DELETE FROM applications WHERE id=%s;",
+                "DELETE FROM pipelines WHERE id=%s;",
                 (id,)
             )
             self.db_conn.commit()

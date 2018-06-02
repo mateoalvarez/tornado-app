@@ -17,10 +17,10 @@
           <a class="nav-link" id="upload-datasets-tab" data-toggle="tab" href="#Upload" role="tab" aria-controls="upload" aria-selected="false">{{ _("mlmodels.tab.Modelsselection") }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="create-model" data-toggle="tab" href="#Create" role="tab" aria-controls="create" aria-selected="false">{{ _("mlmodels.tab.create_application") }}</a>
+          <a class="nav-link" id="create-model" data-toggle="tab" href="#Create" role="tab" aria-controls="create" aria-selected="false">{{ _("mlmodels.tab.create_pipeline") }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="manage-datasets" data-toggle="tab" href="#Manage" role="tab" aria-controls="manage" aria-selected="false">{{ _("mlmodels.tab.applications") }}</a>
+          <a class="nav-link" id="manage-datasets" data-toggle="tab" href="#Manage" role="tab" aria-controls="manage" aria-selected="false">{{ _("mlmodels.tab.pipelines") }}</a>
         </li>
       </ul>
       <div class="tab-content" id="myTabContent">
@@ -44,9 +44,9 @@
         </div>
         <div class="tab-pane fade my-3" id="Manage" role="tabpanel" aria-labelledby="manage-datasets-tab">
           <div class="row">
-            <h1>{{ _("mlmodels.tab.applications") }}</h1>
+            <h1>{{ _("mlmodels.tab.pipelines") }}</h1>
           </div>
-          {% include "_user_applications.html" %}
+          {% include "_user_pipelines.html" %}
         </div>
       </div>
     <!-- Pipeline creation -->
