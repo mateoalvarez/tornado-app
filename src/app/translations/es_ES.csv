@@ -24,6 +24,26 @@
 "navbar.user.Logout","Logout"
 "navbar.user.Register","Registro"
 "navbar.user.Settings","Configuración"
+"navbar.create_pipelines","Nuevo Pipeline"
+"navbar.create_application","Nueva Aplicación"
+"navbar.running_applications","Aplicaciones activas"
+
+# Pipelines
+
+"pipelines.upload_dataset.header","Cargar un dataset"
+"pipelines.upload_dataset.body","Carga tus propios datasets o usa datasets públicos para entrenar tus modelos"
+"pipelines.upload_dataset.button","Cargar dataset"
+
+"pipelines.create_pipeline.header","Entrenar un pipeline"
+"pipelines.create_pipeline.body","Construye y entrena pipelines para usarlos luego en la clasificación de tweets"
+"pipelines.create_pipeline.button","Crear pipeline"
+
+"pipelines.create_application.header","Crear una aplicación"
+"pipelines.create_application.body","Crea una aplicación a partir de un pipeline para obtener y clasificar tweets en tiempo real"
+"pipelines.create_application.button","Crear aplicación"
+
+
+
 
 # Datasets
 
