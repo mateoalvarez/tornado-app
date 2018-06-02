@@ -1,0 +1,45 @@
+{% extends "../base/base.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+{% end %}
+
+{% block body %}
+  <div class="container-fluid transparent_lighter_background py-5">
+    <div class="card-deck">
+      <div class="card">
+        <div class="card-header text-center">
+          <h1>{{ _("pipelines.upload_dataset.header") }}</h1>
+        </div>
+        <div class="card-body text-center">
+          {{ _("pipelines.upload_dataset.body") }}
+        </div>
+        <div class="card-footer text-center">
+          <a href="/datasets" class="btn btn-primary">{{ _("pipelines.upload_dataset.button") }}</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header text-center">
+          <h1>{{ _("pipelines.create_pipeline.header") }}</h1>
+        </div>
+        <div class="card-body text-center">
+          {{ _("pipelines.create_pipeline.body") }}
+        </div>
+        <div class="card-footer text-center">
+          <a href="/ml_models" class="btn btn-primary">{{ _("pipelines.create_pipeline.button") }}</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header text-center">
+          <h1>{{ _("pipelines.create_application.header") }}</h1>
+        </div>
+        <div class="card-body text-center">
+          {{ _("pipelines.create_application.body") }}
+        </div>
+        <div class="card-footer text-center">
+          <a href="/trained_ml_models" class="btn btn-primary">{{ _("pipelines.create_application.button") }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% end %}
