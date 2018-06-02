@@ -1,0 +1,48 @@
+import nltk
+
+from pyspark import keyword_only
+from pyspark.ml import Transformer
+from pyspark.ml.param.shared import HasInputCol, HasOutputCol, Param
+from pyspark.sql.functions import udf
+from pyspark.sql.types import ArrayType, StringType, StructType, StructField
+
+class NLTKPosTagger(Transformer, HasInputCol, HasOutputCol):
+
+    @keyword_only
+    def __init__(self, inputCol=None, outputCol=None):
+        super(NLTKPosTagger, self).__init__()
+        kwargs = self._input_kwargs
+        self.setParams(**kwargs)
+
+    @keyword_only
+    def setParams(self, inputCol=None, outputCol=None):
+        kwargs = self._input_kwargs
+        return self._set(**kwargs)
+
+    def _transform(self, dataset):
+
+        def tag_instance(tokenized_instance):
+            tagged_tokens = nltk.pos_tag(tokenized_instance)
+            return tagged_tokens
+
+        types = ArrayType\
+        (
+            StructType([
+                StructField("char", dataType=StringType(), nullable=False),
+                StructField("type", dataType=StringType(), nullable=False)
+            ])
+        )
+
+        out_col = self.getOutputCol()
+        in_col = dataset[self.getInputCol()]
+        return dataset.\
+            withColumn(out_col, udf(tag_instance, types)(in_col)).\
+            drop("features").\
+            withColumnRenamed("features_output", "features")
+
+NLTK_POS_TAGGER = NLTKPosTagger(
+    inputCol="features",
+    outputCol="features_output"
+    )
+
+pipeline_preprocessing_stages += NLTKPosTagger(inputCol=pipeline_stages[-1].getOutputCol(), "nltk_pos_tagger_col")

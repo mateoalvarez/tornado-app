@@ -1,0 +1,7 @@
+import mleap.pyspark
+from mleap.pyspark.spark_support import SimpleSparkSerializer
+
+preprocessing_pipeline_trained.serializeToBundle("jar:file:s3:/{user_email}/models/{model_id}/preprocessing.zip".format(user_email, model_id))
+
+for model_name, model_pipeline in models_pipelines:
+    model_pipeline.serializeToBundle("jar:file:s3:/{user_email}/models/{model_name}.zip".format(user_email, model_name))

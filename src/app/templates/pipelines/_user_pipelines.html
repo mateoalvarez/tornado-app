@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="table-responsive text-center mx-auto">
+    <table class="table-striped table-bordered table-hover table_spaced">
+        <tr>
+          <th>
+            #
+          </th>
+          <th>
+            {{ _("models.header.pipeline_name") }}
+          </th>
+          <th>
+            {{ _("models.header.dataset") }}
+          </th>
+          <th>
+            {{ _("models.header.preprocessing_stages") }}
+          </th>
+          <th>
+            {{ _("models.header.models") }}
+          </th>
+          <th>
+            {{ _("models.header.classification_criteria") }}
+          </th>
+          <th>
+            {{ _("models.header.status") }}
+          </th>
+          <th>
+            {{ _("models.header.start_training") }}
+          </th>
+          <th>
+            {{ _("models.header.delete") }}
+          </th>
+        </tr>
+      {% for index, pipeline in enumerate(user_pipelines) %}
+        <tr>
+          <td>
+            {{ index }}
+          </td>
+          <td>
+            {{ pipeline["pipeline_name"] }}
+          </td>
+          <td>
+            {{ pipeline["pipeline_dataset"] }}
+          </td>
+          <td>
+            {{ pipeline["pipeline_prep_stages_ids"] }}
+          </td>
+          <td>
+            {{ pipeline["pipeline_models_ids"] }}
+          </td>
+          <td>
+            {{ pipeline["classification_criteria"] }}
+          </td>
+          <td>
+            {{ pipeline["pipeline_status"] }}
+          </td>
+          <td>
+            {% if pipeline["pipeline_status"] == "untrained" %}
+              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ pipeline["id"] }}"/>{{ _("models.content.start_training") }}</button>
+            {% else %}
+              <button disabled class="btn btn-primary" type="button" data-toggle="modal" data-target="#{{ pipeline["id"] }}"/>{{ _("models.content.start_training") }}</button>
+            {% end %}
+          </td>
+          <td>
+            {% if pipeline["pipeline_status"] in ["untrained", "stopped", "error"] %}
+              <form action="/pipelines_delete" method="post">
+                <input type=hidden name="id" value="{{ pipeline["id"] }}" />
+                <button class="btn btn-danger" type="submit">{{ _("models.content.delete_model") }}</button>
+              </form>
+            {% else %}
+              <button class="btn btn-danger" disabled>{{ _("models.content.delete_model") }}</button>
+            {% end %}
+          </td>
+        </tr>
+        <div class="modal fade" id="{{ pipeline["id"] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ _("models.content.start_training") }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {{ _("models.deploy.confirm.confirmation_text") }}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>
+                <form method='post' action='/pipelines/deploy'>
+                  <button class="btn btn-primary" data-toggle="modal" data-target="{{ pipeline["id"] }}" type='submit' value={{ pipeline["id"] }} name="pipeline" id="pipeline">{{ _("models.content.start_training") }}</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% end %}
+    </table>
+  </div>
+</div>

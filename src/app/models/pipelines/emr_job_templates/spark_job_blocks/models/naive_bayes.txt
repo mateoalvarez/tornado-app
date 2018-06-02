@@ -1,0 +1,5 @@
+from pyspark.ml.classification import NaiveBayes
+
+nb = NaiveBayes(smoothing=1.0, modelType="multinomial")
+
+pipeline_models_stages += (nb.uid, nb)

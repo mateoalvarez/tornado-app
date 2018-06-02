@@ -1,0 +1,37 @@
+{% extends "../base/base.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+{% end %}
+
+{% block body %}
+  <div class="container-fluid transparent_lighter_background py-5">
+    <div class="card-deck">
+      <div class="card">
+        <div class="card-header text-center">
+          <h1>{{ _("applications.create_application.header") }}</h1>
+        </div>
+        <div class="card-body text-center">
+          {{ _("applications.create_application.body") }}
+        </div>
+        <div class="card-footer text-center">
+          <a href="/applications" class="btn btn-primary">{{ _("applications.create_application.button") }}</a>
+        </div>
+      </div>
+      <div>
+        <img src="{{ static_url("img/arrows.svg") }}" style="width:6vmax;margin-left:-2vmax;margin-right:-2vmax;margin-top:7.5vmax;z-index: 1;position: relative;"/>
+      </div>
+      <div class="card">
+        <div class="card-header text-center">
+          <h1>{{ _("applications.running_applications.header") }}</h1>
+        </div>
+        <div class="card-body text-center">
+          {{ _("applications.running_applications.body") }}
+        </div>
+        <div class="card-footer text-center">
+          <a href="/running_applications" class="btn btn-primary">{{ _("applications.running_applications.button") }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% end %}

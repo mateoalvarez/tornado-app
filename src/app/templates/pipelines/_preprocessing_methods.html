@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="table-responsive text-center mx-auto">
+    <table class="table-striped table-bordered table-hover table_spaced">
+        <tr>
+          <th>
+            #
+          </th>
+          <th>
+            {{ _("models.header.preprocessing_name") }}
+          </th>
+          <th>
+            {{ _("models.header.preprocessing_description") }}
+          </th>
+          <th>
+            {{ _("models.header.preprocessing_code") }}
+          </th>
+        </tr>
+      {% for index, method in enumerate(data_prep_methods) %}
+        <tr>
+          <td>
+            {{ index }}
+          </td>
+          <td>
+            {{ method["template_name"] }}
+          </td>
+          <td>
+
+          </td>
+          <td>
+            {{ method["code_content"]["code"] }}
+          </td>
+        </tr>
+      {% end %}
+    </table>
+  </div>
+</div>
