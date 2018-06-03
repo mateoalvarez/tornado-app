@@ -120,13 +120,13 @@ class ApplicationDeployer(BaseHandler):
         application_id = self.get_argument("application_id", "", False)
         pipeline_id = self.get_argument("pipeline_id", "", False)
 
-        datasource_configuration_id = self.get_argument("datasource_configuration_id", "", False)
+        datasource_configuration_id = self.get_argument(
+            "datasource_configuration_id", "", False)
         self.db_cur.execute(
             "SELECT datasource_application_config FROM datasource_configurations WHERE id=%s",
             (datasource_configuration_id, )
         )
-        datasource_keywords = self.db_cur.fetchall()\
-            [0]["datasource_application_config"]["keywords"]
+        datasource_keywords = self.db_cur.fetchall()[0]["datasource_application_config"]["keywords"]
 
         self.db_cur.execute(
             "SELECT * FROM pipelines WHERE id=%s;", (pipeline_id, )
@@ -135,35 +135,51 @@ class ApplicationDeployer(BaseHandler):
 
         try:
             model_urls = [
-                'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'+\
-                element["Key"] for element in S3_CLIENT.list_objects_v2(
+                'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'
+                + element["Key"] for element in S3_CLIENT.list_objects_v2(
                     Bucket=self.BUCKET_SPARK_JOBS,
-                    Prefix='user_{user_id}/models/application_{application_id}'\
+                    Prefix='user_{user_id}/models/pipeline_{pipeline_id}'
                     .format(
                         user_id=self.current_user["id"],
-                        application_id=application_id),
-                        StartAfter='user_{user_id}/models/application_{application_id}'
+                        pipeline_id=pipeline_id),
+                    StartAfter='user_{user_id}/models/pipeline_{pipeline_id}'
                     .format(
                         user_id=self.current_user["id"],
-                        application_id=application_id))["Contents"]]
+                        pipeline_id=pipeline_id))["Contents"]]
 
-            # print('\n\n\n\n\n\n')
-            # print('######################')
-            # print(model_urls)
-            # print('######################')
-            # print('\n\n\n\n\n\n')
-
-            preprocessing_url = 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/user_{user_id}/models/application_{application_id}/preprocessing.zip'.format(user_id=self.current_user["id"], application_id=application_id)
+            preprocessing_url = 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/user_{user_id}/models/pipeline_{pipeline_id}/preprocessing.zip'.format(
+                user_id=self.current_user["id"],
+                pipeline_id=pipeline_id)
 
 # SET PUBLIC PERMISSIONS TO FILES
 
             preprocessing_acl = S3_RESOURCE.ObjectAcl(
                 self.BUCKET_SPARK_JOBS,
-                preprocessing_url.replace('https://s3.' +self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
-            response = preprocessing_acl.put(ACL='public-read')
+                preprocessing_url.replace('https://s3.'
+                                          + self.BUCKET_SPARK_JOBS_REGION
+                                          + '.amazonaws.com/'
+                                          + self.BUCKET_SPARK_JOBS + '/', ''))
+            print('\n\n\n\n')
+            print(preprocessing_acl)
+            preprocessing_acl.put(ACL='public-read')
+
+            print('\n\n\n\n')
+            print('######################## prepr updated')
+            print('\n\n\n\n')
+
             for model_url in model_urls:
-                model_acl = S3_RESOURCE.ObjectAcl(self.BUCKET_SPARK_JOBS, model_url.replace('https://s3.' + self.BUCKET_SPARK_JOBS_REGION + '.amazonaws.com/' + self.BUCKET_SPARK_JOBS + '/', ''))
+                model_acl = S3_RESOURCE.ObjectAcl(
+                    self.BUCKET_SPARK_JOBS,
+                    model_url.replace(
+                        'https://s3.'
+                        + self.BUCKET_SPARK_JOBS_REGION
+                        + '.amazonaws.com/'
+                        + self.BUCKET_SPARK_JOBS + '/', ''))
                 model_acl.put(ACL='public-read')
+
+            print('\n\n\n\n')
+            print('######################## Model updated')
+            print('\n\n\n\n')
 
             model_urls.remove(preprocessing_url)
 

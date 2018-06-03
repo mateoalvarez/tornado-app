@@ -86,8 +86,7 @@ class MLModelsHandler(BaseHandler):
 
         pipeline_results_url = "user_" + str(self.current_user["id"]) + \
             "/models/pipeline_" + str(pipeline_id) + "/preprocessing.zip"
-        # print('RESULTS ##########')
-        # print(pipeline_results_url)
+
         try:
             s3_resource.Object(
                 self.BUCKET_SPARK_JOBS, pipeline_results_url).load()
@@ -99,7 +98,7 @@ class MLModelsHandler(BaseHandler):
             if exception.response['Error']['Code'] == "404":
                 pass
             else:
-                # Throw error
+                print(exception)
                 pass
 # Handler methods
 
