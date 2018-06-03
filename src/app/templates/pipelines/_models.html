@@ -17,7 +17,11 @@
           </ul>
         </div>
         <div class="card-footer text-center">
-          {{ model["model_engine"] }}
+          <div class="row justify-content-center">
+            <div class="col-8 text-center">
+              <img class="col-8" src={{ static_url("img/processing_engines/" + str(data_prep_method["model_engine"]) + '.png') }} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

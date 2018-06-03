@@ -89,7 +89,7 @@
 "user.settings.email","Email"
 "user.settings.type","Tipo"
 
-# ML Models
+# Pipelines
 
 ## Tabs
 "mlmodels.tab.Datapreprocessing","Preprocesamiento"
@@ -98,16 +98,12 @@
 "mlmodels.tab.pipelines","Pipelines"
 
 ### Preprocessing tab
-"mlmodels.tab.data_preprocessing","Etapas de preprocesamiento"
-"models.header.preprocessing_name","Nombre"
-"models.header.preprocessing_code","Código"
-"models.header.preprocessing_description","Descripción"
+"pipelines.tab.data_preprocessing","Etapas de prepeocesamiento"
+"pipelines.header.data_prep_method_description","Descripción"
 
 ### Models tab
-"mlmodels.tab.models","Modelos"
-"models.header.model_name","Nombre"
-"models.header.model_code","Código"
-"models.header.model_description","Descripción"
+"pipelines.tab.models","Modelos"
+"pipelines.header.model_description","Descripción"
 
 ### Pipeline creation tab
 "mlmodels.tab.pipeline_creation","Crear nuevo pipeline"
@@ -126,7 +122,7 @@
 "models.pipeline_creation.select.model.stage.delete_current","Borrar modelo"
 "models.pipeline_creation.submit","Crear pipeline"
 
-### Application status tab
+### Pipeline status tab
 "models.header.pipeline_name","Nombre"
 "models.header.dataset","Dataset"
 "models.header.preprocessing_stages","Etapas de preprocesamiento"
