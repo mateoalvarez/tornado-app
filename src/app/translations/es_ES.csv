@@ -47,23 +47,18 @@
 
 # Datasets
 
-"datasets.tab.Existingdatasets","Datasets cargados"
-"datasets.tab.Uploaddataset","Cargar nuevo dataset"
-"datasets.tab.Managedatasets","Gestionar datasets"
 "datasets.headers.public_datasets","Datasets Públicos"
 "datasets.headers.user_datasets","Datasets Privados"
-"datasets.header.dataset_name","Dataset"
-"datasets.header.dataset_size","Tamaño"
-"datasets.header.dataset_download_link","Link de descraga"
-"datasets.header.metrics","Métricas"
 
 ## Upload Datasets
 
 "datasets.upload.dataset","Cargar dataset"
+"datasets.upload.description","Descripción del dataset"
+"datasets.upload.properties","Propiedades del dataset"
 
 ## Manage Datasets
-
-"datasets.header.delete_dataset","Borrar dataset"
+"datasets.header.dataset_description","Descripción del dataset"
+"datasets.header.dataset_properties","Propiedades del dataset"
 "datasets.delete.button","Borrar dataset: "
 
 ### Manage Datasets Modal
