@@ -138,9 +138,28 @@
 
 # APPLICATION DEPLOY
 
+## Applications
+"applications.header","Aplicaciones"
+
 ## Application cards
 "applications.user_applications.card_navbar.application_status","Aplicación"
 "applications.user_applications.card_navbar.application_visualization","Datos"
+
+## Application management
+"application.tab.applications","Aplicaciones"
+"application.tab.create_application","Crear aplicación"
+"applications.user_applications.deploy_application","Desplegar aplicación"
+"applications.user_applications.delete_application_deployment","Parar aplicación"
+"applications.user_applications.delete_application","Borrar aplicación"
+
+## Create applications
+"applications.create_application.create_form.reveal_button","Crear aplicación"
+"applications.create_application.create_form.header","Nueva aplicación"
+"applications.create_application.create_form.application_name","Nombre"
+"applications.create_application.create_form.select_pipeline","Selección de pipeline"
+"applications.create_application.create_form.keywords","Keywords"
+"create_application.create_form.keywords_placeholder","bigdata,ai"
+"create_application.create_form.submit_form","Crear aplicación"
 
 ## Application deploy
 "applications.header.deploy","Desplegar "
@@ -149,3 +168,7 @@
 "applications.content.delete","Parar"
 "applications.deploy.confirm.confirmation_text","La aplicación se desplegará en el cluster, clasificando los tweets que reciba de Twitter. Introduzca las palabras clave (hashtags) que quiera monitorizar. Las palabras deben ir separadas por comas (,), no se admiten espacios, y se procesan como filtros 'OR'."
 "applications.delete.confirm.confirmation_text","La aplicación se dentendrá, y se parará el procesamiento de datos nuevos. Los datos ya procesados seguirán estando disponibles"
+
+## Application visualization data
+"applications.user_applications.card_body.visualize","Visualización"
+"applications.user_applications.card_body.download","Descargar datos"
