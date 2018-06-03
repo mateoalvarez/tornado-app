@@ -47,23 +47,18 @@
 
 # Datasets
 
-"datasets.tab.Existingdatasets","Datasets cargados"
-"datasets.tab.Uploaddataset","Cargar nuevo dataset"
-"datasets.tab.Managedatasets","Gestionar datasets"
 "datasets.headers.public_datasets","Datasets Públicos"
 "datasets.headers.user_datasets","Datasets Privados"
-"datasets.header.dataset_name","Dataset"
-"datasets.header.dataset_size","Tamaño"
-"datasets.header.dataset_download_link","Link de descraga"
-"datasets.header.metrics","Métricas"
 
 ## Upload Datasets
 
 "datasets.upload.dataset","Cargar dataset"
+"datasets.upload.description","Descripción del dataset"
+"datasets.upload.properties","Propiedades del dataset"
 
 ## Manage Datasets
-
-"datasets.header.delete_dataset","Borrar dataset"
+"datasets.header.dataset_description","Descripción del dataset"
+"datasets.header.dataset_properties","Propiedades del dataset"
 "datasets.delete.button","Borrar dataset: "
 
 ### Manage Datasets Modal
@@ -94,7 +89,7 @@
 "user.settings.email","Email"
 "user.settings.type","Tipo"
 
-# ML Models
+# Pipelines
 
 ## Tabs
 "mlmodels.tab.Datapreprocessing","Preprocesamiento"
@@ -103,16 +98,12 @@
 "mlmodels.tab.pipelines","Pipelines"
 
 ### Preprocessing tab
-"mlmodels.tab.data_preprocessing","Etapas de preprocesamiento"
-"models.header.preprocessing_name","Nombre"
-"models.header.preprocessing_code","Código"
-"models.header.preprocessing_description","Descripción"
+"pipelines.tab.data_preprocessing","Etapas de prepeocesamiento"
+"pipelines.header.data_prep_method_description","Descripción"
 
 ### Models tab
-"mlmodels.tab.models","Modelos"
-"models.header.model_name","Nombre"
-"models.header.model_code","Código"
-"models.header.model_description","Descripción"
+"pipelines.tab.models","Modelos"
+"pipelines.header.model_description","Descripción"
 
 ### Pipeline creation tab
 "mlmodels.tab.pipeline_creation","Crear nuevo pipeline"
@@ -131,7 +122,7 @@
 "models.pipeline_creation.select.model.stage.delete_current","Borrar modelo"
 "models.pipeline_creation.submit","Crear pipeline"
 
-### Application status tab
+### Pipeline status tab
 "models.header.pipeline_name","Nombre"
 "models.header.dataset","Dataset"
 "models.header.preprocessing_stages","Etapas de preprocesamiento"
@@ -147,9 +138,28 @@
 
 # APPLICATION DEPLOY
 
+## Applications
+"applications.header","Aplicaciones"
+
 ## Application cards
 "applications.user_applications.card_navbar.application_status","Aplicación"
 "applications.user_applications.card_navbar.application_visualization","Datos"
+
+## Application management
+"application.tab.applications","Aplicaciones"
+"application.tab.create_application","Crear aplicación"
+"applications.user_applications.deploy_application","Desplegar aplicación"
+"applications.user_applications.delete_application_deployment","Parar aplicación"
+"applications.user_applications.delete_application","Borrar aplicación"
+
+## Create applications
+"applications.create_application.create_form.reveal_button","Crear aplicación"
+"applications.create_application.create_form.header","Nueva aplicación"
+"applications.create_application.create_form.application_name","Nombre"
+"applications.create_application.create_form.select_pipeline","Selección de pipeline"
+"applications.create_application.create_form.keywords","Keywords"
+"create_application.create_form.keywords_placeholder","bigdata,ai"
+"create_application.create_form.submit_form","Crear aplicación"
 
 ## Application deploy
 "applications.header.deploy","Desplegar "
@@ -158,3 +168,7 @@
 "applications.content.delete","Parar"
 "applications.deploy.confirm.confirmation_text","La aplicación se desplegará en el cluster, clasificando los tweets que reciba de Twitter. Introduzca las palabras clave (hashtags) que quiera monitorizar. Las palabras deben ir separadas por comas (,), no se admiten espacios, y se procesan como filtros 'OR'."
 "applications.delete.confirm.confirmation_text","La aplicación se dentendrá, y se parará el procesamiento de datos nuevos. Los datos ya procesados seguirán estando disponibles"
+
+## Application visualization data
+"applications.user_applications.card_body.visualize","Visualización"
+"applications.user_applications.card_body.download","Descargar datos"
