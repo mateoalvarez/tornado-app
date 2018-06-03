@@ -147,6 +147,10 @@
 
 # APPLICATION DEPLOY
 
+## Application cards
+"applications.user_applications.card_navbar.application_status","Aplicación"
+"applications.user_applications.card_navbar.application_visualization","Datos"
+
 ## Application deploy
 "applications.header.deploy","Desplegar "
 "applications.content.deploy","Desplegar "

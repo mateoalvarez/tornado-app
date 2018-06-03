@@ -1,7 +1,7 @@
 <div class="card-deck">
   <div class="row">
     {% for index, dataset in enumerate(user_datasets) %}
-      <div class="my-3">
+      <div class="col-6 my-3">
         <div class="card shadow rounded">
           <div class="card-header">
             <h2 class="card-title">{{ dataset["Key"].split("/")[-1] }}</h2>
@@ -26,7 +26,7 @@
               <li class="list-group-item">{{ "{:,.2f}".format(float(dataset["Size"])/1e6) }} MB</li>
             </ul>
           </div>
-          <div class="card-footer">
+          <div class="card-footer text-center">
             <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#{{ index }}"/>{{ _("datasets.delete.button") + dataset["Key"].split("/")[-1] }}</button>
           </div>
         </div>
