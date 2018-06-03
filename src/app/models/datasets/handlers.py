@@ -23,7 +23,7 @@ class DatasetsHandler(BaseHandler):
 
     def _get_dataset_from_database_by_s3_key(self, user_id, s3_key):
         self.db_cur.execute(
-            """SELECT id FROM datasets WHERE user_id = %(user_id)s AND
+            """SELECT * FROM datasets WHERE user_id = %(user_id)s AND
              storage_url LIKE %(s3_key)s;""",
             {"user_id": user_id, "s3_key": '%' + s3_key}
         )
@@ -58,9 +58,19 @@ class DatasetsHandler(BaseHandler):
         if public_datasets_s3["KeyCount"] > 0:
             for public_dataset_s3 in public_datasets_s3["Contents"]:
                 public_datasets.append(public_dataset_s3)
+        # self.db_cur.execute(
+        #     "SELECT * FROM datasets WHERE id=%s;", (self.current_user["id"], )
+        # )
+        # user_datasets = self.db_cur.fetchall()
+        #
+        # self.db_cur.execute(
+        #     "SELECT * FROM datasets WHERE id=1;"
+        # )
+        # public_datasets = self.db_cur.fetchall()
+
         self.render("datasets/dataset.html",
                     user_datasets=user_datasets,
-                    public_datasets=public_datasets[1:]
+                    public_datasets=public_datasets
                     )
 
     @gen.coroutine
@@ -88,6 +98,7 @@ class DatasetsHandler(BaseHandler):
                     info['filename'], "s3://{bucket}/{directory}".format(
                         bucket=self.BUCKET_DATASETS,
                         directory=self.current_user["email"] + "/" + filename))
+
         self.redirect(self.get_argument("next", "/datasets"))
 
 
@@ -120,7 +131,7 @@ class DatasetsDeleteHandler(BaseHandler):
         # get information from database about dataset using dataset_id obtained from request
         dataset_from_db = self._get_dataset_from_database_by_id(
             self.current_user["id"], dataset_id_to_delete)
-        if dataset_from_db != None:
+        if dataset_from_db is not None:
             self._delete_dataset(dataset_id_to_delete)
             s3_dataset_key = "{s3_bucket_prefix}/{s3_resource}".format(
                 s3_bucket_prefix=self.current_user["email"],
