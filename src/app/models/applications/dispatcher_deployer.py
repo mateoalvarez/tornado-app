@@ -28,7 +28,8 @@ class DispatcherDeployer():
 
         dispatcher_config_map_template = requests.get(
             "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"
-            + self.BUCKET_YAML_TEMPLATES+"/dispatcher/dispatcher_config_map.yaml")\
+            + self.BUCKET_YAML_TEMPLATES
+            + "/dispatcher/dispatcher_config_map.yaml")\
             .content.decode("utf-8").format(
                 application_id=kwargs["application_id"],
                 application_models=kwargs["pipeline_models_ids"],
@@ -39,7 +40,7 @@ class DispatcherDeployer():
             "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"
             + self.BUCKET_YAML_TEMPLATES+"/dispatcher/dispatcher_deployment.yaml")\
             .content.decode("utf-8").format(
-                application_id=kwargs["id"],
+                application_id=kwargs["application_id"],
                 MONGODB_DBNAME='user_' + str(kwargs["user_id"]),
                 MONGODB_COLLECTION_NAME='application_' + str(kwargs["id"]),
                 KAFKA_TOPIC='application_' + str(kwargs["id"]))
@@ -91,14 +92,6 @@ class DispatcherDeployer():
             "https://s3." + self.BUCKET_YAML_TEMPLATES_REGION + ".amazonaws.com/"
             + self.BUCKET_YAML_TEMPLATES + "/mleap/model_service.yaml")\
             .content.decode("utf-8")
-
-        # from pprint import pprint
-        # print('\n\n\n\n')
-        # print('########################################')
-        # pprint(deploy_template)
-        # print('\n\n\n\n')
-        # pprint(service_template)
-        # print('\n\n\n\n')
 
         model_deployment_templates = []
         model_service_templates = []

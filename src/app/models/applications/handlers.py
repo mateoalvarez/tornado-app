@@ -163,10 +163,6 @@ class ApplicationDeployer(BaseHandler):
             print(preprocessing_acl)
             preprocessing_acl.put(ACL='public-read')
 
-            print('\n\n\n\n')
-            print('######################## prepr updated')
-            print('\n\n\n\n')
-
             for model_url in model_urls:
                 model_acl = S3_RESOURCE.ObjectAcl(
                     self.BUCKET_SPARK_JOBS,
@@ -177,11 +173,11 @@ class ApplicationDeployer(BaseHandler):
                         + self.BUCKET_SPARK_JOBS + '/', ''))
                 model_acl.put(ACL='public-read')
 
-            print('\n\n\n\n')
-            print('######################## Model updated')
-            print('\n\n\n\n')
-
             model_urls.remove(preprocessing_url)
+
+            print("\n\n\n\n")
+            print("DEPLOY MODELS")
+            print("\n\n\n\n")
 
             dispatcher_deployer.deploy_models(
                 pipeline_id=pipeline_id,
@@ -234,10 +230,10 @@ class ApplicationDeploymentDeletionHandler(BaseHandler):
         application = self.db_cur.fetchone()
 
         self.db_cur.execute(
-            "UPDATE applications SET application_status='stopped' WHERE id=%s;",
-            (application["id"], )
-            )
-        self.db_conn.commit()
+            "SELECT * FROM pipelines WHERE id=%s;",
+            (application["application_pipeline"], )
+        )
+        pipeline = self.db_cur.fetchall()[0]
 
         dispatcher_deployer = DispatcherDeployer(
             k8s_config=self.k8s_config,
@@ -247,7 +243,13 @@ class ApplicationDeploymentDeletionHandler(BaseHandler):
             )
         dispatcher_deployer.delete_deployments(
             application_id=application["id"],
-            preprocessing_ids=application["application_prep_stages_ids"],
-            model_ids=["application_models_ids"]
+            preprocessing_ids=pipeline["pipeline_prep_stages_ids"],
+            model_ids=["pipeline_models_ids"]
             )
+
+        self.db_cur.execute(
+            "UPDATE applications SET application_status='stopped' WHERE id=%s;",
+            (application["id"], )
+            )
+        self.db_conn.commit()
         self.redirect(self.get_argument("next", "/applications"))
