@@ -133,6 +133,7 @@
 "models.content.start_training","Empezar entrenamiento"
 "models.header.delete","Borrar"
 "models.content.delete_model","Borrar"
+"application.tab.pipelines","Pipelines"
 
 "models.deploy.confirm.confirmation_text","La aplicación desplegará un trabajo de spark en un cluster distribuido, lo que generará costes adicionales, ¿Está seguro de que quiere continuar?"
 
@@ -151,6 +152,7 @@
 "applications.user_applications.deploy_application","Desplegar aplicación"
 "applications.user_applications.delete_application_deployment","Parar aplicación"
 "applications.user_applications.delete_application","Borrar aplicación"
+"applications.user_applications.no_applications.header","No hay aplicaciones"
 
 ## Create applications
 "applications.create_application.create_form.reveal_button","Crear aplicación"
