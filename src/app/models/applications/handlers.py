@@ -242,9 +242,10 @@ class ApplicationDeploymentDeletionHandler(BaseHandler):
             BUCKET_YAML_TEMPLATES_REGION=self.BUCKET_YAML_TEMPLATES_REGION
             )
         dispatcher_deployer.delete_deployments(
-            application_id=application["id"],
+            application_id=application_id,
+            pipeline_id=pipeline["id"],
             preprocessing_ids=pipeline["pipeline_prep_stages_ids"],
-            model_ids=["pipeline_models_ids"]
+            model_ids=pipeline["pipeline_models_ids"]
             )
 
         self.db_cur.execute(

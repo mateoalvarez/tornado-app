@@ -50,8 +50,8 @@ class DispatcherDeployer():
                 namespace=self.k8s_namespace,
                 body=yaml.load(dispatcher_config_map_template),
                 pretty=True)
-        except Exception as e:
-            print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
+        except Exception as exception:
+            print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % exception)
 
         try:
             self.k8s_deployment.create_namespaced_deployment(
@@ -66,7 +66,8 @@ class DispatcherDeployer():
 
         producer_template = requests.get(
             "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"
-            + self.BUCKET_YAML_TEMPLATES+"/dispatcher/kafka_producer_deployment.yaml")\
+            + self.BUCKET_YAML_TEMPLATES
+            + "/dispatcher/kafka_producer_deployment.yaml")\
             .content.decode("utf-8").format(
                 application_id=application_id,
                 WORDS_TO_TRACK=keywords,
@@ -84,13 +85,15 @@ class DispatcherDeployer():
         """Deploy all application's models"""
 
         deploy_template = requests.get(
-            "https://s3." + self.BUCKET_YAML_TEMPLATES_REGION + ".amazonaws.com/"
-            + self.BUCKET_YAML_TEMPLATES + "/mleap/model_deployment.yaml")\
+            "https://s3." + self.BUCKET_YAML_TEMPLATES_REGION
+            + ".amazonaws.com/" + self.BUCKET_YAML_TEMPLATES
+            + "/mleap/model_deployment.yaml")\
             .content.decode("utf-8")
 
         service_template = requests.get(
-            "https://s3." + self.BUCKET_YAML_TEMPLATES_REGION + ".amazonaws.com/"
-            + self.BUCKET_YAML_TEMPLATES + "/mleap/model_service.yaml")\
+            "https://s3." + self.BUCKET_YAML_TEMPLATES_REGION
+            + ".amazonaws.com/" + self.BUCKET_YAML_TEMPLATES
+            + "/mleap/model_service.yaml")\
             .content.decode("utf-8")
 
         model_deployment_templates = []
@@ -133,7 +136,8 @@ class DispatcherDeployer():
 
         deploy_template = requests.get(
             "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"
-            + self.BUCKET_YAML_TEMPLATES+"/mleap/preprocessing_deployment.yaml")\
+            + self.BUCKET_YAML_TEMPLATES
+            + "/mleap/preprocessing_deployment.yaml")\
             .content.decode("utf-8")
         service_template = requests.get(
             "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"
@@ -172,30 +176,39 @@ class DispatcherDeployer():
             except Exception as e:
                 print("Exception when calling V1Api->create_service:%s\n" % e)
 
-    def delete_deployments(self, application_id, preprocessing_ids, model_ids):
+    def delete_deployments(self, application_id, pipeline_id, preprocessing_ids, model_ids):
         """DELETE kubernetes deployment"""
 
         application_deployment_name = 'dispatcher-' + str(application_id)
-
+        # DEPLOYMENTS
         try:
-
             self.k8s_deployment.delete_namespaced_deployment(
                 namespace=self.k8s_namespace,
                 name=application_deployment_name,
                 body=self.delete_body
                 )
 
-            for preprocessing_id in preprocessing_ids:
-                preprocessing_deployment_name = 'prep-' + str(preprocessing_id)
-                self.k8s_deployment.delete_namespaced_deployment(
-                    namespace=self.k8s_namespace,
-                    name=preprocessing_deployment_name,
-                    body=self.delete_body
-                    )
+            # for preprocessing_id in preprocessing_ids:
+            preprocessing_deployment_name = 'prepr-' + str(pipeline_id)
+            self.k8s_deployment.delete_namespaced_deployment(
+                namespace=self.k8s_namespace,
+                name=preprocessing_deployment_name,
+                body=self.delete_body
+                )
+            self.k8s_service.delete_namespaced_service(
+                namespace=self.k8s_namespace,
+                name=preprocessing_deployment_name,
+                body=self.delete_body
+                )
 
             for model_id in model_ids:
                 model_name = 'model-' + str(model_id)
                 self.k8s_deployment.delete_namespaced_deployment(
+                    namespace=self.k8s_namespace,
+                    name=model_name,
+                    body=self.delete_body
+                    )
+                self.k8s_service.delete_namespaced_service(
                     namespace=self.k8s_namespace,
                     name=model_name,
                     body=self.delete_body
@@ -208,13 +221,13 @@ class DispatcherDeployer():
                 body=self.delete_body
                 )
 
-            dispatcher_config_map_name = "application-" + str(application_id) + "-config-map"
-            self.k8s_deployment.delete_namespaced_deployment(
+            dispatcher_config_map_name = "application-" + str(application_id) + "-configmap"
+            self.k8s_config_map.delete_namespaced_config_map(
                 namespace=self.k8s_namespace,
                 name=dispatcher_config_map_name,
                 body=self.delete_body
                 )
         except kubernetes.client.rest.ApiException as exception:
-            print("### Error ###")
+            print("### Error Deleting deployment ###")
             print(exception)
         return
