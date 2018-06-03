@@ -162,8 +162,8 @@
 "applications.create_application.create_form.keywords","Keywords"
 "create_application.create_form.keywords_placeholder","bigdata,ai"
 "create_application.create_form.submit_form","Crear aplicación"
-"create_application.create_form.optgroup_label.user_datasets","--- Datasets Privados ---"
-"create_application.create_form.optgroup_label.public_datasets","--- Datasets Públicos ---"
+"create_application.create_form.optgroup_label.user_pipelines","--- Pipelines Privados ---"
+"create_application.create_form.optgroup_label.public_pipelines","--- Pipelines Públicos ---"
 
 ## Application deploy
 "applications.header.deploy","Desplegar "

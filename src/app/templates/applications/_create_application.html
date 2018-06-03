@@ -22,12 +22,12 @@
               <label for="pipeline">{{ _("applications.create_application.create_form.select_pipeline") }}</label>
               <br />
               <select name="pipeline_id" class="form-control">
-                <optgroup label="{{ _("create_application.create_form.optgroup_label.public_datasets") }}">
+                <optgroup label="{{ _("create_application.create_form.optgroup_label.public_pipelines") }}">
                   {% for pipeline in user_pipelines %}
                     <option value="{{ pipeline["id"] }}">{{ pipeline["pipeline_name"] }}</option>
                   {% end %}
                 </optgroup>
-                <optgroup label="{{ _("create_application.create_form.optgroup_label.user_datasets") }}">
+                <optgroup label="{{ _("create_application.create_form.optgroup_label.user_pipelines") }}">
                   {% for pipeline in public_pipelines %}
                     <option value="{{ pipeline["id"] }}">{{ pipeline["pipeline_name"] }}</option>
                   {% end %}
