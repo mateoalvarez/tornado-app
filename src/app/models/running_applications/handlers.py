@@ -88,13 +88,13 @@ class VisualizeApplicationsHandler(BaseHandler):
         LOGGER.debug("Application id: {name}".format(name=application_id))
         LOGGER.debug("Elements to show: {elements}".format(elements=last_elements))
         if application_id == "":
-            self.render("running_applications/ml_models_visualization.html", records=[])
+            self.render("running_applications/pipelines_visualization.html", records=[])
         else:
             # TODO Filter for those that match with timestamp filter
             records_to_show = list(self._mongo_client[\
             "user_" + str(self.current_user["id"])]["application_" +\
              str(application_id)].find().sort([("_id", -1)]).limit(int(last_elements)))
-            self.render("running_applications/ml_models_visualization.html",\
+            self.render("running_applications/pipelines_visualization.html",\
              records=records_to_show, app_id=application_id)
 
 class DownloadDataHandler(BaseHandler):#, tornado.web.StaticFileHandler):

@@ -1,0 +1,90 @@
+<div class="card-deck">
+  {% for application in user_applications %}
+    <div class="col-6 my-3">
+      <div class="card shadow rounded">
+        <div class="card-header">
+          <h2 class="card-title">{{ application["application_name"] }}</h2>
+          <ul class="nav nav-tabs card-header-tabs" id="tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="home_{{ application["id"] }}-tab" data-toggle="tab" href="#home_{{ application["id"] }}" role="tab" aria-controls="home_{{ application["id"] }}" aria-selected="true">{{ _("applications.user_applications.card_navbar.application_status") }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="home_{{ application["id"] }}-tab" data-toggle="tab" href="#visualization_{{ application["id"] }}"  role="tab" aria-controls="home_{{ application["id"] }}" aria-selected="false">{{ _("applications.user_applications.card_navbar.application_visualization") }}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body tab-content" id="tabContent">
+          <div class="tab-pane fade show active" id="home_{{ application["id"] }}" role="tabpanel" aria-labelledby="home_{{ application["id"] }}-tab">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">{{ application["datasource_configuration_id"] }}</li>
+              <li class="list-group-item">{{ application["datasource_settings_id"] }}</li>
+              <li class="list-group-item">
+                <form method="post" action="/applications/deploy">
+                  {% if application["application_status"] == "stopped" %}
+                    <input hidden value="{{ application["id"] }}" name="application_id"/>
+                    <input hidden value="{{ application["application_pipeline"] }}" name="pipeline_id"/>
+                    <input hidden value="{{ application["datasource_configuration_id"] }}" name="datasource_configuration_id" />
+                    <button type="submit" class="btn btn-primary" value={{ application["id"] }} name="application_id">{{ _("applications.user_applications.deploy_application") }}</button>
+                  {% else %}
+                    <button class="btn btn-primary" disabled>{{ _("applications.user_applications.deploy_application") }}</button>
+                  {% end %}
+                </form>
+                <form method="post" action="/applications/stop">
+                  {% if application["application_status"] == "running" %}
+                    <button type="submit" class="btn btn-danger" value={{ application["id"] }} name="application_id">{{ _("applications.user_applications.delete_application_deployment") }}</button>
+                  {% else %}
+                    <button class="btn btn-danger" disabled>{{ _("applications.user_applications.delete_application_deployment") }}</button>
+                  {% end %}
+                </form>
+                <form method="post" action="/applications/delete">
+                  {% if application["application_status"] != "running" %}
+                    <button type="submit" class="btn btn-danger" value={{ application["id"] }} name="application_id">{{ _("applications.user_applications.delete_application") }}</button>
+                  {% else %}
+                    <button class="btn btn-danger" disabled>{{ _("applications.user_applications.delete_application") }}</button>
+                  {% end %}
+                </form>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-pane fade show" id="visualization_{{ application["id"] }}" role="tabpanel" aria-labelledby="visualization_{{ application["id"] }}-tab">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <a class="btn btn-primary" href="/running_applications/visualize?app_id={{ application["id"] }}&elements=100">{{ _("applications.user_applications.card_body.visualize") }}</a>
+              </li>
+              <li class="list-group-item">
+                <form method="post" action="/running_applications/download">
+                  <button type="submit" class="btn btn-primary" value={{ application["id"] }} name="application_id">{{ _("applications.user_applications.card_body.download") }}</button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-footer text-white text-center">
+          {% if application["application_status"] == "running" %}
+            <li class="list-group-item bg-success">
+          {% elif application["application_status"] == "error" %}
+            <li class="list-group-item bg-danger">
+          {% else %}
+            <li class="list-group-item bg-warning">
+          {% end %}
+            {{ application["application_status"] }}
+          </li>
+        </div>
+      </div>
+    </div>
+  {% end %}
+</div>
+
+{% if user_applications == [] %}
+<div class="card shadow">
+  <div class="card-header">
+    <h2 class="card-title">{{ _("mlmodels.user_applications.no_applications.header") }}</h2>
+  </div>
+  <div class="card-body">
+    {{ _("mlmodels.user_applications.no_applications.body") }}
+  </div>
+  <div class="card-footer">
+    {{ _("mlmodels.user_applications.no_applications.footer") }}
+  </div>
+</div>
+{% end %}

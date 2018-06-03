@@ -1,0 +1,24 @@
+<div class="card-deck">
+  {% for index, data_prep_method in enumerate(data_prep_methods) %}
+    <div class="col-6 my-3">
+      <div class="card shadow rounded">
+        <div class="card-header">
+          <h2 class="card-title">{{ data_prep_method["template_name"] }}</h2>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <h4>{{ _("pipelines.header.data_prep_method_description") }}</h4>
+              <p>
+                {{ data_prep_method["description"] }}
+              </p>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer text-center">
+          {{ data_prep_method["model_engine"] }}
+        </div>
+      </div>
+    </div>
+  {% end %}
+</div>

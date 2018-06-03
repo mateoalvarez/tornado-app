@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: prepr-{preprocessing_id}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pipeline-{pipeline_id}
+      tier: preprocessing
+  template:
+    metadata:
+      labels:
+        app: pipeline-{pipeline_id}
+        tier: preprocessing
+    spec:
+      containers:
+      - name: prepr-{preprocessing_id}
+        image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-mleap
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 65327
+          hostPort: 65327
+        env:
+          - name: MODEL_URL
+            value: {preprocessing_url}

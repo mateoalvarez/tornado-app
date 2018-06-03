@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: model-{model_id}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pipeline-{pipeline_id}
+      tier: model
+  template:
+    metadata:
+      labels:
+        app: pipeline-{pipeline_id}
+        tier: model
+    spec:
+      containers:
+      - name: model-{model_id}
+        image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-mleap
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 65327
+          hostPort: 65327
+        env:
+          - name: MODEL_URL
+            value: {model_url}

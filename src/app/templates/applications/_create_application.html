@@ -1,0 +1,52 @@
+<p>
+  <a class="btn btn-primary" data-toggle="collapse" href="#createApplication" role="button" aria-expanded="false" aria-controls="createApplication">
+    {{ _("create_application.create_form.reveal_button") }}
+  </a>
+</p>
+<div class="collapse" id="createApplication">
+  <div class="card shadow rounded">
+    <div class="card-header">
+      <h2 class="card-title">{{ _("create_application.create_form.header") }}</h2>
+    </div>
+    <form method="POST" action="/applications">
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <fieldset>
+              <label for="application_name">{{ _("create_application.create_form.application_name") }}</label>
+              <input name="application_name" class="text-input form-control col-8" maxlength="20" required/>
+            </fieldset>
+          </li>
+          <li class="list-group-item">
+            <fieldset>
+              <!-- <legend>{{ _("create_application.create_form.select_pipeline") }}</legend> -->
+              <label for="pipeline">{{ _("create_application.create_form.select_pipeline") }}</label>
+              <br />
+              <select name="pipeline_id" class="form-control col-8">
+                <optgroup label="{{ _("create_application.create_form.optgroup_label.public_datasets") }}">
+                  {% for pipeline in user_pipelines %}
+                    <option value="{{ pipeline["id"] }}">{{ pipeline["pipeline_name"] }}</option>
+                  {% end %}
+                </optgroup>
+                <optgroup label="{{ _("create_application.create_form.optgroup_label.user_datasets") }}">
+                  {% for pipeline in public_pipelines %}
+                    <option value="{{ pipeline["id"] }}">{{ pipeline["pipeline_name"] }}</option>
+                  {% end %}
+                </optgroup>
+              </select>
+            </fieldset>
+          </li>
+          <li class="list-group-item">
+            <fieldset>
+              <label for="keywords">{{ _("create_application.create_form.keywords") }}</label>
+              <input name="application_keywords" class="text-input form-control col-8" placeholder="{{ _("create_application.create_form.keywords_placeholder") }}" required/>
+            </fieldset>
+          </li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary" type="submit" value="Submit">{{ _("create_application.create_form.submit_form") }}</button>
+      </div>
+    </form>
+  </div>
+</div>

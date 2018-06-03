@@ -1,7 +1,6 @@
 """Main deployer"""
 import os
 import boto3
-# import requests
 import kubernetes
 import yaml
 from pprint import pprint

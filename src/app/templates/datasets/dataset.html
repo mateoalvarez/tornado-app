@@ -6,38 +6,62 @@
 
 {% block body %}
   <div class="container-fluid transparent_lighter_background py-5">
-    <div class="container px-0">
-      <ul class="nav nav-tabs strong" id="Tabs" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="list-datasets-tab" data-toggle="tab" href="#Datasets" role="tab" aria-controls="datasets" aria-selected="true">{{ _("datasets.tab.Existingdatasets") }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="upload-datasets-tab" data-toggle="tab" href="#Upload" role="tab" aria-controls="upload" aria-selected="false">{{ _("datasets.tab.Uploaddataset") }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="manage-datasets" data-toggle="tab" href="#Manage" role="tab" aria-controls="manage" aria-selected="false">{{ _("datasets.tab.Managedatasets") }}</a>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="Datasets" role="tabpanel" aria-labelledby="list-datasets-tab">
-          <div class="row my-3">
-            <h1>{{ _("datasets.headers.public_datasets") }}</h1>
-          </div>
-          {% include "_public_datasets.html" %}
-          <div class="row my-3">
-            <h1>{{ _("datasets.headers.user_datasets") }}</h1>
-          </div>
+    <div class="container">
+      <div class="row text-center">
+        <a class="btn btn-primary btn-lg col-12" data-toggle="collapse" href="#uploadDataset" role="button" aria-expanded="false" aria-controls="uploadDataset">
+          {{ _("datasets.upload.dataset") }}
+        </a>
+        <div class="collapse col-12 py-2" id="uploadDataset">
+          <center>
+            <div class="card shadow rounded px-3">
+              <form enctype="multipart/form-data" action="/datasets" method="post" id="upload_dataset_form">
+                <div class="form-group">
+                  <fieldset>
+                      <br />
+                      <input class="text-input" id="dataset_file" name="dataset_file" type="file" value="">
+                  </fieldset>
+                  <br />
+                  <fieldset>
+                    <textarea class="form-control" name="dataset_description" rows="4"></textarea>
+                    <label for="dataset_description">{{ _("datasets.upload.description") }}</label>
+                    <textarea class="form-control " name="dataset_properties" rows="4"></textarea>
+                    <label for="dataset_properties">{{ _("datasets.upload.properties") }}</label>
+                  </fieldset>
+                  <div id="form_btn">
+                      <input id="signin-btn" class="btn btn-primary" type="submit" value={{ _("datasets.upload.dataset") }} tabindex="3">
+                  </div>
+                </div>
+              </form>
+            </div>
+          </center>
+        </div>
+      </div>
+      <div class="row my-3">
+        <a class="btn btn-outline-dark btn-lg col-12 text-center" data-toggle="collapse" href="#publicDatasets" role="button" aria-expanded="false" aria-controls="publicDatasets">
+          <center>
+            {{ _("datasets.headers.public_datasets") }}
+          </center>
+        </a>
+        <div class="collapse col-12 py-2" id="publicDatasets">
+          {% if bool(public_datasets) %}
+            <center>
+              {% include "_public_datasets.html" %}
+            </center>
+          {% else %}
+            <h2>No public datasets</h2>
+          {% end %}
+        </div>
+      </div>
+      <div class="row my-3">
+        <a class="btn btn-outline-dark btn-lg col-12 text-center" data-toggle="collapse" href="#userDatasets" role="button" aria-expanded="false" aria-controls="userDatasets">
+          {{ _("datasets.headers.user_datasets") }}
+        </a>
+        <div class="collapse col-12 py-2" id="userDatasets">
           {% if bool(user_datasets) %}
             {% include "_user_datasets.html" %}
           {% else %}
             <h2>No user datasets yet</h2>
           {% end %}
-        </div>
-        <div class="tab-pane fade" id="Upload" role="tabpanel" aria-labelledby="upload-datasets-tab">
-          {% include "_upload_dataset.html" %}
-        </div>
-        <div class="tab-pane fade" id="Manage" role="tabpanel" aria-labelledby="manage-datasets-tab">
-          {% include "_manage_datasets.html" %}
         </div>
       </div>
     </div>

@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dispatcher-{application_id}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application-{application_id}
+  template:
+    metadata:
+      labels:
+        app: application-{application_id}
+    spec:
+      containers:
+      - name: dispatcher-{application_id}
+        image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-dispatcher:latest
+        imagePullPolicy: Always
+        env:
+          - name: MONGODB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secrets
+                key: MONGODB_HOST
+          - name: MONGODB_PORT
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secrets
+                key: MONGODB_PORT
+          - name: MODELS
+            valueFrom:
+              configMapKeyRef:
+                name: application-{application_id}-configmap
+                key: application.models
+          - name: PREPROCESSING
+            valueFrom:
+              configMapKeyRef:
+                name: application-{application_id}-configmap
+                key: application.preprocessing
+          - name: MONGODB_DBNAME
+            value: {MONGODB_DBNAME}
+          - name: MONGODB_COLLECTION_NAME
+            value: {MONGODB_COLLECTION_NAME}
+          - name: KAFKA_TOPIC
+            value: {KAFKA_TOPIC}
+          - name: KAFKA_BOOTSTRAP_SERVER
+            value: kafka-server
+        volumeMounts:
+        - name: classification-config
+          mountPath: /tmp/classification-config
+      volumes:
+      - name: classification-config
+        configMap:
+          name: application-{application_id}-configmap
+          items:
+          - key: application.classification
+            path: classification.config

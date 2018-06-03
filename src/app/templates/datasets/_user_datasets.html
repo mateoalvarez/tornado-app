@@ -1,36 +1,55 @@
-<div class="row">
-  <div class="table-responsive text-center mx-auto">
-    <table class="table-striped table-bordered table-hover table_spaced">
-        <tr>
-          <th>
-            #
-          </th>
-          <th>
-            {{ _("datasets.header.dataset_name") }}
-          </th>
-          <th>
-            {{ _("datasets.header.dataset_name") }}
-          </th>
-          <th>
-            {{ _("datasets.header.metrics") }}
-          </th>
-        </tr>
-      {% for index, dataset in enumerate(user_datasets) %}
-        <tr>
-          <td>
-            {{ index }}
-          </td>
-          <td>
-            {{ dataset["Key"] }}
-          </td>
-          <td>
-            {{ "{:,.2f}".format(float(dataset["Size"])/1e6) }} MB
-          </td>
-          <td>
-            {{ dataset["LastModified"] }}
-          </td>
-        </tr>
-      {% end %}
-    </table>
-  </div>
+<div class="card-deck">
+  {% for index, dataset in enumerate(user_datasets) %}
+    <div class="col-6 my-3">
+      <div class="card shadow rounded">
+        <div class="card-header">
+          <h2 class="card-title">{{ dataset["Key"].split("/")[-1] }}</h2>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <h4>{{ _("datasets.header.dataset_description") }}</h4>
+              <p>
+                {{ dataset["dataset_description"] }}
+              </p>
+            </li>
+            <li class="list-group-item">
+              <h4>{{ _("datasets.header.dataset_properties") }}</h4>
+              <p>
+                {{ dataset["dataset_properties"] }}
+              </p>
+            </li>
+            <li class="list-group-item">
+              <a href='{{ "https://s3.eu-central-1.amazonaws.com/tornado-app-datasets/" + dataset["Key"] }}'>{{ _("datasets.download_link") }}</a>
+            </li>
+            <li class="list-group-item">{{ "{:,.2f}".format(float(dataset["Size"])/1e6) }} MB</li>
+          </ul>
+        </div>
+        <div class="card-footer text-center">
+          <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#{{ index }}"/>{{ _("datasets.delete.button") + dataset["Key"].split("/")[-1] }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="{{ index }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{ _("datasets.delete.confirm.title") }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{ _("datasets.delete.confirm.confirmation_text") }} {{ dataset["Key"].split("/")[-1] }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _("datasets.delete.confirm.go_back") }}</button>
+            <form method='post' action='/datasets/delete'>
+              <button class="btn btn-primary" data-toggle="modal" data-target="{{ dataset["Key"] }}" type='submit' value={{ dataset["id"] }} name="dataset" id="dataset">{{ _("datasets.delete.confirm.confirm") }}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% end %}
 </div>

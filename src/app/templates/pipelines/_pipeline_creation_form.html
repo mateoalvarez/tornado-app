@@ -1,0 +1,111 @@
+{% block head %}
+  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
+  <link rel="stylesheet" href="{{ static_url("css/ml-models/ml-models.css") }}" type="text/css">
+  <script src="{{ static_url("js/ml-models/ml-models.js") }}"></script>
+<!-- javascript variables -->
+  <script type="text/javascript">
+    var deletePreprocessingButtonText = String('{{ _("models.pipeline_creation.select.preprocessing.stage.delete_current") }}')
+    var modelsPipeline_creationSelectPreprocessingStagePreprocessing = String('{{ _("models.pipeline_creation.select.preprocessing.stage.preprocessing") }}')
+    var modelsPipeline_creationSelectPreprocessingStageConfig = String('{{ _("models.pipeline_creation.select.preprocessing.stage.config") }}')
+    var preprocessingMethodNames = ("{{preprocessing_names}}").split(',')
+    var preprocessingMethodIds = ("{{preprocessing_ids}}").split(',')
+
+    var deleteModelButtonText = String('{{ _("models.pipeline_creation.select.model.stage.delete_current") }}')
+    var modelsPipeline_creationSelectModelStageModel = String('{{ _("models.pipeline_creation.select.model.stage.model") }}')
+    var modelsPipeline_creationSelectModelStageConfig = String('{{ _("models.pipeline_creation.select.model.stage.config") }}')
+    var modelMethodNames = ("{{model_names}}").split(',')
+    var modelMethodIds = ("{{model_ids}}").split(',')
+
+  </script>
+  <script type="text/javascript">
+    function someFunction(value){console.log(value);}
+  </script>
+{% end %}
+
+<form class="form-group" method='post' action='/pipelines'>
+  <div class="dropdown">
+    <label for="pipeline_dataset">{{ _("models.pipeline_creation.select.dataset") }}</label>
+    <select class="form-control" id="pipeline_dataset" name="pipeline_dataset" required>
+      {% for dataset in datasets %}
+        <option value="{{ dataset["id"] }}">{{ dataset["storage_url"] }}</option>
+      {% end %}
+    </select>
+  </div>
+  <hr />
+  <!-- PREPROCESSING STAGES -->
+  <div class="input-group">
+    <label for="pipeline_prep_stages_ids">{{ _("models.pipeline_creation.select.preprocessing") }}</label>
+    <br />
+    <div class="container card-deck">
+      <div class="container card-group my-3 px-0 w-100">
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.pipeline_creation.select.preprocessing.stage.preprocessing") }}</h4>
+          <div class="card-body">
+            <select class="form-control" id="pipeline_prep_stages_ids" name="pipeline_prep_stages_ids" required>
+              {% for method in data_prep_methods %}
+                <option value="{{ method["id"] }}">{{ method["template_name"] }}</option>
+              {% end %}
+            </select>
+          </div>
+        </div>
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.pipeline_creation.select.preprocessing.stage.config") }}</h4>
+          <div class="card-body">
+            <input class="text-input card-body w-100" id="pipeline_prep_stages_ids_config" name="pipeline_prep_stages_ids_config" />
+          </div>
+        </div>
+      </div>
+      <!-- Add more cards -->
+      <div id="preprocessing-element-to-replace-1"> </div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addNewPreprocessing()">{{ _("models.pipeline_creation.select.preprocessing.stage.add_more") }}</button>
+    <br />
+  </div>
+  <hr />
+  <!-- MODELS -->
+  <div class="input-group">
+    <label for="pipeline_models_ids">{{ _("models.pipeline_creation.select.model") }}</label>
+    <br>
+    <div class="container card-deck">
+      <div class="container card-group my-3 px-0 w-100">
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.pipeline_creation.select.model.stage.model") }}</h4>
+          <div class="card-body">
+            <select class="form-control" id="pipeline_models_ids" name="pipeline_models_ids" required>
+              {% for method in models %}
+                <option value="{{ method["id"] }}">{{ method["template_name"] }}</option>
+              {% end %}
+            </select>
+          </div>
+        </div>
+        <div class="card mx-0">
+          <h4 class="card-header">{{ _("models.pipeline_creation.select.model.stage.config") }}</h4>
+          <div class="card-body">
+            <input class="text-input card-body w-100" id="pipeline_models_config" name="pipeline_models_config" />
+          </div>
+        </div>
+      </div>
+      <!-- Add more cards -->
+      <div id="model-element-to-replace-1"> </div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addNewModel()">{{ _("models.pipeline_creation.select.model.stage.add_more") }}</button>
+  </div>
+  <hr />
+  <div>
+    <label for="classification_criteria">{{ _("models.pipeline_creation.select.classification_criteria") }}</label>
+    <select class="form-control" id="classification_criteria" name="classification_criteria" required>
+      {% for criteria in classification_criteria %}
+        <option value="{{ criteria["id"] }}">{{ criteria["name"] }}</option>
+      {% end %}
+    </select>
+  </div>
+  <hr />
+  <div>
+    <label for="pipeline_name">{{ _("models.pipeline_creation.select.pipeline_name") }}</label>
+    <input class="text-input 6-col form-control" id="pipeline_name" name="pipeline_name" type="text" value="" maxlength="20"/>
+  </div>
+  <hr />
+  <div class="container">
+    <button class="btn btn-primary float-right" type='submit'>{{ _("models.pipeline_creation.submit") }}</button>
+  </div>
+</form>

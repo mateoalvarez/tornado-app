@@ -24,6 +24,26 @@
 "navbar.user.Logout","Logout"
 "navbar.user.Register","Registro"
 "navbar.user.Settings","Configuración"
+"navbar.datasets","Datasets"
+"navbar.pipelines","Pipelines"
+"navbar.applications","Aplicaciones"
+
+# Pipelines
+
+"pipelines.upload_dataset.header","Cargar un dataset"
+"pipelines.upload_dataset.body","Carga tus propios datasets o usa datasets públicos para entrenar tus modelos"
+"pipelines.upload_dataset.button","Cargar dataset"
+
+"pipelines.create_pipeline.header","Entrenar un pipeline"
+"pipelines.create_pipeline.body","Construye y entrena pipelines para usarlos luego en la clasificación de tweets"
+"pipelines.create_pipeline.button","Crear pipeline"
+
+"pipelines.create_application.header","Crear una aplicación"
+"pipelines.create_application.body","Crea una aplicación a partir de un pipeline para obtener y clasificar tweets en tiempo real"
+"pipelines.create_application.button","Crear aplicación"
+
+
+
 
 # Datasets
 
@@ -79,8 +99,8 @@
 ## Tabs
 "mlmodels.tab.Datapreprocessing","Preprocesamiento"
 "mlmodels.tab.Modelsselection","Modelos"
-"mlmodels.tab.create_application","Crear pipeline"
-"mlmodels.tab.applications","Pipelines"
+"mlmodels.tab.create_pipeline","Crear pipeline"
+"mlmodels.tab.pipelines","Pipelines"
 
 ### Preprocessing tab
 "mlmodels.tab.data_preprocessing","Etapas de preprocesamiento"
@@ -96,23 +116,23 @@
 
 ### Pipeline creation tab
 "mlmodels.tab.pipeline_creation","Crear nuevo pipeline"
-"models.application_creation.select.dataset","Seleccionar dataset"
-"models.application_creation.select.preprocessing","Añadir etapas de preprocesamiento"
-"models.application_creation.select.model","Añadir modelos"
-"models.application_creation.select.classification_criteria","Seleccionar criterio de clasificación"
-"models.application_creation.select.pipeline_name","Nombre del pipeline"
-"models.application_creation.select.preprocessing.stage.preprocessing","Plantilla"
-"models.application_creation.select.preprocessing.stage.config","Configuración"
-"models.application_creation.select.preprocessing.stage.add_more","Añadir más etapas de preprocesamiento"
-"models.application_creation.select.preprocessing.stage.delete_current","Eliminar etapa de preprocesamiento"
-"models.application_creation.select.model.stage.model","Plantilla"
-"models.application_creation.select.model.stage.config","Configuración"
-"models.application_creation.select.model.stage.add_more","Añadir más modelos"
-"models.application_creation.select.model.stage.delete_current","Borrar modelo"
-"models.application_creation.submit","Crear pipeline"
+"models.pipeline_creation.select.dataset","Seleccionar dataset"
+"models.pipeline_creation.select.preprocessing","Añadir etapas de preprocesamiento"
+"models.pipeline_creation.select.model","Añadir modelos"
+"models.pipeline_creation.select.classification_criteria","Seleccionar criterio de clasificación"
+"models.pipeline_creation.select.pipeline_name","Nombre del pipeline"
+"models.pipeline_creation.select.preprocessing.stage.preprocessing","Plantilla"
+"models.pipeline_creation.select.preprocessing.stage.config","Configuración"
+"models.pipeline_creation.select.preprocessing.stage.add_more","Añadir más etapas de preprocesamiento"
+"models.pipeline_creation.select.preprocessing.stage.delete_current","Eliminar etapa de preprocesamiento"
+"models.pipeline_creation.select.model.stage.model","Plantilla"
+"models.pipeline_creation.select.model.stage.config","Configuración"
+"models.pipeline_creation.select.model.stage.add_more","Añadir más modelos"
+"models.pipeline_creation.select.model.stage.delete_current","Borrar modelo"
+"models.pipeline_creation.submit","Crear pipeline"
 
 ### Application status tab
-"models.header.application_name","Nombre"
+"models.header.pipeline_name","Nombre"
 "models.header.dataset","Dataset"
 "models.header.preprocessing_stages","Etapas de preprocesamiento"
 "models.header.models","Modelos"
@@ -126,6 +146,10 @@
 "models.deploy.confirm.confirmation_text","La aplicación desplegará un trabajo de spark en un cluster distribuido, lo que generará costes adicionales, ¿Está seguro de que quiere continuar?"
 
 # APPLICATION DEPLOY
+
+## Application cards
+"applications.user_applications.card_navbar.application_status","Aplicación"
+"applications.user_applications.card_navbar.application_visualization","Datos"
 
 ## Application deploy
 "applications.header.deploy","Desplegar "

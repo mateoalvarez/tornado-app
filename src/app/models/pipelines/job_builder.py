@@ -1,15 +1,13 @@
 """Class to assemble block codes to create spark job"""
 import logging
-import tornado
-from tornado import gen
 import json
-import requests
-from ..base.handlers import BaseHandler
 
 LOGGER = logging.getLogger(__name__)
 
+
 class JobAssemblerHandler():
     """Class to compose the spark jobs"""
+
     def __init__(self, db_cur, db_conn, current_user):
         """Initializer method"""
         self.db_cur = db_cur
@@ -18,36 +16,34 @@ class JobAssemblerHandler():
 
     def _get_dataset_from_db(self, dataset_id):
         """GET dataset from database"""
-        self.db_cur.execute\
-        (\
-            "SELECT * FROM datasets WHERE id=%s", (dataset_id, )\
+        self.db_cur.execute(
+            "SELECT * FROM datasets WHERE id=%s", (dataset_id, )
         )
         dataset = self.db_cur.fetchall()
         return dataset
 
     def _get_code_block_template(self, code_template_id):
         """GET code element"""
-        self.db_cur.execute\
-        (\
-            "SELECT * FROM code_block_templates WHERE id=%s;", (code_template_id, )\
+        self.db_cur.execute(
+            "SELECT * FROM code_block_templates WHERE id=%s;",
+            (code_template_id, )
         )
         code_element = self.db_cur.fetchall()
         return code_element
 
     def _get_code_block_template_by_type(self, code_template_type):
         """GET templates given types"""
-        self.db_cur.execute\
-        (\
-            "SELECT * FROM code_block_templates WHERE type=%s;", (code_template_type, )\
+        self.db_cur.execute(
+            "SELECT * FROM code_block_templates WHERE type=%s;",
+            (code_template_type, )
         )
         code_element = self.db_cur.fetchall()
         return code_element
 
     def _get_code_block(self, code_block_id):
         """GET block code filled"""
-        self.db_cur.execute\
-        (\
-            "SELECT * FROM code_block WHERE id=%s;", (code_block_id, )\
+        self.db_cur.execute(
+            "SELECT * FROM code_block WHERE id=%s;", (code_block_id, )
         )
         code_element = self.db_cur.fetchall()
         return code_element
@@ -65,10 +61,10 @@ class JobAssemblerHandler():
         # from pprint import pprint
         # print(code_content_json)
         # print("\n\n\n\n\n")
-        self.db_cur.execute\
-        (\
-            "INSERT INTO code_block (user_id, code_block_template_id, code_content) VALUES (%s, %s, %s) returning id;",
-            (\
+        self.db_cur.execute(
+            "INSERT INTO code_block (user_id, code_block_template_id, code_content)\
+            VALUES (%s, %s, %s) returning id;",
+            (
                 self.current_user['id'],
                 code_block_template_id,
                 json.dumps(code_content_json)
@@ -78,13 +74,13 @@ class JobAssemblerHandler():
         self.db_conn.commit()
         return code_content
 
-
     def _code_assembler(self, pipeline_sequence, pipeline_sequence_params):
         """CREATE full job code"""
         job_code = ''
 
         stages = ['input', 'preprocessing', 'model', 'output']
-        self.db_cur.execute("SELECT * FROM code_block_templates WHERE name='initializer';")
+        self.db_cur.execute(
+            "SELECT * FROM code_block_templates WHERE name='initializer';")
         initializer = self.db_cur.fetchone()
 
         self.db_cur.execute("SELECT * FROM code_block_templates WHERE name='pipeline_execution';")

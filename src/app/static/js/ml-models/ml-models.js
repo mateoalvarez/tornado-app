@@ -13,17 +13,17 @@ function addNewPreprocessing(){
   <div id="preprocessing-element-to-replace-` + preprocessingCounter + `" class="w-100">
     <div class="container card-group my-3 px-0 w-100">
       <div class="card mx-0">
-        <h4 class="card-header">` + modelsApplication_creationSelectPreprocessingStagePreprocessing + `</h4>
+        <h4 class="card-header">` + modelsPipeline_creationSelectPreprocessingStagePreprocessing + `</h4>
         <div class="card-body">
-          <select class="form-control" id="application_prep_stages_ids" name="application_prep_stages_ids">
+          <select class="form-control" id="pipeline_prep_stages_ids" name="pipeline_prep_stages_ids">
             ` + preprNameOptions + `
           </select>
         </div>
       </div>
       <div class="card mx-0">
-        <h4 class="card-header">` + modelsApplication_creationSelectPreprocessingStageConfig + `</h4>
+        <h4 class="card-header">` + modelsPipeline_creationSelectPreprocessingStageConfig + `</h4>
         <div class="card-body">
-          <input class="text-input card-body w-100" id="application_prep_stages_ids_` + preprocessingCounterNext + `" name="application_prep_stages_ids_config" />
+          <input class="text-input card-body w-100" id="pipeline_prep_stages_ids_` + preprocessingCounterNext + `" name="pipeline_prep_stages_ids_config" />
         </div>
       </div>
     </div>
@@ -61,17 +61,17 @@ function addNewModel(){
   <div id="model-element-to-replace-` + modelCounter + `" class="w-100">
     <div class="container card-group my-3 px-0 w-100">
       <div class="card mx-0">
-        <h4 class="card-header">` + modelsApplication_creationSelectModelStageModel + `</h4>
+        <h4 class="card-header">` + modelsPipeline_creationSelectModelStageModel + `</h4>
         <div class="card-body">
-          <select class="form-control" id="application_models_ids" name="application_models_ids">
+          <select class="form-control" id="pipeline_models_ids" name="pipeline_models_ids">
             ` + modelNameOptions + `
           </select>
         </div>
       </div>
       <div class="card mx-0">
-        <h4 class="card-header">` + modelsApplication_creationSelectModelStageConfig + `</h4>
+        <h4 class="card-header">` + modelsPipeline_creationSelectModelStageConfig + `</h4>
         <div class="card-body">
-          <input class="text-input card-body w-100" id="application_prep_stages_ids_config_` + modelCounterNext + `" name="application_models_config" />
+          <input class="text-input card-body w-100" id="pipeline_prep_stages_ids_config_` + modelCounterNext + `" name="pipeline_models_config" />
         </div>
       </div>
     </div>
