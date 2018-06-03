@@ -7,32 +7,40 @@
 {% block body %}
   <div class="container-fluid transparent_lighter_background py-5">
     <div class="container">
-      <ul class="nav nav-tabs strong" id="Tabs" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="list-datasets-tab" data-toggle="tab" href="#Datasets" role="tab" aria-controls="datasets" aria-selected="true">{{ _("datasets.tab.Existingdatasets") }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="upload-datasets-tab" data-toggle="tab" href="#Upload" role="tab" aria-controls="upload" aria-selected="false">{{ _("datasets.tab.Uploaddataset") }}</a>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="Datasets" role="tabpanel" aria-labelledby="list-datasets-tab">
-          <div class="row my-3">
-            <h1>{{ _("datasets.headers.public_datasets") }}</h1>
+      <div class="tab-pane fade show active" id="Datasets" role="tabpanel" aria-labelledby="list-datasets-tab">
+        <div class="row text-center">
+          <a class="btn btn-primary col-12" data-toggle="collapse" href="#uploadDataset" role="button" aria-expanded="false" aria-controls="uploadDataset">
+            {{ _("datasets.upload.dataset") }}
+          </a>
+          <div class="collapse col-12 py-2" id="uploadDataset">
+            <div class="card shadow rounded">
+              <form enctype="multipart/form-data" action="/datasets" method="post" id="upload_dataset_form">
+                <div class="form-group">
+                  <fieldset>
+                      <br />
+                      <input class="text-input" id="dataset_file" name="dataset_file" type="file" value="">
+                  </fieldset>
+                  <br />
+                  <div id="form_btn">
+                      <input id="signin-btn" class="btn btn-primary" type="submit" value={{ _("datasets.upload.dataset") }} tabindex="3">
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
-          {% include "_public_datasets.html" %}
-          <div class="row my-3">
-            <h1>{{ _("datasets.headers.user_datasets") }}</h1>
-          </div>
-          {% if bool(user_datasets) %}
-            {% include "_user_datasets.html" %}
-          {% else %}
-            <h2>No user datasets yet</h2>
-          {% end %}
         </div>
-        <div class="tab-pane fade" id="Upload" role="tabpanel" aria-labelledby="upload-datasets-tab">
-          {% include "_upload_dataset.html" %}
+        <div class="row my-3">
+          <h1>{{ _("datasets.headers.public_datasets") }}</h1>
         </div>
+        {% include "_public_datasets.html" %}
+        <div class="row my-3">
+          <h1>{{ _("datasets.headers.user_datasets") }}</h1>
+        </div>
+        {% if bool(user_datasets) %}
+          {% include "_user_datasets.html" %}
+        {% else %}
+          <h2>No user datasets yet</h2>
+        {% end %}
       </div>
     </div>
   </div>
