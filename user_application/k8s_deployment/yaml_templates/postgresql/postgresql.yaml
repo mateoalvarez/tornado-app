@@ -39,3 +39,11 @@ spec:
         env:
           - name: POSTGRES_PASSWORD
             value: mysecretpassword
+        volumeMounts:
+        - name: psql-cluster
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: psql-cluster
+        awsElasticBlockStore:
+          volumeID: EBS_VOLUME_ID # volume id from aws console.
+          fsType: ext4
