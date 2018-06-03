@@ -22,7 +22,7 @@
   </script>
 {% end %}
 
-<form method='post' action='/pipelines'>
+<form class="form-group" method='post' action='/pipelines'>
   <div class="dropdown">
     <label for="pipeline_dataset">{{ _("models.pipeline_creation.select.dataset") }}</label>
     <select class="form-control" id="pipeline_dataset" name="pipeline_dataset" required>
@@ -93,7 +93,7 @@
   <hr />
   <div>
     <label for="classification_criteria">{{ _("models.pipeline_creation.select.classification_criteria") }}</label>
-    <select id="classification_criteria" name="classification_criteria" required>
+    <select class="form-control" id="classification_criteria" name="classification_criteria" required>
       {% for criteria in classification_criteria %}
         <option value="{{ criteria["id"] }}">{{ criteria["name"] }}</option>
       {% end %}
@@ -102,7 +102,7 @@
   <hr />
   <div>
     <label for="pipeline_name">{{ _("models.pipeline_creation.select.pipeline_name") }}</label>
-    <input class="text-input" id="pipeline_name" name="pipeline_name" type="text" value="" />
+    <input class="text-input 6-col form-control" id="pipeline_name" name="pipeline_name" type="text" value="" maxlength="20"/>
   </div>
   <hr />
   <div class="container">

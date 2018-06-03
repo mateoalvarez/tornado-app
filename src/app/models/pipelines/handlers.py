@@ -250,11 +250,11 @@ class MLModelsHandlerDelete(BaseHandler):
         try:
             self.db_cur.execute(
                 "DELETE FROM pipelines WHERE id=%s;",
-                (id,)
+                (id, )
             )
             self.db_conn.commit()
             error = None
         except Exception as exception:
             error = exception
             print(exception)
-        self.redirect(self.get_argument("next", "/pipelines"), error=error)
+        self.redirect(self.get_argument("next", "/pipelines"))

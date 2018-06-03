@@ -7,40 +7,50 @@
 {% block body %}
   <div class="container-fluid transparent_lighter_background py-5">
     <div class="container">
-      <div class="tab-pane fade show active" id="Datasets" role="tabpanel" aria-labelledby="list-datasets-tab">
-        <div class="row text-center">
-          <a class="btn btn-primary col-12" data-toggle="collapse" href="#uploadDataset" role="button" aria-expanded="false" aria-controls="uploadDataset">
-            {{ _("datasets.upload.dataset") }}
-          </a>
-          <div class="collapse col-12 py-2" id="uploadDataset">
-            <div class="card shadow rounded">
-              <form enctype="multipart/form-data" action="/datasets" method="post" id="upload_dataset_form">
-                <div class="form-group">
-                  <fieldset>
-                      <br />
-                      <input class="text-input" id="dataset_file" name="dataset_file" type="file" value="">
-                  </fieldset>
-                  <br />
-                  <div id="form_btn">
-                      <input id="signin-btn" class="btn btn-primary" type="submit" value={{ _("datasets.upload.dataset") }} tabindex="3">
-                  </div>
+      <div class="row text-center">
+        <a class="btn btn-primary btn-lg col-12" data-toggle="collapse" href="#uploadDataset" role="button" aria-expanded="false" aria-controls="uploadDataset">
+          {{ _("datasets.upload.dataset") }}
+        </a>
+        <div class="collapse col-12 py-2" id="uploadDataset">
+          <div class="card shadow rounded">
+            <form enctype="multipart/form-data" action="/datasets" method="post" id="upload_dataset_form">
+              <div class="form-group">
+                <fieldset>
+                    <br />
+                    <input class="text-input" id="dataset_file" name="dataset_file" type="file" value="">
+                </fieldset>
+                <br />
+                <div id="form_btn">
+                    <input id="signin-btn" class="btn btn-primary" type="submit" value={{ _("datasets.upload.dataset") }} tabindex="3">
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
-        <div class="row my-3">
-          <h1>{{ _("datasets.headers.public_datasets") }}</h1>
+      </div>
+      <div class="row my-3">
+        <a class="btn btn-outline-dark btn-lg col-12 text-center" data-toggle="collapse" href="#publicDatasets" role="button" aria-expanded="false" aria-controls="publicDatasets">
+          {{ _("datasets.headers.public_datasets") }}
+        </a>
+        <div class="collapse col-12 py-2" id="publicDatasets">
+          {% if bool(public_datasets) %}
+            {% include "_public_datasets.html" %}
+          {% else %}
+            <h2>No public datasets</h2>
+          {% end %}
         </div>
-        {% include "_public_datasets.html" %}
-        <div class="row my-3">
-          <h1>{{ _("datasets.headers.user_datasets") }}</h1>
+      </div>
+      <div class="row my-3">
+        <a class="btn btn-outline-dark btn-lg col-12 text-center" data-toggle="collapse" href="#userDatasets" role="button" aria-expanded="false" aria-controls="userDatasets">
+          {{ _("datasets.headers.user_datasets") }}
+        </a>
+        <div class="collapse col-12 py-2" id="userDatasets">
+          {% if bool(user_datasets) %}
+            {% include "_user_datasets.html" %}
+          {% else %}
+            <h2>No user datasets yet</h2>
+          {% end %}
         </div>
-        {% if bool(user_datasets) %}
-          {% include "_user_datasets.html" %}
-        {% else %}
-          <h2>No user datasets yet</h2>
-        {% end %}
       </div>
     </div>
   </div>
