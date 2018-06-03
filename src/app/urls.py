@@ -5,7 +5,7 @@ from tornado.web import url
 from models.home.handlers import HomeHandler
 from models.users.handlers import RegisterHandler, LogoutHandler, LoginHandler, UserSettingsHandler
 from models.applications.handlers import ApplicationsHandler, ApplicationDeletionHandler
-from models.applications.handlers import ApplicationDeploymentDeletionHandler
+from models.applications.handlers import ApplicationDeploymentDeletionHandler, ApplicationDeployer
 from models.datasets.handlers import DatasetsHandler, DatasetsDeleteHandler
 from models.pipelines.handlers import MLModelsHandler, MLModelsHandlerDelete
 from models.pipelines.aws_deploy_handler import MLModelsAWSDeployHandler
@@ -33,7 +33,7 @@ URL_PATTERNS = [
 
     # Applications
     url(r"/applications", ApplicationsHandler, name="applications"),
-    url(r"/applications/deploy", ApplicationsHandler, name="applications_deploy"),
+    url(r"/applications/deploy", ApplicationDeployer, name="applications_deploy"),
     url(r"/applications/stop", ApplicationDeploymentDeletionHandler, name="applications_stop"),
     url(r"/applications/delete", ApplicationDeletionHandler, name="applications_delete"),
 

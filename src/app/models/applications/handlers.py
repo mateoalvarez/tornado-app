@@ -101,6 +101,8 @@ class ApplicationDeletionHandler(BaseHandler):
 class ApplicationDeployer(BaseHandler):
     """Handler to deploy created applications"""
 
+    @gen.coroutine
+    @tornado.web.authenticated
     def post(self):
         "Deploy application"
 
@@ -118,6 +120,19 @@ class ApplicationDeployer(BaseHandler):
         application_id = self.get_argument("application_id", "", False)
         pipeline_id = self.get_argument("pipeline_id", "", False)
 
+        datasource_configuration_id = self.get_argument("datasource_configuration_id", "", False)
+        self.db_cur.execute(
+            "SELECT datasource_application_config FROM datasource_configurations WHERE id=%s",
+            (datasource_configuration_id, )
+        )
+        datasource_keywords = self.db_cur.fetchall()\
+            [0]["datasource_application_config"]["keywords"]
+
+        self.db_cur.execute(
+            "SELECT * FROM pipelines WHERE id=%s;", (pipeline_id, )
+        )
+        pipeline = self.db_cur.fetchall()[0]
+
         try:
             model_urls = [
                 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'+\
@@ -127,7 +142,7 @@ class ApplicationDeployer(BaseHandler):
                     .format(
                         user_id=self.current_user["id"],
                         application_id=application_id),
-                    StartAfter='user_{user_id}/models/application_{application_id}'
+                        StartAfter='user_{user_id}/models/application_{application_id}'
                     .format(
                         user_id=self.current_user["id"],
                         application_id=application_id))["Contents"]]
@@ -153,29 +168,30 @@ class ApplicationDeployer(BaseHandler):
             model_urls.remove(preprocessing_url)
 
             dispatcher_deployer.deploy_models(
-                application_id=application["id"],
-                model_ids=application["application_models_ids"],
+                pipeline_id=pipeline_id,
+                model_ids=pipeline["pipeline_models_ids"],
                 model_urls=model_urls)
 
             dispatcher_deployer.deploy_preprocessing(
-                application_id=application["id"],
-                preprocessing_ids=application["application_prep_stages_ids"],
+                pipeline_id=pipeline_id,
+                preprocessing_ids=pipeline["pipeline_prep_stages_ids"],
                 preprocessing_url=preprocessing_url)
 
             dispatcher_deployer.deploy_dispatcher(
-                **application,
+                **pipeline,
+                application_id=application_id,
                 datasource_configuration=application_datasource_configuration,
                 classification_configuration=classification_configuration
             )
             dispatcher_deployer.deploy_kafka_producer(
-                application_id=application["id"],
+                application_id=application_id,
                 keywords=datasource_keywords
                 )
 
             # Update application status -> to 'running'
             self.db_cur.execute(
-                "UPDATE applications SET application_status='running' WHERE id=(%s);", (application_id,)
-                )
+                "UPDATE applications SET application_status='running' WHERE id=(%s);",
+                (application_id,))
             self.db_conn.commit()
 
             self.redirect(self.get_argument("next", "/applications"))
