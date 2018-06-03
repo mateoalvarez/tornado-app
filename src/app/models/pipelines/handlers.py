@@ -143,9 +143,7 @@ class MLModelsHandler(BaseHandler):
     @gen.coroutine
     @tornado.web.authenticated
     def post(self):
-        """CREATE and deploy training works"""
-
-        # print('\n\n\n')
+        """CREATE training works"""
 
         dataset = self.get_argument('pipeline_dataset', '')
 
