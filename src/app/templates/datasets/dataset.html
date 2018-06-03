@@ -13,26 +13,30 @@
         </a>
         <div class="collapse col-12 py-2" id="uploadDataset">
           <center>
-            <div class="card shadow rounded px-3">
-              <form enctype="multipart/form-data" action="/datasets" method="post" id="upload_dataset_form">
-                <div class="form-group">
-                  <fieldset>
-                      <br />
-                      <input class="text-input" id="dataset_file" name="dataset_file" type="file" value="">
-                  </fieldset>
-                  <br />
-                  <fieldset>
-                    <label for="dataset_description">{{ _("datasets.upload.description") }}</label>
-                    <textarea class="form-control" name="dataset_description" rows="4"></textarea>
-                    <label for="dataset_properties">{{ _("datasets.upload.properties") }}</label>
-                    <textarea class="form-control " name="dataset_properties" rows="4"></textarea>
-                  </fieldset>
+            <form enctype="multipart/form-data" action="/datasets" method="post" id="upload_dataset_form">
+              <div class="card shadow rounded">
+                <div class="card-body">
+                  <div class="form-group">
+                    <fieldset>
+                        <br />
+                        <input class="text-input" id="dataset_file" name="dataset_file" type="file" value="">
+                    </fieldset>
+                    <br />
+                    <fieldset>
+                      <label for="dataset_description">{{ _("datasets.upload.description") }}</label>
+                      <textarea class="form-control" name="dataset_description" rows="4"></textarea>
+                      <label for="dataset_properties">{{ _("datasets.upload.properties") }}</label>
+                      <textarea class="form-control " name="dataset_properties" rows="4"></textarea>
+                    </fieldset>
+                  </div>
+                </div>
+                <div class="card-footer">
                   <div class="py-2">
                       <input class="btn btn-primary py-2" type="submit" value={{ _("datasets.upload.dataset") }} tabindex="3">
                   </div>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </center>
         </div>
       </div>
