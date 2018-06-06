@@ -1,62 +1,183 @@
 # Home page
 
-"welcome","welcome"
-"Welcome","Welcome"
-"Sign out","Sign out"
+"welcome","bienvenido"
+"Welcome","Bienvenido"
+"Sign out","Cerrar sesión"
 "home.cards.header.create_user","Regístrate"
-"home.cards.text.create_user","Crea una cuenta e introduce tus credenciales de twitter. Para más información, visita este "
+"home_cards_text_create_user","Crea una cuenta e introduce tus credenciales de twitter. Para más información, visita este "
+
+"home.cards.header.upload_dataset","Usa tus datos"
+"home.cards.text.upload_dataset","Carga tus datasets en la plataforma para entrenar modelos o usa datasets públicos ya cargados."
+
+"home.cards.header.create_model","Entrena modelos"
+"home.cards.text.create_model","Entrena modelos en un cluster, en distribuído, a partir de los datos cargados."
+
+"home.cards.header.deploy_application","Despliega aplicaciones"
+"home.cards.text.deploy_application","Usa los modelos entrenados para desplegar aplicaciones conectadas al API de twitter para clasificar y almacenar tweets."
+
+"home.cards.header.visualize_data","Visualiza y descarga los datos"
+"home.cards.text.visualize_data","Analiza los gráficos de tendencia para ver la clasificación de los tweets y descarga los datos de tweets clasificados."
+
+## Landing page
+"landing.main.title","PyxisML"
+"landing.main.description","The Machine Learning tool to classify tweets in Real Time"
+"landing.main.read_more.button","How it works"
 
 # Navbar
 
 "navbar.user.Login","Login"
 "navbar.user.Logout","Logout"
-"navbar.user.Register","Register"
-"navbar.user.Settings","Settings"
+"navbar.user.Register","Registro"
+"navbar.user.Settings","Configuración"
+"navbar.datasets","Datasets"
+"navbar.pipelines","Pipelines"
+"navbar.applications","Aplicaciones"
+
+# Pipelines
+
+"pipelines.upload_dataset.header","Cargar un dataset"
+"pipelines.upload_dataset.body","Carga tus propios datasets o usa datasets públicos para entrenar tus modelos"
+"pipelines.upload_dataset.button","Cargar dataset"
+
+"pipelines.create_pipeline.header","Entrenar un pipeline"
+"pipelines.create_pipeline.body","Construye y entrena pipelines para usarlos luego en la clasificación de tweets"
+"pipelines.create_pipeline.button","Crear pipeline"
+
+"pipelines.create_application.header","Crear una aplicación"
+"pipelines.create_application.body","Crea una aplicación a partir de un pipeline para obtener y clasificar tweets en tiempo real"
+"pipelines.create_application.button","Crear aplicación"
+
+
+
 
 # Datasets
 
-"datasets.tab.Existingdatasets","Existing datasets"
-"datasets.tab.Uploaddataset","Upload dataset"
-
-## Datasets
-
-"datasets.header.dataset_name","Dataset name"
-"datasets.header.dataset_size","Dataset size"
-"datasets.header.metrics","Dataset metrics"
+"datasets.headers.public_datasets","Datasets Públicos"
+"datasets.headers.user_datasets","Datasets Privados"
 
 ## Upload Datasets
 
-"datasets.upload.dataset","Load dataset"
+"datasets.upload.dataset","Cargar dataset"
+"datasets.upload.description","Descripción del dataset"
+"datasets.upload.properties","Propiedades del dataset"
 
 ## Manage Datasets
-
-"datasets.header.delete_dataset","Delete dataset"
-"datasets.delete.button","Delete dataset: "
+"datasets.header.dataset_description","Descripción del dataset"
+"datasets.header.dataset_properties","Propiedades del dataset"
+"datasets.delete.button","Borrar dataset: "
 
 ### Manage Datasets Modal
 
-"datasets.delete.confirm.title","Confirm Deletion"
-"datasets.delete.confirm.confirmation_text","This action can not be undone, please confirm deletion of dataset: "
-"datasets.delete.confirm.go_back","Go back"
-"datasets.delete.confirm.confirm","Confirm"
+"datasets.delete.confirm.title","Confirmar borrado"
+"datasets.delete.confirm.confirmation_text","Esta acción no se puede deshacer, por favor, confirma el borrado: "
+"datasets.delete.confirm.go_back","Atrás"
+"datasets.delete.confirm.confirm","Confirmar"
 
 # User login
 
-login.user.Email, Email
-login.user.Password, Password
-"login.user.Login","Log in"
+"login.user.Email","Email"
+"login.user.Password","Password"
+"login.user.Login","Entrar"
 
 # User registration
 
-registration.user.Email, Email
-registration.user.Username, Username
-registration.user.Password, Password
-registration.user.Repeatpassword, Repeat password
-registration.user.Register, Register
+"registration.user.Email","Email"
+"registration.user.Username","Nombre"
+"registration.user.Password","Password"
+"registration.user.Repeatpassword","Repetir password"
+"registration.user.Register","Registrarse"
 
 # User settings page
 
-user.settings.title, Settings
-user.settings.name, Name
-user.settings.email, Email
-user.settings.type, Type
+"user.settings.title","Configuración"
+"user.settings.name","Nombre"
+"user.settings.email","Email"
+"user.settings.type","Tipo"
+
+# Pipelines
+
+## Tabs
+"mlmodels.tab.Datapreprocessing","Preprocesamiento"
+"mlmodels.tab.Modelsselection","Modelos"
+"mlmodels.tab.create_pipeline","Crear pipeline"
+"mlmodels.tab.pipelines","Pipelines"
+
+### Preprocessing tab
+"pipelines.tab.data_preprocessing","Etapas de prepeocesamiento"
+"pipelines.header.data_prep_method_description","Descripción"
+
+### Models tab
+"pipelines.tab.models","Modelos"
+"pipelines.header.model_description","Descripción"
+
+### Pipeline creation tab
+"mlmodels.tab.pipeline_creation","Crear nuevo pipeline"
+"models.pipeline_creation.select.dataset","Seleccionar dataset"
+"models.pipeline_creation.select.preprocessing","Añadir etapas de preprocesamiento"
+"models.pipeline_creation.select.model","Añadir modelos"
+"models.pipeline_creation.select.classification_criteria","Seleccionar criterio de clasificación"
+"models.pipeline_creation.select.pipeline_name","Nombre del pipeline"
+"models.pipeline_creation.select.preprocessing.stage.preprocessing","Plantilla"
+"models.pipeline_creation.select.preprocessing.stage.config","Configuración"
+"models.pipeline_creation.select.preprocessing.stage.add_more","Añadir más etapas de preprocesamiento"
+"models.pipeline_creation.select.preprocessing.stage.delete_current","Eliminar etapa de preprocesamiento"
+"models.pipeline_creation.select.model.stage.model","Plantilla"
+"models.pipeline_creation.select.model.stage.config","Configuración"
+"models.pipeline_creation.select.model.stage.add_more","Añadir más modelos"
+"models.pipeline_creation.select.model.stage.delete_current","Borrar modelo"
+"models.pipeline_creation.submit","Crear pipeline"
+
+### Pipeline status tab
+"models.header.pipeline_name","Nombre"
+"models.header.dataset","Dataset"
+"models.header.preprocessing_stages","Etapas de preprocesamiento"
+"models.header.models","Modelos"
+"models.header.classification_criteria","Criterio de clasificación"
+"models.header.status","Estado"
+"models.header.start_training","Empezar entrenamiento"
+"models.content.start_training","Empezar entrenamiento"
+"models.header.delete","Borrar"
+"models.content.delete_model","Borrar"
+"application.tab.pipelines","Pipelines"
+
+"models.deploy.confirm.confirmation_text","La aplicación desplegará un trabajo de spark en un cluster distribuido, lo que generará costes adicionales, ¿Está seguro de que quiere continuar?"
+
+# APPLICATION DEPLOY
+
+## Applications
+"applications.header","Aplicaciones"
+
+## Application cards
+"applications.user_applications.card_navbar.application_status","Aplicación"
+"applications.user_applications.card_navbar.application_visualization","Datos"
+
+## Application management
+"application.tab.applications","Aplicaciones"
+"application.tab.create_application","Crear aplicación"
+"applications.user_applications.deploy_application","Desplegar aplicación"
+"applications.user_applications.delete_application_deployment","Parar aplicación"
+"applications.user_applications.delete_application","Borrar aplicación"
+"applications.user_applications.no_applications.header","No hay aplicaciones"
+
+## Create applications
+"applications.create_application.create_form.reveal_button","Crear aplicación"
+"applications.create_application.create_form.header","Nueva aplicación"
+"applications.create_application.create_form.application_name","Nombre"
+"applications.create_application.create_form.select_pipeline","Selección de pipeline"
+"applications.create_application.create_form.keywords","Keywords"
+"create_application.create_form.keywords_placeholder","bigdata,ai"
+"create_application.create_form.submit_form","Crear aplicación"
+"create_application.create_form.optgroup_label.user_pipelines","--- Pipelines Privados ---"
+"create_application.create_form.optgroup_label.public_pipelines","--- Pipelines Públicos ---"
+
+## Application deploy
+"applications.header.deploy","Desplegar "
+"applications.content.deploy","Desplegar "
+"applications.header.delete","Parar"
+"applications.content.delete","Parar"
+"applications.deploy.confirm.confirmation_text","La aplicación se desplegará en el cluster, clasificando los tweets que reciba de Twitter. Introduzca las palabras clave (hashtags) que quiera monitorizar. Las palabras deben ir separadas por comas (,), no se admiten espacios, y se procesan como filtros 'OR'."
+"applications.delete.confirm.confirmation_text","La aplicación se dentendrá, y se parará el procesamiento de datos nuevos. Los datos ya procesados seguirán estando disponibles"
+
+## Application visualization data
+"applications.user_applications.card_body.visualize","Visualización"
+"applications.user_applications.card_body.download","Descargar datos"

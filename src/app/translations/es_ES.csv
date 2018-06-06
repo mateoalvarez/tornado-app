@@ -18,6 +18,11 @@
 "home.cards.header.visualize_data","Visualiza y descarga los datos"
 "home.cards.text.visualize_data","Analiza los gráficos de tendencia para ver la clasificación de los tweets y descarga los datos de tweets clasificados."
 
+## Landing page
+"landing.main.title","PyxisML"
+"landing.main.description","La herramienta de Machine Learning para clasificar tweets en tiempo real"
+"landing.main.read_more.button","Cómo funciona"
+
 # Navbar
 
 "navbar.user.Login","Login"
