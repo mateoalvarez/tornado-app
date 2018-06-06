@@ -95,6 +95,12 @@ CREATE TABLE datasource_configurations (
   PRIMARY KEY (id),
   FOREIGN KEY (datasource_settings_id) REFERENCES datasource_settings(id)
 );
+-- pipeline_files
+-- pipeline_files: {
+--   model_files: [{model_name: model_link}, {model_name: model_link}],
+--   preprocessing_files: [{preprocessing_name: preprocessing_link}],
+--   metric_files: metric_files_link
+-- }
 
 CREATE TABLE pipelines (
   id SERIAL UNIQUE,
@@ -106,6 +112,7 @@ CREATE TABLE pipelines (
   pipeline_status pipeline_status_enum,
   pipeline_prep_stages_ids INTEGER ARRAY NOT NULL,
   pipeline_models_ids INTEGER ARRAY NOT NULL,
+  pipeline_files JSONB,
   error_status TEXT,
   creation_date DATE NOT NULL DEFAULT(now()),
   PRIMARY KEY (id, user_id),

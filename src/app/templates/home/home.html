@@ -9,76 +9,243 @@
 {% end %}
 {% block body %}
 
-<div class="dark_background">
-  <div class="container">
-    <center class="text-light mx-auto">
+<!--Showcase-->
+<section id="showcase" class="py-5">
+    <div class="primary-overlay text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 text-center">
+                    <h1 class="display-2 mt-5 pt-5">
+                        Pyxisml Tweet Analysis
+                    </h1>
+                    <p>A tool using machine learning to categorize tweets based on specific models </p>
+                    <a href="#about" class="btn btn-outline-secondary btn-lg text-white"><i class="fa fa-arrow-right"></i>Read
+                        More</a>
+                </div>
+                <div class="col-sm-5">
+                    <img src="../../static/img/PyxismlDiagram.png" alt="Diagram" class="img-fluid d-none d-lg-block">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-      <div class="container-fluid">
-        <img src="{{ static_url("img/landing_description.png") }}"/>
-      </div>
-    </center>
-    <center>
-    <div class="container card-columns">
-      <!-- First card -->
-      <div class="card">
-        <div class="card-header bg-info">
-          <h4 class="card-title">{{ _("home.cards.header.create_user") }}</h4>
+<!-- Boxes Section -->
+<section id="boxes" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-center border-primary">
+                    <div class="card-body">
+                        <h3 class="text-primary">Chose a Trained Model</h3>
+                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad,
+                            molestiae?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-primary text-white">
+                    <div class="card-body">
+                        <h3>Interpret All Data</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, molestiae Lorem ipsum
+                          dolor sit amet</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-primary">
+                    <div class="card-body">
+                        <h3 class="text-primary">Categorize tweets</h3>
+                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad,
+                            molestiae?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-primary text-white">
+                    <div class="card-body">
+                        <h3>Boost your Efficiency</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, molestiae?</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-          <p class="card-text">
-            {{ _("home_cards_text_create_user") }}
-            <a target="_blank" href="https://twitter.com/?lang=es">link</a>
-          </p>
-        </div>
-      </div>
-      <!-- Second card -->
-      <div class="card">
-        <div class="card-header bg-info">
-          <h4 class="card-title">{{ _("home.cards.header.upload_dataset") }}</h4>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            {{ _("home.cards.text.upload_dataset") }}
-          </p>
-        </div>
-      </div>
-      <!-- Third card -->
-      <div class="card">
-        <div class="card-header bg-info">
-          <h4 class="card-title">{{ _("home.cards.header.create_model") }}</h4>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            {{ _("home.cards.text.create_model") }}
-          </p>
-        </div>
-      </div>
     </div>
-    <div class="row">
-      <!-- Fourth card -->
-      <div class="card col-5 mx-auto px-0">
-        <div class="card-header bg-info">
-          <h4 class="card-title">{{ _("home.cards.header.deploy_application") }}</h4>
+</section>
+
+<!-- Accordeon Section FAQ/ABOUT -->
+<section id="about" class="py-5 text-center bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="info-header mb-5">
+                    <h1 class="text-primary pb-3">
+                        What is Pyxisml?
+                    </h1>
+                    <p class="lead pb-3">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae cum ducimus, fugiat illo
+                        obcaecati vel!
+                    </p>
+                </div>
+
+                <!--ACCORDION-->
+                <div id="accordion" role="tablist">
+                    <div class="card">
+                        <div class="card-header" id="heading1">
+                            <h5 class="mb-0">
+                                <div href="#collapse1" data-toggle="collapse" data-parent="#accordion">
+                                    <i class="fa fa-arrow-circle-down"></i> Neuronal Networks
+                                </div>
+                            </h5>
+                        </div>
+                        <div id="collapse1" class="collapse show">
+                            <div class="card-body">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis consequuntur
+                                distinctio, eius maxime modi necessitatibus nihil nobis officiis perspiciatis quis
+                                reprehenderit sapiente veritatis vero voluptate. Culpa explicabo in laudantium
+                                molestias mollitia quasi similique, tenetur veniam voluptates? Ipsum, molestias quia?
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" id="heading2">
+                            <h5 class="mb-0">
+                                <div href="#collapse2" data-toggle="collapse" data-parent="#accordion">
+                                    <i class="fa fa-arrow-circle-down"></i> Machine Learning
+                                </div>
+                            </h5>
+                        </div>
+                        <div id="collapse2" class="collapse">
+                            <div class="card-body">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis consequuntur
+                                distinctio, eius maxime modi necessitatibus nihil nobis officiis perspiciatis quis
+                                reprehenderit sapiente veritatis vero voluptate. Culpa explicabo in laudantium
+                                molestias mollitia quasi similique, tenetur veniam voluptates? Ipsum, molestias quia?
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" id="heading3">
+                            <h5 class="mb-0">
+                                <div href="#collapse3" data-toggle="collapse" data-parent="#accordion">
+                                    <i class="fa fa-arrow-circle-down"></i> Predictions and Models
+                                </div>
+                            </h5>
+                        </div>
+                        <div id="collapse3" class="collapse">
+                            <div class="card-body">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis consequuntur
+                                distinctio, eius maxime modi necessitatibus nihil nobis officiis perspiciatis quis
+                                reprehenderit sapiente veritatis vero voluptate. Culpa explicabo in laudantium
+                                molestias mollitia quasi similique, tenetur veniam voluptates? Ipsum, molestias quia?
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-          <p class="card-text">
-            {{ _("home.cards.text.deploy_application") }}
-          </p>
-        </div>
-      </div>
-      <!-- Fifth card -->
-      <div class="card col-5 mx-auto px-0">
-        <div class="card-header bg-info">
-          <h4 class="card-title">{{ _("home.cards.header.visualize_data") }}</h4>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            {{ _("home.cards.text.visualize_data") }}
-          </p>
-        </div>
-      </div>
     </div>
-    </center>
-  </div>
-</div>
+</section>
+
+<!-- Authors Section -->
+<section id="authors" class="my-5 text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="info-header mb-5">
+                    <h1 class="text-primary pb-3">
+                        The Team
+                    </h1>
+                    <p class="lead pb-3">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae cum ducimus, fugiat illo
+                        obcaecati vel!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+              <div class="card">
+                  <div class="card-body">
+                      <img src="img/monkey.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                      <h3>Mateo Alvarez</h3>
+                      <h5>Designer</h5>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, magni quaerat. Architecto
+                          ducimus ea est eum praesentium saepe sint.</p>
+                      <div class="d-flex flex-row-justify-content-center">
+                          <div class="p-4">
+                              <a href="#"><i class="fa fa-linkedin"></i></a>
+                          </div>
+                          <div class="p-4">
+                              <a href="#"><i class="fa fa-github"></i></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+              <div class="card">
+                  <div class="card-body">
+                      <img src="img/monkey.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                      <h3>Mateo Alvarez</h3>
+                      <h5>Designer</h5>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, magni quaerat. Architecto
+                          ducimus ea est eum praesentium saepe sint.</p>
+                      <div class="d-flex flex-row-justify-content-center">
+                          <div class="p-4">
+                              <a href="#"><i class="fa fa-linkedin"></i></a>
+                          </div>
+                          <div class="p-4">
+                              <a href="#"><i class="fa fa-github"></i></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+              <div class="card">
+                  <div class="card-body">
+                      <img src="img/monkey.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                      <h3>Mateo Alvarez</h3>
+                      <h5>Designer</h5>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, magni quaerat. Architecto
+                          ducimus ea est eum praesentium saepe sint.</p>
+                      <div class="d-flex flex-row-justify-content-center">
+                          <div class="p-4">
+                              <a href="#"><i class="fa fa-linkedin"></i></a>
+                          </div>
+                          <div class="p-4">
+                              <a href="#"><i class="fa fa-github"></i></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="img/monkey.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                        <h3>Mateo Alvarez</h3>
+                        <h5>Designer</h5>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, magni quaerat. Architecto
+                            ducimus ea est eum praesentium saepe sint.</p>
+                        <div class="d-flex flex-row-justify-content-center">
+                            <div class="p-4">
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                            </div>
+                            <div class="p-4">
+                                <a href="#"><i class="fa fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% end %}
