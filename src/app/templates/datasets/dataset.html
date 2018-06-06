@@ -23,9 +23,9 @@
                     <br />
                     <fieldset>
                       <label for="dataset_description">{{ _("datasets.upload.description") }}</label>
-                      <textarea class="form-control" name="dataset_description" rows="4"></textarea>
+                      <textarea class="form-control" name="dataset_description" rows="4" placeholder="Description"></textarea>
                       <label for="dataset_properties">{{ _("datasets.upload.properties") }}</label>
-                      <textarea class="form-control " name="dataset_properties" rows="4"></textarea>
+                      <textarea class="form-control " name="dataset_properties" rows="4" placeholder="{&quot;property&quot;: &quot;value&quot;}"></textarea>
                     </fieldset>
                   </div>
                 </div>
@@ -56,10 +56,10 @@
         </div>
       </div>
       <div class="row my-3">
-        <a class="btn btn-outline-dark btn-lg col-12 text-center" data-toggle="collapse" href="#userDatasets" role="button" aria-expanded="false" aria-controls="userDatasets">
+        <a class="btn btn-outline-dark btn-lg col-12 text-center" data-toggle="collapse" href="#userDatasets" role="button" aria-expanded="true" aria-controls="userDatasets">
           {{ _("datasets.headers.user_datasets") }}
         </a>
-        <div class="collapse col-12 py-2" id="userDatasets">
+        <div class="collapse show col-12 py-2" id="userDatasets">
           {% if bool(user_datasets) %}
             {% include "_user_datasets.html" %}
           {% else %}

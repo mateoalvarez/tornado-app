@@ -12,12 +12,16 @@ class DatasetsHandler(BaseHandler):
 
     S3_CLIENT, S3_RESOURCE = BaseHandler.start_s3_connection()
 
-    def _save_dataset_in_database(self, dataset_name, storage_url):
+    def _save_dataset_in_database(self, dataset_name, storage_url, dataset_description, dataset_properties):
         """Store dataset references on database"""
         self.db_cur.execute(
-            """INSERT INTO datasets (user_id, dataset_name, storage_url)
-             VALUES (%s,%s,%s);""",
-            (self.current_user["id"], dataset_name, storage_url)
+            """INSERT INTO datasets (user_id, dataset_name, storage_url, dataset_description, dataset_properties)
+             VALUES (%s, %s, %s, %s, %s);""",
+            (self.current_user["id"],
+             dataset_name,
+             storage_url,
+             dataset_description,
+             dataset_properties)
         )
         self.db_conn.commit()
 
@@ -58,15 +62,6 @@ class DatasetsHandler(BaseHandler):
         if public_datasets_s3["KeyCount"] > 0:
             for public_dataset_s3 in public_datasets_s3["Contents"]:
                 public_datasets.append(public_dataset_s3)
-        # self.db_cur.execute(
-        #     "SELECT * FROM datasets WHERE id=%s;", (self.current_user["id"], )
-        # )
-        # user_datasets = self.db_cur.fetchall()
-        #
-        # self.db_cur.execute(
-        #     "SELECT * FROM datasets WHERE id=1;"
-        # )
-        # public_datasets = self.db_cur.fetchall()
 
         self.render("datasets/dataset.html",
                     user_datasets=user_datasets,
@@ -77,6 +72,8 @@ class DatasetsHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         """POST file to S3 bucket"""
+        dataset_description = self.get_argument("dataset_description", "")
+        dataset_properties = self.get_argument("dataset_properties", "")
         for field_name, files in self.request.files.items():
             for info in files:
                 filename, content_type = info['filename'], info['content_type']
@@ -95,9 +92,12 @@ class DatasetsHandler(BaseHandler):
                 )
                 object_acl.put(ACL='public-read')
                 self._save_dataset_in_database(
-                    info['filename'], "s3://{bucket}/{directory}".format(
+                    info['filename'],
+                    "s3://{bucket}/{directory}".format(
                         bucket=self.BUCKET_DATASETS,
-                        directory=self.current_user["email"] + "/" + filename))
+                        directory=self.current_user["email"] + "/" + filename),
+                    dataset_description,
+                    dataset_properties)
 
         self.redirect(self.get_argument("next", "/datasets"))
 
