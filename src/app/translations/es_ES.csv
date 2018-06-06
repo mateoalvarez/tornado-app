@@ -26,18 +26,28 @@
 "landing.main.read_more.button","Cómo funciona"
 
 ### Second section
-"landing.steps.first_step.header","Elige un dataset"
-"landing.steps.first_step.paragraph","Elige un dataset de los que proveemos o carga el tuyo propio"
+"landing.steps.first_step.header","Regístrate"
+"landing.steps.first_step.paragraph","Crea una cuenta e introduce tus credenciales de aplicación de Twitter"
 "landing.steps.second_step.header","Entrena un modelo"
-"landing.steps.second_step.paragraph","Despliega el entrenamiento en distribuído de un o varios de los modelos que proveemos"
-"landing.steps.third_step.header","Clasifica Streams de Twitter"
+"landing.steps.second_step.paragraph","Entrena un modelo usando uno de nuestros datasets o el tuyo propio"
+"landing.steps.third_step.header","Clasifica Tweets"
 "landing.steps.third_step.paragraph","Crea una aplicación, elige un hashtag y clasifica los tweets que lo lleven"
-"landing.steps.fourth_step.header","Visualiza y descarga los resultados"
+"landing.steps.fourth_step.header","Visualiza los resultados"
 "landing.steps.fourth_step.paragraph","Monitoriza en tiempo real la clasificación de los tweets y descarga los datos para hacer tus propios análisis"
 
 ### Third section
-"landing.how_it_works.header",""
-"landing.how_it_works.description",""
+"landing.how_it_works.header","Cómo funciona"
+"landing.how_it_works.description","Empleamos algoritmos de Procesamiento de Lenguaje Natural (NLP) junto con otras técnicas de Machine Learning para generar modelos que permitan clasificar los Tweets como positivos o negativos. Luego desplegamos estos modelos y los conectamos con el API de Twitter para obtener un Stream de Tweets clasificados y guardarlos en nuestra base de datos para poder analizarlos."
+"landing.how_it_works.advantages.first.header","Es muy fácil"
+"landing.how_it_works.advantages.first.paragraph","No es necesario programar, el código está ya generado, el entrenamiento y despliegue de los modelos se hace mediante clicks"
+"landing.how_it_works.advantages.second.header","En tiempo real"
+"landing.how_it_works.advantages.second.paragraph","Las aplicaciones se conectan al API de Twitter y descargan y clasifican tweets en tiempo real, por lo que obtienes resultados al instante y puedes monitorizar eventos externos"
+"landing.how_it_works.advantages.third.header","Descarga los datos"
+"landing.how_it_works.advantages.third.paragraph","Además de la visualización, puedes descargar tanto los datos de tweets clasificados como los modelos generados para que los uses donde quieras"
+"landing.how_it_works.advantages.fourth.header","Plataforma en crecimiento"
+"landing.how_it_works.advantages.fourth.paragraph","Es una plataforma en crecimiento constante, iremos añadiendo progresivamente nuevas funcionalidades, modelos y metodologías"
+
+
 
 # Navbar
 
