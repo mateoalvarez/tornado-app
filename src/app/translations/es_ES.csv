@@ -26,7 +26,18 @@
 "landing.main.read_more.button","Cómo funciona"
 
 ### Second section
+"landing.steps.first_step.header","Elige un dataset"
+"landing.steps.first_step.paragraph","Elige un dataset de los que proveemos o carga el tuyo propio"
+"landing.steps.second_step.header","Entrena un modelo"
+"landing.steps.second_step.paragraph","Despliega el entrenamiento en distribuído de un o varios de los modelos que proveemos"
+"landing.steps.third_step.header","Clasifica Streams de Twitter"
+"landing.steps.third_step.paragraph","Crea una aplicación, elige un hashtag y clasifica los tweets que lo lleven"
+"landing.steps.fourth_step.header","Visualiza y descarga los resultados"
+"landing.steps.fourth_step.paragraph","Monitoriza en tiempo real la clasificación de los tweets y descarga los datos para hacer tus propios análisis"
 
+### Third section
+"landing.how_it_works.header",""
+"landing.how_it_works.description",""
 
 # Navbar
 
