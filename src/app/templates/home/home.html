@@ -15,8 +15,8 @@
                     <h1 class="display-2 mt-5 pt-5">
                         {{ _("landing.main.title") }}
                     </h1>
-                    <p>{{ _("landing.main.description") }}</p>
-                    <a href="#about" class="btn btn-outline-secondary btn-lg text-white"><i class="fa fa-arrow-right"></i>{{ _("landing.main.read_more.button") }}</a>
+                    <p class="landing_main_description">{{ _("landing.main.description") }}</p>
+                    <a href="#about" class="btn btn-outline-light btn-lg"><i class="fa fa-arrow-right"></i>{{ _("landing.main.read_more.button") }}</a>
                 </div>
                 <div class="col-sm-5">
                     <img src="{{ static_url("img/PyxismlDiagram.png") }}" alt="Diagram" class="img-fluid d-none d-lg-block">
@@ -86,13 +86,13 @@
                         <div class="card-header" id="heading1">
                             <h5 class="mb-0">
                                 <div href="#collapse1" data-toggle="collapse" data-parent="#accordion">
-                                    <i class="fa fa-arrow-circle-down"></i> {{ _("landing.how_it_works.models.header") }}
+                                    <i class="fa fa-arrow-circle-down"></i> {{ _("landing.how_it_works.advantages.first.header") }}
                                 </div>
                             </h5>
                         </div>
                         <div id="collapse1" class="collapse show">
                             <div class="card-body">
-                                {{ _("landing.how_it_works.models.paragraph") }}
+                                {{ _("landing.how_it_works.advantages.first.paragraph") }}
                             </div>
                         </div>
                     </div>
@@ -101,13 +101,13 @@
                         <div class="card-header" id="heading2">
                             <h5 class="mb-0">
                                 <div href="#collapse2" data-toggle="collapse" data-parent="#accordion">
-                                    <i class="fa fa-arrow-circle-down">{{ _("landing.how_it_works.training.header") }}</i>
+                                    <i class="fa fa-arrow-circle-down">{{ _("landing.how_it_works.advantages.second.header") }}</i>
                                 </div>
                             </h5>
                         </div>
                         <div id="collapse2" class="collapse">
                             <div class="card-body">
-                                {{ _("landing.how_it_works.training.paragraph") }}
+                                {{ _("landing.how_it_works.advantages.second.paragraph") }}
                             </div>
                         </div>
                     </div>
@@ -116,13 +116,28 @@
                         <div class="card-header" id="heading3">
                             <h5 class="mb-0">
                                 <div href="#collapse3" data-toggle="collapse" data-parent="#accordion">
-                                    <i class="fa fa-arrow-circle-down">{{ _("landing.how_it_works.analysis.header") }}</i>
+                                    <i class="fa fa-arrow-circle-down">{{ _("landing.how_it_works.advantages.third.header") }}</i>
                                 </div>
                             </h5>
                         </div>
                         <div id="collapse3" class="collapse">
                             <div class="card-body">
-                                {{ _("landing.how_it_works.analysis.header") }}
+                                {{ _("landing.how_it_works.advantages.third.paragraph") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" id="heading4">
+                            <h5 class="mb-0">
+                                <div href="#collapse4" data-toggle="collapse" data-parent="#accordion">
+                                    <i class="fa fa-arrow-circle-down">{{ _("landing.how_it_works.advantages.fourth.header") }}</i>
+                                </div>
+                            </h5>
+                        </div>
+                        <div id="collapse4" class="collapse">
+                            <div class="card-body">
+                                {{ _("landing.how_it_works.advantages.fourth.paragraph") }}
                             </div>
                         </div>
                     </div>
@@ -132,102 +147,4 @@
         </div>
     </div>
 </section>
-
-<!-- Authors Section -->
-<!-- <section id="authors" class="my-5 text-center">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="info-header mb-5">
-                    <h1 class="text-primary pb-3">
-                        {{ _("landing.team.header") }}
-                    </h1>
-                    <p class="lead pb-3">
-                        {{ _("landing.team.paragraph") }}
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-
-          <div class="col-lg-3 col-md-6">
-              <div class="card">
-                  <div class="card-body">
-                      <img src="img/monkey.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
-                      <h3>Mateo Alvarez</h3>
-                      <h5>Designer</h5>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, magni quaerat. Architecto
-                          ducimus ea est eum praesentium saepe sint.</p>
-                      <div class="d-flex flex-row-justify-content-center">
-                          <div class="p-4">
-                              <a href="#"><i class="fa fa-linkedin"></i></a>
-                          </div>
-                          <div class="p-4">
-                              <a href="#"><i class="fa fa-github"></i></a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-              <div class="card">
-                  <div class="card-body">
-                      <img src="img/monkey.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
-                      <h3>Mateo Alvarez</h3>
-                      <h5>Designer</h5>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, magni quaerat. Architecto
-                          ducimus ea est eum praesentium saepe sint.</p>
-                      <div class="d-flex flex-row-justify-content-center">
-                          <div class="p-4">
-                              <a href="#"><i class="fa fa-linkedin"></i></a>
-                          </div>
-                          <div class="p-4">
-                              <a href="#"><i class="fa fa-github"></i></a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="col-lg-3 col-md-6 text-center">
-              <div class="card">
-                  <div class="card-body">
-                      <img src="img/monkey.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
-                      <h3>Mateo Alvarez</h3>
-                      <h5>Designer</h5>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, magni quaerat. Architecto
-                          ducimus ea est eum praesentium saepe sint.</p>
-                      <div class="d-flex flex-row-justify-content-center">
-                          <div class="p-4">
-                              <a href="#"><i class="fa fa-linkedin"></i></a>
-                          </div>
-                          <div class="p-4">
-                              <a href="#"><i class="fa fa-github"></i></a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <img src="img/monkey.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
-                        <h3>Mateo Alvarez</h3>
-                        <h5>Designer</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, magni quaerat. Architecto
-                            ducimus ea est eum praesentium saepe sint.</p>
-                        <div class="d-flex flex-row-justify-content-center">
-                            <div class="p-4">
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                            </div>
-                            <div class="p-4">
-                                <a href="#"><i class="fa fa-github"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> -->
 {% end %}

@@ -20,6 +20,10 @@
   background-color: linear-gradient(to right, #2ecc71 0%,#27aa6b 35%,#2ecc71 64%,#229379 100%);
 }
 
+.landing_main_description{
+  font-size:2vmax;
+}
+
 #showcase {
   position: relative;
   background: url("https://cdn-images-1.medium.com/max/2000/1*m2gDBT_nc-iE7R4AM3sHBQ.jpeg");
