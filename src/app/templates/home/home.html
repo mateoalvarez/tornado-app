@@ -16,7 +16,7 @@
                         {{ _("landing.main.title") }}
                     </h1>
                     <p class="landing_main_description">{{ _("landing.main.description") }}</p>
-                    <!-- <a href=c"#about" class="btn btn-outline-light btn-lg"><i class="fa fa-arrow-right"></i>{{ _("landing.main.read_more.button") }}</a> -->
+                    <a href="#about" class="btn btn-outline-light btn-lg"><i class="fa fa-arrow-right"></i>{{ _("landing.main.read_more.button") }}</a>
                 </div>
                 <div class="col-sm-5">
                     <img src="{{ static_url("img/PyxismlDiagram.png") }}" alt="Diagram" class="img-fluid d-none d-lg-block">
@@ -123,6 +123,21 @@
                         <div id="collapse3" class="collapse">
                             <div class="card-body">
                                 {{ _("landing.how_it_works.advantages.third.paragraph") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" id="heading3">
+                            <h5 class="mb-0">
+                                <div href="#collapse3" data-toggle="collapse" data-parent="#accordion">
+                                    <i class="fa fa-arrow-circle-down">{{ _("landing.how_it_works.advantages.fourth.header") }}</i>
+                                </div>
+                            </h5>
+                        </div>
+                        <div id="collapse3" class="collapse">
+                            <div class="card-body">
+                                {{ _("landing.how_it_works.advantages.fourth.paragraph") }}
                             </div>
                         </div>
                     </div>
