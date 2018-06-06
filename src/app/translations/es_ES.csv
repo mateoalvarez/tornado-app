@@ -19,9 +19,14 @@
 "home.cards.text.visualize_data","Analiza los gráficos de tendencia para ver la clasificación de los tweets y descarga los datos de tweets clasificados."
 
 ## Landing page
+
+### First section
 "landing.main.title","PyxisML"
-"landing.main.description","La herramienta de Machine Learning para clasificar tweets en tiempo real"
+"landing.main.description","La herramienta de Machine Learning que clasifica tweets en tiempo real"
 "landing.main.read_more.button","Cómo funciona"
+
+### Second section
+
 
 # Navbar
 
