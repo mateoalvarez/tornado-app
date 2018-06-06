@@ -1,7 +1,7 @@
 body {
-  background-image: url("../img/wil-stewart-23388-unsplash.jpg");
+  /* background-image: url("../img/wil-stewart-23388-unsplash.jpg"); */
   background-size: cover;
-  background-color: rgba(52,53,164,0.8);
+  background-color: '#fff';
 }
 
 #loginbox {

@@ -21,3 +21,14 @@ li a {
 li a:hover {
     background-color: #111111;
 } */
+.navbar {
+  box-shadow: 2px 2px 5px #3292a6;
+  opacity: 0.9;
+  background: #fff;
+}
+
+.navbar .nav-item a:hover{
+color: #4286f4 !important;
+    /* font-size: 1.4rem;
+    padding-right: 20px;  */
+}
