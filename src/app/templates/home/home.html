@@ -1,11 +1,8 @@
 {% extends "../base/base.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="{{ static_url("css/particles.css") }}" type="text/css">
   <link rel="stylesheet" href="{{ static_url("css/home/home.css") }}" type="text/css">
   <link rel="stylesheet" href="{{ static_url("css/base.css") }}" type="text/css">
-<!-- <link rel="stylesheet" href="./home.css" type="text/css" /> -->
-<!-- <script src="{{ static_url("js/particles.js") }}"></script> -->
 {% end %}
 {% block body %}
 
@@ -16,14 +13,13 @@
             <div class="row">
                 <div class="col-lg-6 text-center">
                     <h1 class="display-2 mt-5 pt-5">
-                        Pyxisml Tweet Analysis
+                        {{ _("landing.main.title") }}
                     </h1>
-                    <p>A tool using machine learning to categorize tweets based on specific models </p>
-                    <a href="#about" class="btn btn-outline-secondary btn-lg text-white"><i class="fa fa-arrow-right"></i>Read
-                        More</a>
+                    <p>{{ _("landing.main.description") }}</p>
+                    <a href="#about" class="btn btn-outline-secondary btn-lg text-white"><i class="fa fa-arrow-right"></i>{{ _("landing.main.read_more.button") }}</a>
                 </div>
                 <div class="col-sm-5">
-                    <img src="../../static/img/PyxismlDiagram.png" alt="Diagram" class="img-fluid d-none d-lg-block">
+                    <img src="{{ static_url("img/PyxismlDiagram.png") }}" alt="Diagram" class="img-fluid d-none d-lg-block">
                 </div>
             </div>
         </div>
@@ -37,35 +33,32 @@
             <div class="col-md-3">
                 <div class="card text-center border-primary">
                     <div class="card-body">
-                        <h3 class="text-primary">Chose a Trained Model</h3>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad,
-                            molestiae?</p>
+                        <h3 class="text-primary">{{ _("landing.steps.first_step.header") }}</h3>
+                        <p class="text-muted">{{ _("landing.steps.first_step.paragraph") }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card text-center bg-primary text-white">
                     <div class="card-body">
-                        <h3>Interpret All Data</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, molestiae Lorem ipsum
-                          dolor sit amet</p>
+                        <h3>{{ _("landing.steps.second_step.header") }}</h3>
+                        <p>{{ _("landing.steps.second_step.paragraph") }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card text-center border-primary">
                     <div class="card-body">
-                        <h3 class="text-primary">Categorize tweets</h3>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad,
-                            molestiae?</p>
+                        <h3 class="text-primary">{{ _("landing.steps.third_step.header") }}</h3>
+                        <p class="text-muted">{{ _("landing.steps.third_step.paragraph") }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card text-center bg-primary text-white">
                     <div class="card-body">
-                        <h3>Boost your Efficiency</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, molestiae?</p>
+                        <h3>{{ _("landing.steps.fourth_step.header") }}</h3>
+                        <p>{{ _("landing.steps.fourth_step.paragraph") }}</p>
                     </div>
                 </div>
             </div>
@@ -80,11 +73,10 @@
             <div class="col">
                 <div class="info-header mb-5">
                     <h1 class="text-primary pb-3">
-                        What is Pyxisml?
+                        {{ _("landing.how_it_works.header") }}
                     </h1>
                     <p class="lead pb-3">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae cum ducimus, fugiat illo
-                        obcaecati vel!
+                        {{ _("landing.how_it_works.description") }}
                     </p>
                 </div>
 
@@ -94,16 +86,13 @@
                         <div class="card-header" id="heading1">
                             <h5 class="mb-0">
                                 <div href="#collapse1" data-toggle="collapse" data-parent="#accordion">
-                                    <i class="fa fa-arrow-circle-down"></i> Neuronal Networks
+                                    <i class="fa fa-arrow-circle-down"></i> {{ _("landing.how_it_works.models.header") }}
                                 </div>
                             </h5>
                         </div>
                         <div id="collapse1" class="collapse show">
                             <div class="card-body">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis consequuntur
-                                distinctio, eius maxime modi necessitatibus nihil nobis officiis perspiciatis quis
-                                reprehenderit sapiente veritatis vero voluptate. Culpa explicabo in laudantium
-                                molestias mollitia quasi similique, tenetur veniam voluptates? Ipsum, molestias quia?
+                                {{ _("landing.how_it_works.models.paragraph") }}
                             </div>
                         </div>
                     </div>
@@ -112,16 +101,13 @@
                         <div class="card-header" id="heading2">
                             <h5 class="mb-0">
                                 <div href="#collapse2" data-toggle="collapse" data-parent="#accordion">
-                                    <i class="fa fa-arrow-circle-down"></i> Machine Learning
+                                    <i class="fa fa-arrow-circle-down">{{ _("landing.how_it_works.training.header") }}</i>
                                 </div>
                             </h5>
                         </div>
                         <div id="collapse2" class="collapse">
                             <div class="card-body">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis consequuntur
-                                distinctio, eius maxime modi necessitatibus nihil nobis officiis perspiciatis quis
-                                reprehenderit sapiente veritatis vero voluptate. Culpa explicabo in laudantium
-                                molestias mollitia quasi similique, tenetur veniam voluptates? Ipsum, molestias quia?
+                                {{ _("landing.how_it_works.training.paragraph") }}
                             </div>
                         </div>
                     </div>
@@ -130,16 +116,13 @@
                         <div class="card-header" id="heading3">
                             <h5 class="mb-0">
                                 <div href="#collapse3" data-toggle="collapse" data-parent="#accordion">
-                                    <i class="fa fa-arrow-circle-down"></i> Predictions and Models
+                                    <i class="fa fa-arrow-circle-down">{{ _("landing.how_it_works.analysis.header") }}</i>
                                 </div>
                             </h5>
                         </div>
                         <div id="collapse3" class="collapse">
                             <div class="card-body">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis consequuntur
-                                distinctio, eius maxime modi necessitatibus nihil nobis officiis perspiciatis quis
-                                reprehenderit sapiente veritatis vero voluptate. Culpa explicabo in laudantium
-                                molestias mollitia quasi similique, tenetur veniam voluptates? Ipsum, molestias quia?
+                                {{ _("landing.how_it_works.analysis.header") }}
                             </div>
                         </div>
                     </div>
@@ -151,17 +134,16 @@
 </section>
 
 <!-- Authors Section -->
-<section id="authors" class="my-5 text-center">
+<!-- <section id="authors" class="my-5 text-center">
     <div class="container">
         <div class="row">
             <div class="col">
                 <div class="info-header mb-5">
                     <h1 class="text-primary pb-3">
-                        The Team
+                        {{ _("landing.team.header") }}
                     </h1>
                     <p class="lead pb-3">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae cum ducimus, fugiat illo
-                        obcaecati vel!
+                        {{ _("landing.team.paragraph") }}
                     </p>
                 </div>
             </div>
@@ -247,5 +229,5 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 {% end %}
