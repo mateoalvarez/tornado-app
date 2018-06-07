@@ -20,7 +20,7 @@
 
         <fieldset>
             <label for="password">{{ _("registration.user.Password") }}</label>
-            <input class="text-input form-control" id="password" name="password" type="password" value="" placeholder="Enter password" aria-describedby="passwordHelpInline" required>
+            <input pattern=".{0}|.{4,8}" class="text-input form-control" id="password" name="password" type="password" value="" placeholder="Enter password" aria-describedby="passwordHelpInline" required>
             <small id="passwordHelpInline" class="text-muted">
               Must be 4-8 characters long.
             </small>
@@ -28,7 +28,7 @@
 
         <fieldset>
             <label for="password">{{ _("registration.user.Repeatpassword") }}</label>
-            <input class="text-input form-control" id="password" name="password" type="password" value="" placeholder="Repeat password" required>
+            <input pattern=".{0}|.{4,8}" class="text-input form-control" id="password" name="password" type="password" value="" placeholder="Repeat password" required>
         </fieldset>
 
         <fieldset>
