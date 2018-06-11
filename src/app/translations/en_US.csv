@@ -28,12 +28,16 @@
 ### Second section
 "landing.steps.first_step.header","Register"
 "landing.steps.first_step.paragraph","Create an account and introduce your Twitter credentials"
+"landing.steps.first_step.button","Register"
 "landing.steps.second_step.header","Train a Model"
 "landing.steps.second_step.paragraph","Train a model using one of our datasets or your own dataset."
+"landing.steps.second_step.button","Train"
 "landing.steps.third_step.header","Classify Tweets"
 "landing.steps.third_step.paragraph","Create an application, chose a hashtag and classify Tweets that contain that hashtag"
+"landing.steps.third_step.button","Classify"
 "landing.steps.fourth_step.header","Check Results"
 "landing.steps.fourth_step.paragraph","Monitorize in real time the classification of Tweets and download the data to make your own analysis."
+"landing.steps.fourth_step.button","Visualize"
 
 ### Third section
 "landing.how_it_works.header","How does it work"
