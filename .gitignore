@@ -4,3 +4,4 @@ src/db/__pycache__
 *.pyc
 .idea/
 .DS_Store
+k8s_config
