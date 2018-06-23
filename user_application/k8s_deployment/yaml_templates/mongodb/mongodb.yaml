@@ -41,6 +41,5 @@ spec:
           mountPath: /data
       volumes:
       - name: mongo-cluster
-        awsElasticBlockStore:
-          volumeID: EBS_VOLUME_ID # volume id from aws console.
-          fsType: ext4
+        persistentVolumeClaim:
+          claimName: mongodb-pv-claim

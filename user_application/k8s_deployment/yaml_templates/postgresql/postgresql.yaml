@@ -44,6 +44,5 @@ spec:
           mountPath: /var/lib/postgresql/data
       volumes:
       - name: psql-cluster
-        awsElasticBlockStore:
-          volumeID: EBS_VOLUME_ID # volume id from aws console.
-          fsType: ext4
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
