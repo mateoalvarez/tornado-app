@@ -73,7 +73,7 @@ class DatasetsHandler(BaseHandler):
     def post(self):
         """POST file to S3 bucket"""
         dataset_description = self.get_argument("dataset_description", "")
-        dataset_properties = self.get_argument("dataset_properties", "")
+        dataset_properties = self.get_argument("dataset_properties", '{}')
         for field_name, files in self.request.files.items():
             for info in files:
                 filename, content_type = info['filename'], info['content_type']
