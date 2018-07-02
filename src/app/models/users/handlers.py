@@ -1,6 +1,5 @@
 """User handlers"""
 
-import json
 import logging
 import concurrent.futures
 import bcrypt
@@ -82,7 +81,10 @@ class LoginHandler(BaseHandler):
             self.get_argument("password").encode(),
                 user["hashed_password"].encode()):
             self.set_current_user(str(user["id"]))
-            self.redirect(self.get_argument("next", "/"))
+            self.redirect(
+                self.get_argument("next", "/"),
+                success_message="Succesfully logged in"
+                )
         else:
             self.render("users/login.html",
                         next=self.get_argument("next", "/"),
