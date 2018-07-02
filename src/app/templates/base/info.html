@@ -1,3 +1,5 @@
-<div class="alert alert-info" role="alert">
-  {{ info_message }}
-</div>
+{% block alerts %}
+  <div class="alert alert-info" role="alert">
+    {{ info_message }}
+  </div>
+{% end %}
