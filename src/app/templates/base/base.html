@@ -17,20 +17,6 @@
   </head>
   <body style="margin:0;">
     {% block navbar %}{% include "navbar.html" %}{% end %}
-    <div id="body" class="my-1 mb-4">
-      {% block alerts %}
-        {% if error_message %}
-          {% include "error.html" %}
-        {% elif warning_message %}
-          {% include "warning.html" %}
-        {% elif success_message %}
-          {% include "success.html" %}
-        {% elif info_message %}
-          {% include "info.html" %}
-        {% end %}
-      {% end %}
-        </div>
-      {% end %}
       <div id="content">
         {% block body %}{% end %}
       </div>
