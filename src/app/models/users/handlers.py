@@ -82,8 +82,7 @@ class LoginHandler(BaseHandler):
                 user["hashed_password"].encode()):
             self.set_current_user(str(user["id"]))
             self.redirect(
-                self.get_argument("next", "/"),
-                success_message="Succesfully logged in"
+                self.get_argument("next", "/")
                 )
         else:
             self.render("users/login.html",
