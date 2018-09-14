@@ -98,9 +98,7 @@ class LogoutHandler(BaseHandler):
         """GET logout"""
         self.clear_cookie("user")
         self.redirect(
-            self.get_argument("next", "/"),
-            info_message="Succesfully logged out"
-            )
+            self.get_argument("next", "/"))
 
 
 class UserSettingsHandler(BaseHandler):
