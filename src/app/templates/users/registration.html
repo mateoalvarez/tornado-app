@@ -30,10 +30,12 @@
             <label for="password">{{ _("registration.user.Repeatpassword") }}</label>
             <input pattern=".{0}|.{4,8}" class="text-input form-control" id="password" name="password" type="password" value="" placeholder="Repeat password" required>
         </fieldset>
-
-        <fieldset>
-            <span class="errormessage"></span>
-        </fieldset>
+        
+        {% if error_message %}
+          <fieldset>
+              <span class="errormessage">{{ error_message }}</span>
+          </fieldset>
+        {% end %}
 
         <div id="form_btn" class="w-100 mx-auto mt-4">
             <input id="registration-btn" class="btn btn-primary" type="submit" value={{ _("registration.user.Register") }} tabindex="3">

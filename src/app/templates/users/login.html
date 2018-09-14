@@ -17,10 +17,11 @@
             <label for="password">{{ _("login.user.Password") }}</label>
             <input class="text-input form-control" id="password" name="password" type="password" placeholder="Enter password" required>
         </fieldset>
-
-        <fieldset>
-            <span class="errormessage"></span>
-        </fieldset>
+        {% if error_message %}
+          <fieldset>
+              <span class="errormessage">{{ error_message }}</span>
+          </fieldset>
+        {% end %}
         <input name="next" value={{ next }} hidden>
         <div id="form_btn" class="w-100 mx-auto mt-4">
             <input id="signin-btn" class="btn btn-primary" type="submit" value={{ _("login.user.Login") }} tabindex="3">
