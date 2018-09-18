@@ -151,11 +151,14 @@
 "models.pipeline_creation.select.preprocessing.stage.config","Configuration"
 "models.pipeline_creation.select.preprocessing.stage.add_more","Add more preprocessing stages"
 "models.pipeline_creation.select.preprocessing.stage.delete_current","Delete preprocessing stage"
+"models.pipeline_creation.select.preprocessing.stage.config.description",Introduce configuration with the format: {"key":"value"}
 "models.pipeline_creation.select.model.stage.model","Template"
 "models.pipeline_creation.select.model.stage.config","Configuration"
 "models.pipeline_creation.select.model.stage.add_more","Add more models"
 "models.pipeline_creation.select.model.stage.delete_current","Delete models"
+"models.pipeline_creation.select.model.stage.config.description",Introduce configuration with the format: {"key":"value"}
 "models.pipeline_creation.submit","Create pipeline"
+
 
 ### Pipeline status tab
 "models.header.pipeline_name","Name"

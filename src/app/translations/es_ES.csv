@@ -151,10 +151,12 @@
 "models.pipeline_creation.select.preprocessing.stage.config","Configuración"
 "models.pipeline_creation.select.preprocessing.stage.add_more","Añadir más etapas de preprocesamiento"
 "models.pipeline_creation.select.preprocessing.stage.delete_current","Eliminar etapa de preprocesamiento"
+"models.pipeline_creation.select.preprocessing.stage.config.description",Introducir configuración con el formato: {"clave":"valor"}
 "models.pipeline_creation.select.model.stage.model","Plantilla"
 "models.pipeline_creation.select.model.stage.config","Configuración"
 "models.pipeline_creation.select.model.stage.add_more","Añadir más modelos"
 "models.pipeline_creation.select.model.stage.delete_current","Borrar modelo"
+"models.pipeline_creation.select.model.stage.config.description",Introducir configuración con el formato: {"clave":"valor"}
 "models.pipeline_creation.submit","Crear pipeline"
 
 ### Pipeline status tab
