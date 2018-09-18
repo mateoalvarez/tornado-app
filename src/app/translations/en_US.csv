@@ -95,6 +95,7 @@
 "datasets.header.dataset_description","Dataset Description"
 "datasets.header.dataset_properties","Dataset Properties"
 "datasets.delete.button","Delete Dataset: "
+"datasets.download_link","Download this dataset"
 
 ### Manage Datasets Modal
 
