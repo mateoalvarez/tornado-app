@@ -149,7 +149,7 @@ INSERT INTO datasource_settings (user_id, type, datasource_access_settings)
 VALUES (1, 1, '{"TWITTER_CONSUMER_API_KEY":"qUBED8JONS1rdOXMGXxJw3KDK", "TWITTER_CONSUMER_API_SECRET":"DUI0ICvIXTYE4SPxdBSRVlq3xEw1UDpcy6mZG2qWE1yyX3nH2M", "TWITTER_CONSUMER_TOKEN":"245605482-rajqw4klordPOid8izXvAHBc8DhU8QliOFraCFqM", "TWITTER_CONSUMER_SECRET":"kYalUO9SmnLvcjXPIrRE0dSEDd2LhQBSBMPD57UgLvzse"}');
 -- CLASSIFICATION CRITERIA
 INSERT INTO classification_criteria (name, properties, description)
-VALUES ('Default', '{}', 'Votación en caso de ser número impar de modelos. En caso de ser par, máxima probabilidad');
+VALUES ('Default', '{}', 'Votación en caso de ser número impar de modelos y máxima probabilidad en caso de ser par.');
 -- ENGINE
 INSERT INTO engines (engine_name,engine_configuration)
 VALUES ('spark', '{}');

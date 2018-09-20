@@ -108,7 +108,7 @@
     <label for="classification_criteria">{{ _("models.pipeline_creation.select.classification_criteria") }}</label>
     <select class="form-control" id="classification_criteria" name="classification_criteria" required>
       {% for criteria in classification_criteria %}
-        <option value="{{ criteria["id"] }}">{{ criteria["name"] }}</option>
+        <option value="{{ criteria["id"] }}">{{ criteria["name"] }} - {{criteria["description"]}}</option>
       {% end %}
     </select>
   </div>

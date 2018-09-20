@@ -149,7 +149,7 @@
 "models.pipeline_creation.select.dataset","Seleccionar dataset"
 "models.pipeline_creation.select.preprocessing","Añadir etapas de preprocesamiento"
 "models.pipeline_creation.select.model","Añadir modelos"
-"models.pipeline_creation.select.classification_criteria","Seleccionar criterio de clasificación"
+"models.pipeline_creation.select.classification_criteria","Seleccionar criterio de clasificación para usar varios modelos"
 "models.pipeline_creation.select.pipeline_name","Nombre del pipeline"
 "models.pipeline_creation.select.preprocessing.stage.preprocessing","Plantilla"
 "models.pipeline_creation.select.preprocessing.stage.config","Configuración"
