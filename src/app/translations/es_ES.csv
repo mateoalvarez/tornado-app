@@ -82,8 +82,11 @@
 
 # Datasets
 
+"datasets.main.description","Aquí puedes gestionar tus datasets, asi como descargar los datasets públicos. El formato aceptado de datasets es tsv (tab separated values), con la siguiente estructura: <texto> tab <etiqueta numérica>, ie: texto a clasificar  1.0"
 "datasets.headers.public_datasets","Datasets Públicos"
 "datasets.headers.user_datasets","Datasets Privados"
+"datasets.no.public.datasets","No hay datasets públicos cargados"
+"datasets.no.private.datasets","No hay datasets privados cargados"
 
 ## Upload Datasets
 
