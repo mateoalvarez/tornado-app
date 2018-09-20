@@ -14,6 +14,8 @@ class DatasetsHandler(BaseHandler):
 
     def _save_dataset_in_database(self, dataset_name, storage_url, dataset_description, dataset_properties):
         """Store dataset references on database"""
+        if dataset_properties == '':
+            dataset_properties = '{}'
         self.db_cur.execute(
             """INSERT INTO datasets (user_id, dataset_name, storage_url, dataset_description, dataset_properties)
              VALUES (%s, %s, %s, %s, %s);""",

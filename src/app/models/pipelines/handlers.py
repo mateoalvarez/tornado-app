@@ -35,7 +35,7 @@ class MLModelsHandler(BaseHandler):
     def _get_initializers(self):
         """GET initializer code blocks"""
         self.db_cur.execute(
-            "SELECT * FROM code_block_templates where type='input';"
+            "SELECT * FROM code_block_templates WHERE type='input';"
         )
         initializers = self.db_cur.fetchall()
         return initializers
@@ -43,7 +43,7 @@ class MLModelsHandler(BaseHandler):
     def _get_data_prep_methods(self):
         """GET preprocessing methods"""
         self.db_cur.execute(
-            "SELECT * FROM code_block_templates where type='preprocessing';"
+            "SELECT * FROM code_block_templates WHERE type='preprocessing';"
         )
         data_prep_methods = self.db_cur.fetchall()
         return data_prep_methods
@@ -51,7 +51,7 @@ class MLModelsHandler(BaseHandler):
     def _get_models(self):
         """GET models"""
         self.db_cur.execute(
-            "SELECT * FROM code_block_templates where type='model';"
+            "SELECT * FROM code_block_templates WHERE type='model';"
         )
         models = self.db_cur.fetchall()
         return models
@@ -59,7 +59,7 @@ class MLModelsHandler(BaseHandler):
     def _get_outputs(self):
         """GET output code blocks"""
         self.db_cur.execute(
-            "SELECT * FROM code_block_templates where type='output';"
+            "SELECT * FROM code_block_templates WHERE type='output';"
         )
         outputs = self.db_cur.fetchall()
         return outputs
@@ -67,7 +67,8 @@ class MLModelsHandler(BaseHandler):
     def _get_datasets(self):
         """GET all datasets from user and public"""
         self.db_cur.execute(
-            "SELECT * FROM datasets;"
+            "SELECT * FROM datasets WHERE user_id=%s OR user_id=%s;",
+            (self.current_user["id"], 1)
         )
         datasets = self.db_cur.fetchall()
         return datasets

@@ -26,7 +26,7 @@ class RegisterHandler(BaseHandler):
     @gen.coroutine
     def get(self):
         """User registration page"""
-        self.render("users/registration.html")
+        self.render("users/registration.html", error_message=None)
 
     @gen.coroutine
     def post(self):
@@ -71,7 +71,7 @@ class LoginHandler(BaseHandler):
         """User login page"""
         if self.get_current_user():
             self.redirect(self.get_argument("next", "/"))
-        self.render("users/login.html", next=self.get_argument("next", "/"))
+        self.render("users/login.html", next=self.get_argument("next", "/"), error_message=None)
 
     @gen.coroutine
     def post(self):

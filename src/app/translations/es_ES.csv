@@ -82,8 +82,11 @@
 
 # Datasets
 
+"datasets.main.description","Aquí puedes gestionar tus datasets, asi como descargar los datasets públicos. El formato aceptado de datasets es tsv (tab separated values), con la siguiente estructura: <texto> tab <etiqueta numérica>, ie: texto a clasificar  1.0"
 "datasets.headers.public_datasets","Datasets Públicos"
 "datasets.headers.user_datasets","Datasets Privados"
+"datasets.no.public.datasets","No hay datasets públicos cargados"
+"datasets.no.private.datasets","No hay datasets privados cargados"
 
 ## Upload Datasets
 
@@ -95,6 +98,7 @@
 "datasets.header.dataset_description","Descripción del dataset"
 "datasets.header.dataset_properties","Propiedades del dataset"
 "datasets.delete.button","Borrar dataset: "
+"datasets.download_link","Descargar este dataset"
 
 ### Manage Datasets Modal
 
@@ -145,16 +149,18 @@
 "models.pipeline_creation.select.dataset","Seleccionar dataset"
 "models.pipeline_creation.select.preprocessing","Añadir etapas de preprocesamiento"
 "models.pipeline_creation.select.model","Añadir modelos"
-"models.pipeline_creation.select.classification_criteria","Seleccionar criterio de clasificación"
+"models.pipeline_creation.select.classification_criteria","Seleccionar criterio de clasificación para usar varios modelos"
 "models.pipeline_creation.select.pipeline_name","Nombre del pipeline"
 "models.pipeline_creation.select.preprocessing.stage.preprocessing","Plantilla"
 "models.pipeline_creation.select.preprocessing.stage.config","Configuración"
 "models.pipeline_creation.select.preprocessing.stage.add_more","Añadir más etapas de preprocesamiento"
 "models.pipeline_creation.select.preprocessing.stage.delete_current","Eliminar etapa de preprocesamiento"
+"models.pipeline_creation.select.preprocessing.stage.config.description",Introducir configuración con el formato: {"clave":"valor"}
 "models.pipeline_creation.select.model.stage.model","Plantilla"
 "models.pipeline_creation.select.model.stage.config","Configuración"
 "models.pipeline_creation.select.model.stage.add_more","Añadir más modelos"
 "models.pipeline_creation.select.model.stage.delete_current","Borrar modelo"
+"models.pipeline_creation.select.model.stage.config.description",Introducir configuración con el formato: {"clave":"valor"}
 "models.pipeline_creation.submit","Crear pipeline"
 
 ### Pipeline status tab

@@ -50,14 +50,21 @@
         <div class="card mx-0">
           <h4 class="card-header">{{ _("models.pipeline_creation.select.preprocessing.stage.config") }}</h4>
           <div class="card-body">
-            <input class="text-input card-body w-100" id="pipeline_prep_stages_ids_config" name="pipeline_prep_stages_ids_config" />
+            <input class="text-input card-body w-100" id="pipeline_prep_stages_ids_config" name="pipeline_prep_stages_ids_config" placeholder='{"key":"value"}'/>
           </div>
         </div>
       </div>
       <!-- Add more cards -->
       <div id="preprocessing-element-to-replace-1"> </div>
     </div>
-    <button type="button" class="btn btn-primary" onclick="addNewPreprocessing()">{{ _("models.pipeline_creation.select.preprocessing.stage.add_more") }}</button>
+    <div class="col-sm">
+      <button type="button" class="btn btn-primary" onclick="addNewPreprocessing()">{{ _("models.pipeline_creation.select.preprocessing.stage.add_more") }}</button>
+    </div>
+    <div class="col-sm">
+      <p>
+        {{ _("models.pipeline_creation.select.preprocessing.stage.config.description") }}
+      </p>
+    </div>
     <br />
   </div>
   <hr />
@@ -80,21 +87,28 @@
         <div class="card mx-0">
           <h4 class="card-header">{{ _("models.pipeline_creation.select.model.stage.config") }}</h4>
           <div class="card-body">
-            <input class="text-input card-body w-100" id="pipeline_models_config" name="pipeline_models_config" />
+            <input class="text-input card-body w-100" id="pipeline_models_config" name="pipeline_models_config" placeholder='{"key":"value"}'/>
           </div>
         </div>
       </div>
       <!-- Add more cards -->
       <div id="model-element-to-replace-1"> </div>
     </div>
-    <button type="button" class="btn btn-primary" onclick="addNewModel()">{{ _("models.pipeline_creation.select.model.stage.add_more") }}</button>
+    <div class="col-sm">
+      <button type="button" class="btn btn-primary" onclick="addNewModel()">{{ _("models.pipeline_creation.select.model.stage.add_more") }}</button>
+    </div>
+    <div class="col-sm">
+      <p>
+        {{ _("models.pipeline_creation.select.model.stage.config.description") }}
+      </p>
+    </div>
   </div>
   <hr />
   <div>
     <label for="classification_criteria">{{ _("models.pipeline_creation.select.classification_criteria") }}</label>
     <select class="form-control" id="classification_criteria" name="classification_criteria" required>
       {% for criteria in classification_criteria %}
-        <option value="{{ criteria["id"] }}">{{ criteria["name"] }}</option>
+        <option value="{{ criteria["id"] }}">{{ criteria["name"] }} - {{criteria["description"]}}</option>
       {% end %}
     </select>
   </div>

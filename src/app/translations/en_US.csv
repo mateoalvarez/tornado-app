@@ -82,8 +82,11 @@
 
 # Datasets
 
+"datasets.main.description","Here you can manage your datasets, as well as download the public ones provided. The format of the dataset must be tsv (tab separated values), with the following structure: <text> tab <numeric label>, ie: text to classify  1.0"
 "datasets.headers.public_datasets","Public Datasets"
 "datasets.headers.user_datasets","Private Datasets"
+"datasets.no.public.datasets","There are no public datasets yet"
+"datasets.no.private.datasets","There are no private datasets yet"
 
 ## Upload Datasets
 
@@ -95,6 +98,7 @@
 "datasets.header.dataset_description","Dataset Description"
 "datasets.header.dataset_properties","Dataset Properties"
 "datasets.delete.button","Delete Dataset: "
+"datasets.download_link","Download this dataset"
 
 ### Manage Datasets Modal
 
@@ -145,17 +149,20 @@
 "models.pipeline_creation.select.dataset","Select dataset"
 "models.pipeline_creation.select.preprocessing","Add preprocessing stages"
 "models.pipeline_creation.select.model","Add models"
-"models.pipeline_creation.select.classification_criteria","Choose classification criteria"
+"models.pipeline_creation.select.classification_criteria","Choose classification criteria for using more than one model."
 "models.pipeline_creation.select.pipeline_name","Pipeline name"
 "models.pipeline_creation.select.preprocessing.stage.preprocessing","Template"
 "models.pipeline_creation.select.preprocessing.stage.config","Configuration"
 "models.pipeline_creation.select.preprocessing.stage.add_more","Add more preprocessing stages"
 "models.pipeline_creation.select.preprocessing.stage.delete_current","Delete preprocessing stage"
+"models.pipeline_creation.select.preprocessing.stage.config.description",Introduce configuration with the format: {"key":"value"}
 "models.pipeline_creation.select.model.stage.model","Template"
 "models.pipeline_creation.select.model.stage.config","Configuration"
 "models.pipeline_creation.select.model.stage.add_more","Add more models"
 "models.pipeline_creation.select.model.stage.delete_current","Delete models"
+"models.pipeline_creation.select.model.stage.config.description",Introduce configuration with the format: {"key":"value"}
 "models.pipeline_creation.submit","Create pipeline"
+
 
 ### Pipeline status tab
 "models.header.pipeline_name","Name"
