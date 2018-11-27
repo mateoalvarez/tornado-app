@@ -42,8 +42,8 @@ class DispatcherDeployer():
             .content.decode("utf-8").format(
                 application_id=kwargs["application_id"],
                 MONGODB_DBNAME='user_' + str(kwargs["user_id"]),
-                MONGODB_COLLECTION_NAME='application_' + str(kwargs["id"]),
-                KAFKA_TOPIC='application_' + str(kwargs["id"]))
+                MONGODB_COLLECTION_NAME='application_' + kwargs["application_id"],
+                KAFKA_TOPIC='application_' + kwargs["application_id"])
 
         try:
             self.k8s_config_map.create_namespaced_config_map(
@@ -61,7 +61,7 @@ class DispatcherDeployer():
         except Exception as e:
             print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
 
-    def deploy_kafka_producer(self, application_id, keywords):
+    def deploy_kafka_producer(self, application_id, keywords, datasource_settings):
         """Kafka producer deployer"""
 
         producer_template = requests.get(
@@ -71,7 +71,11 @@ class DispatcherDeployer():
             .content.decode("utf-8").format(
                 application_id=application_id,
                 WORDS_TO_TRACK=keywords,
-                KAFKA_TOPIC='application_' + str(application_id))
+                KAFKA_TOPIC='application_' + str(application_id),
+                TWITTER_CONSUMER_API_KEY=datasource_settings["TWITTER_CONSUMER_API_KEY"],
+                TWITTER_CONSUMER_API_SECRET=datasource_settings["TWITTER_CONSUMER_API_SECRET"],
+                TWITTER_CONSUMER_TOKEN=datasource_settings["TWITTER_CONSUMER_TOKEN"],
+                TWITTER_CONSUMER_SECRET=datasource_settings["TWITTER_CONSUMER_SECRET"])
 
         try:
             self.k8s_deployment.create_namespaced_deployment(
