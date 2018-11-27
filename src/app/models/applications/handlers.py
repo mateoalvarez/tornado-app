@@ -133,6 +133,12 @@ class ApplicationDeployer(BaseHandler):
         )
         pipeline = self.db_cur.fetchall()[0]
 
+        self.db_cur.execute(
+            "SELECT datasource_access_settings FROM datasource_settings WHERE user_id=%s", (self.current_user["id"],)
+        )
+
+        datasource_access_settings = self.db_cur.fetchall()[0]
+
         try:
             model_urls = [
                 'https://s3.eu-central-1.amazonaws.com/tornado-app-emr/'
@@ -197,7 +203,8 @@ class ApplicationDeployer(BaseHandler):
             )
             dispatcher_deployer.deploy_kafka_producer(
                 application_id=application_id,
-                keywords=datasource_keywords
+                keywords=datasource_keywords,
+                datasource_settings=datasource_access_settings
                 )
 
             # Update application status -> to 'running'
