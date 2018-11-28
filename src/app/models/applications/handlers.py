@@ -118,6 +118,12 @@ class ApplicationDeployer(BaseHandler):
         S3_CLIENT, S3_RESOURCE = self.start_s3_connection()
 
         application_id = self.get_argument("application_id", "", False)
+        kafka_topic='application_{}'.format(application_id)
+        print("#### --> kafka_topic --->" + kafka_topic)
+        print("#### --> application_id --->" + str(application_id))
+        LOGGER.info("#### --> kafka_topic --->" + kafka_topic)
+        LOGGER.info("#### --> application_id --->" + str(application_id))
+
         pipeline_id = self.get_argument("pipeline_id", "", False)
 
         datasource_configuration_id = self.get_argument(
@@ -137,7 +143,7 @@ class ApplicationDeployer(BaseHandler):
             "SELECT datasource_access_settings FROM datasource_settings WHERE user_id=%s", (self.current_user["id"],)
         )
 
-        datasource_access_settings = self.db_cur.fetchall()[0]
+        datasource_access_settings = self.db_cur.fetchall()[0]['datasource_access_settings']
 
         try:
             model_urls = [
@@ -182,18 +188,30 @@ class ApplicationDeployer(BaseHandler):
             model_urls.remove(preprocessing_url)
 
             print("\n\n\n\n")
-            print("DEPLOY MODELS")
+            print("\t -> DEPLOY MODELS")
             print("\n\n\n\n")
+            LOGGER.info("\t -> DEPLOY MODELS")
 
             dispatcher_deployer.deploy_models(
                 pipeline_id=pipeline_id,
                 model_ids=pipeline["pipeline_models_ids"],
                 model_urls=model_urls)
 
+
+            print("\n\n\n\n")
+            print("\t -> DEPLOY PREPROCESSING")
+            print("\n\n\n\n")
+            LOGGER.info("\t -> DEPLOY PREPROCESSING")
+
             dispatcher_deployer.deploy_preprocessing(
                 pipeline_id=pipeline_id,
                 preprocessing_ids=pipeline["pipeline_prep_stages_ids"],
                 preprocessing_url=preprocessing_url)
+
+            print("\n\n\n\n")
+            print("\t -> DEPLOY DISPATCHER")
+            print("\n\n\n\n")
+            LOGGER.info("\t -> DEPLOY DISPATCHER")
 
             dispatcher_deployer.deploy_dispatcher(
                 **pipeline,
@@ -201,10 +219,17 @@ class ApplicationDeployer(BaseHandler):
                 datasource_configuration=application_datasource_configuration,
                 classification_configuration=classification_configuration
             )
+
+            print("\n\n\n\n")
+            print("\t -> DEPLOY KAFKA_PRODUCER")
+            print("\n\n\n\n")
+            LOGGER.info("\t -> DEPLOY KAFKA_PRODUCER")
+
             dispatcher_deployer.deploy_kafka_producer(
                 application_id=application_id,
                 keywords=datasource_keywords,
-                datasource_settings=datasource_access_settings
+                datasource_settings=datasource_access_settings,
+                kafka_topic=kafka_topic
                 )
 
             # Update application status -> to 'running'
@@ -216,9 +241,10 @@ class ApplicationDeployer(BaseHandler):
             self.redirect(self.get_argument("next", "/applications"))
 
         except Exception as exception:
-            print('######## ERROR ########')
-            print(exception)
-            print('######## ERROR ########')
+            LOGGER.error('######## ERROR ########')
+            LOGGER.error(exception)
+            LOGGER.error(str(exception))
+            LOGGER.error('######## ERROR ########')
             self.redirect(self.get_argument("next", "/applications"))
 
 

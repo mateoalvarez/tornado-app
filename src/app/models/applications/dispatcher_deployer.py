@@ -2,7 +2,9 @@
 import kubernetes
 import yaml
 import requests
+import logging
 
+LOGGER = logging.getLogger(__name__)
 
 class DispatcherDeployer():
     """Class to launch dispatcher of application"""
@@ -61,8 +63,22 @@ class DispatcherDeployer():
         except Exception as e:
             print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
 
-    def deploy_kafka_producer(self, application_id, keywords, datasource_settings):
+    def deploy_kafka_producer(self, application_id, keywords, datasource_settings, kafka_topic):
         """Kafka producer deployer"""
+        print("## -> begin deploy_kafka_producer arguments")
+        print("\tapplication_id -> {app_id}".format(app_id=application_id))
+        print("\tkeywords -> {keywords}".format(keywords=keywords))
+        print("\tdatasource_settings -> {datasource_settings}".format(datasource_settings=str(datasource_settings)))
+        print("\tkafka_topic -> {kafka_topic}".format(kafka_topic=kafka_topic))
+        print("## <- end deploy_kafka_producer arguments")
+
+        LOGGER.info("## -> begin deploy_kafka_producer arguments")
+        LOGGER.info("\tapplication_id -> {app_id}".format(app_id=application_id))
+        LOGGER.info("\tkeywords -> {keywords}".format(keywords=keywords))
+        LOGGER.info("\tdatasource_settings -> {datasource_settings}".format(datasource_settings=str(datasource_settings)))
+        LOGGER.info("\tkafka_topic -> {kafka_topic}".format(kafka_topic=kafka_topic))
+        LOGGER.info("## <- end deploy_kafka_producer arguments")
+
 
         producer_template = requests.get(
             "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"
@@ -71,7 +87,7 @@ class DispatcherDeployer():
             .content.decode("utf-8").format(
                 application_id=application_id,
                 WORDS_TO_TRACK=keywords,
-                KAFKA_TOPIC='application_' + str(application_id),
+                KAFKA_TOPIC=kafka_topic,
                 TWITTER_CONSUMER_API_KEY=datasource_settings["TWITTER_CONSUMER_API_KEY"],
                 TWITTER_CONSUMER_API_SECRET=datasource_settings["TWITTER_CONSUMER_API_SECRET"],
                 TWITTER_CONSUMER_TOKEN=datasource_settings["TWITTER_CONSUMER_TOKEN"],
@@ -84,6 +100,9 @@ class DispatcherDeployer():
                 pretty=True)
         except Exception as e:
             print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
+            LOGGER.error("Exception in kafka producer deployment process")
+            LOGGER.error(str(e))
+
 
     def deploy_models(self, pipeline_id, model_ids, model_urls):
         """Deploy all application's models"""
@@ -126,6 +145,7 @@ class DispatcherDeployer():
                     pretty=True)
             except Exception as e:
                 print("Exception when calling V1Api->create_namespaced_deployment:%s\n" % e)
+                LOGGER.error("Exception when calling V1Api->create_namespaced_deployment:%s\n" % e)
             # service
             try:
                 self.k8s_service.create_namespaced_service(
@@ -134,6 +154,7 @@ class DispatcherDeployer():
                     pretty=True)
             except Exception as e:
                 print("Exception when calling V1Api->create_service:%s\n" % e)
+                LOGGER.error("Exception when calling V1Api->create_service:%s\n" % e)
 
     def deploy_preprocessing(self, pipeline_id, preprocessing_ids, preprocessing_url):
         """Deploy preprocessing stages"""
@@ -169,7 +190,7 @@ class DispatcherDeployer():
                     body=yaml.load(prep_deployment),
                     pretty=True)
             except Exception as e:
-                print("Exception when calling V1Api->create_namespaced_deployment:%s\n" % e)
+                LOGGER.error("Exception when calling V1Api->create_namespaced_deployment:%s\n" % e)
 
             # service
             try:
@@ -178,7 +199,7 @@ class DispatcherDeployer():
                     body=yaml.load(prep_service),
                     pretty=True)
             except Exception as e:
-                print("Exception when calling V1Api->create_service:%s\n" % e)
+                LOGGER.error("Exception when calling V1Api->create_service:%s\n" % e)
 
     def delete_deployments(self, application_id, pipeline_id, preprocessing_ids, model_ids):
         """DELETE kubernetes deployment"""
@@ -234,4 +255,6 @@ class DispatcherDeployer():
         except kubernetes.client.rest.ApiException as exception:
             print("### Error Deleting deployment ###")
             print(exception)
+            LOGGER.error("### Error Deleting deployment ###")
+            LOGGER.error(exception)
         return
