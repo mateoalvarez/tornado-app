@@ -26,6 +26,6 @@ spec:
           - name: TWITTER_CONSUMER_API_SECRET
             value: {TWITTER_CONSUMER_API_SECRET}
           - name: TWITTER_CONSUMER_TOKEN
-            value: {TWITTER_CONSUMER_API_SECRET}
+            value: {TWITTER_CONSUMER_TOKEN}
           - name: TWITTER_CONSUMER_SECRET
             value: {TWITTER_CONSUMER_SECRET}
