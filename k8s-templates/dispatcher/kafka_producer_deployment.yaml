@@ -21,3 +21,11 @@ spec:
             value: {WORDS_TO_TRACK}
           - name: KAFKA_TOPIC
             value: {KAFKA_TOPIC}
+          - name: TWITTER_CONSUMER_API_KEY
+            value: {TWITTER_CONSUMER_API_KEY}
+          - name: TWITTER_CONSUMER_API_SECRET
+            value: {TWITTER_CONSUMER_API_SECRET}
+          - name: TWITTER_CONSUMER_TOKEN
+            value: {TWITTER_CONSUMER_TOKEN}
+          - name: TWITTER_CONSUMER_SECRET
+            value: {TWITTER_CONSUMER_SECRET}
