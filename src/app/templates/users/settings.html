@@ -26,12 +26,12 @@
       </div>
       <div class="container">
         {% if len(user_twitter_settings) == 0 %}
-          <button type="button" class="btn btn-primary my-3" data-toggle="collapse" data-target="#twitter_credentials">{{ _("user.configuration.add_twitter_account") }}</button>
+          <button type="button" class="btn btn-primary my-3" data-toggle="collapse" data-target="#twitter_credentials">{{ _("user.config.add_twitter_account") }}</button>
           <div id="twitter_credentials" class="container collapse">
             {% include "_twitter_account_form.html" %}
           </div>
         {% else %}
-          <button type="button" class="btn btn-primary my-3" data-toggle="collapse" data-target="#twitter_credentials" disabled>{{ _("user.configuration.add_twitter_account") }}</button>
+          <button type="button" class="btn btn-primary my-3" data-toggle="collapse" data-target="#twitter_credentials" disabled>{{ _("user.config.add_twitter_account") }}</button>
         {% end %}
       </div>
       <table class="table-striped table-bordered table-hover">
