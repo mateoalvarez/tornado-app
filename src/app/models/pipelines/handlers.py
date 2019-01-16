@@ -81,26 +81,45 @@ class MLModelsHandler(BaseHandler):
         classification_criteria = self.db_cur.fetchall()
         return classification_criteria
 
-    def _update_pipeline_training_status(self, pipeline_id):
-        """GET to S3 to check finished pipeline training"""
-        _, s3_resource = self.start_s3_connection()
+    def _update_pipeline_training_status(self, job_id, pipeline_id):
+        """GET to EMR to check pipeline status"""
+        emr_client = self.start_emr_connection()
+        cluster_status = emr_client.describe_cluster(ClusterId=job_id)\
+        ["Cluster"]["Status"]
 
-        pipeline_results_url = "user_" + str(self.current_user["id"]) + \
-            "/models/pipeline_" + str(pipeline_id) + "/preprocessing.zip"
-
-        try:
-            s3_resource.Object(
-                self.BUCKET_SPARK_JOBS, pipeline_results_url).load()
+        status = {
+            "STARTING": "training",
+            "BOOTSTRAPPING": "training",
+            "RUNNING": "training",
+            "WAITING": "training",
+            "TERMINATING": "training",
+            "TERMINATED": "trained",
+            "TERMINATED_WITH_ERRORS": "error"
+        }
+        
+        if status[cluster_status["State"]] == "error"\
+            or (status[cluster_status["State"]] == "trained"\
+            and cluster_status["StateChangeReason"]["Message"] != "Steps completed"):
             self.db_cur.execute(
-                "UPDATE pipelines SET pipeline_status='trained' WHERE id=%s;",
-                (pipeline_id,))
+                """
+                UPDATE pipelines SET
+                pipeline_status = %s,
+                error_status = %s
+                WHERE id = %s;
+                """, (
+                    "error",
+                    cluster_status["StateChangeReason"]["Message"],
+                    pipeline_id))
             self.db_conn.commit()
-        except botocore.exceptions.ClientError as exception:
-            if exception.response['Error']['Code'] == "404":
-                pass
-            else:
-                print(exception)
-                pass
+        else:
+            self.db_cur.execute(
+                """
+                UPDATE pipelines SET
+                pipeline_status = %s
+                WHERE id = %s;
+                """, (status[cluster_status["State"]], pipeline_id))
+            self.db_conn.commit()
+
 # Handler methods
 
     @gen.coroutine
@@ -124,7 +143,8 @@ class MLModelsHandler(BaseHandler):
                                       for prep in data_prep_methods])
 
         for pipeline in user_pipelines:
-            self._update_pipeline_training_status(pipeline["id"])
+            self._update_pipeline_training_status(
+                pipeline["job_id"], pipeline["id"])
 
         self.render(
             "pipelines/pipelines.html",
@@ -218,13 +238,15 @@ class MLModelsHandler(BaseHandler):
         self.db_cur.execute(
             """INSERT INTO pipelines(
             user_id, pipeline_name,
+            job_id,
             training_config_resources, pipeline_dataset,
             pipeline_prep_stages_ids, pipeline_models_ids,
             classification_criteria, pipeline_status, error_status)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);""",
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""",
             (
                 self.current_user['id'],
                 self.get_argument('pipeline_name', ''),
+                '',
                 self.get_argument('training_config_resources', '{}'),
                 dataset,
                 preprocessing_block_ids,
@@ -254,5 +276,5 @@ class MLModelsHandlerDelete(BaseHandler):
             error = None
         except Exception as exception:
             error = exception
-            print(exception)
+            print(error)
         self.redirect(self.get_argument("next", "/pipelines"))

@@ -89,9 +89,11 @@ class MLModelsAWSDeployHandler(BaseHandler):
         import urllib
 
         prereq_file_url = "{user}/pipeline_{pipeline_id}/prerequisites_{pipeline_id}.sh".\
-            format(user="user_" + str(self.current_user["id"]), pipeline_id=pipeline_id)
+            format(user="user_" + str(self.current_user["id"]),
+                   pipeline_id=pipeline_id)
         job_file_url = "{user}/pipeline_{pipeline_id}/job_{pipeline_id}.py".\
-            format(user="user_" + str(self.current_user["id"]), pipeline_id=pipeline_id)
+            format(user="user_" + str(self.current_user["id"]),
+                   pipeline_id=pipeline_id)
 
         s3_client, _ = self.start_s3_connection()
 
@@ -110,10 +112,12 @@ class MLModelsAWSDeployHandler(BaseHandler):
         )
 
         job_file_url = "s3://" + self.BUCKET_SPARK_JOBS + "/" + job_file_url
-        prereq_file_url = "s3://" + self.BUCKET_SPARK_JOBS + "/" + urllib.parse.quote(prereq_file_url)
+        prereq_file_url = "s3://" + self.BUCKET_SPARK_JOBS + "/" +\
+            urllib.parse.quote(prereq_file_url)
         return job_file_url, prereq_file_url
 
-    def _deploy_emr_pipeline_training(self, pipeline, job_file_url, prereq_file_url):
+    def _deploy_emr_pipeline_training(
+            self, pipeline, job_file_url, prereq_file_url):
         """DEPLOT pipeline on cluster"""
 
         elements_to_replace = {
@@ -135,7 +139,12 @@ class MLModelsAWSDeployHandler(BaseHandler):
         # print('\n\n\n\n\n\n')
         emr_client = self.start_emr_connection()
         result = emr_client.run_job_flow(**job_step_content)
-        print("\n\n\n\n\n\n\n", result, "\n\n\n\n\n")
+        self.db_cur.execute("""UPDATE pipelines
+                            SET job_id = %s
+                            WHERE id = %s;""", (
+                                result["JobFlowId"],
+                                pipeline["id"]
+                            ))
 
     def _create_emr_files(self, pipeline):
         """CREATE files and return content"""
@@ -145,8 +154,10 @@ class MLModelsAWSDeployHandler(BaseHandler):
         pipeline_training_json = self._create_job_json_from_template(
             elements_to_replace=elements_to_replace)
 
-        job_file_url = self.BUCKET_SPARK_JOBS + "/{user}/pipeline_{pipeline_id}/job_{pipeline_id}.py".\
-            format(user="user_" + str(self.current_user["id"]), pipeline_id=pipeline['id'])
+        job_file_url = self.BUCKET_SPARK_JOBS +\
+            "/{user}/pipeline_{pipeline_id}/job_{pipeline_id}.py".\
+            format(user="user_" + str(self.current_user["id"]),
+                   pipeline_id=pipeline['id'])
         prereq_file = self._create_prerequisites_from_template(job_file_url)
 
         return job_file, prereq_file, pipeline_training_json
@@ -164,11 +175,13 @@ class MLModelsAWSDeployHandler(BaseHandler):
         )
         pipeline = self.db_cur.fetchone()
 
-        job_file, prereq_file, pipeline_training_json = self._create_emr_files(pipeline)
+        job_file, prereq_file, pipeline_training_json =\
+            self._create_emr_files(pipeline)
 
         job_file_url, prereq_file_url = self._upload_emr_files(
             job_file, prereq_file, pipeline_training_json, pipeline_id)
-        self._deploy_emr_pipeline_training(pipeline, job_file_url, prereq_file_url)
+        self._deploy_emr_pipeline_training(
+            pipeline, job_file_url, prereq_file_url)
         # self.db_cur.execute\
         # (\
         #     "UPDATE pipelines SET pipeline_status=%s WHERE id=%s;",\
