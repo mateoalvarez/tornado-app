@@ -45,6 +45,7 @@ class DatasetsHandler(BaseHandler):
             Bucket=self.BUCKET_DATASETS,
             Prefix=self.current_user["email"]
         )
+
         user_datasets = []
         if user_datasets_s3["KeyCount"] > 0:
             for user_dataset_s3 in user_datasets_s3["Contents"]:
@@ -57,13 +58,19 @@ class DatasetsHandler(BaseHandler):
 
         public_datasets_s3 = self.S3_CLIENT.list_objects_v2(
             Bucket=self.BUCKET_DATASETS,
-            Prefix="Public"
+            Prefix="admin@pyxisml.com"
         )
 
         public_datasets = []
         if public_datasets_s3["KeyCount"] > 0:
             for public_dataset_s3 in public_datasets_s3["Contents"]:
-                public_datasets.append(public_dataset_s3)
+                aux_public_dataset = public_dataset_s3
+                db_public_datasets = self._get_dataset_from_database_by_s3_key(
+                    1,
+                    aux_public_dataset["Key"])
+                if bool(db_public_datasets):
+                    aux_public_dataset.update(db_public_datasets[0])
+                    public_datasets.append(aux_public_dataset)
 
         self.render("datasets/dataset.html",
                     user_datasets=user_datasets,
