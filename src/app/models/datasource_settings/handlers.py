@@ -33,6 +33,7 @@ class DataSourceSettingsHandler(BaseHandler):
         self.db_conn.commit()
         self.redirect("/user_settings")
 
+
 class DataSourceSettingsHandlerDelete(BaseHandler):
     """Handler for delete"""
     @gen.coroutine
