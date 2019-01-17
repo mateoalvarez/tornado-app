@@ -207,6 +207,7 @@
 
 ## Create applications
 "applications.create_application.create_form.reveal_button","Crear aplicación"
+"applications.create_application.add_credentials","Añadir credenciales de Twitter para crear nuevas aplicaciones"
 "applications.create_application.create_form.header","Nueva aplicación"
 "applications.create_application.create_form.application_name","Nombre"
 "applications.create_application.create_form.select_pipeline","Selección de pipeline"

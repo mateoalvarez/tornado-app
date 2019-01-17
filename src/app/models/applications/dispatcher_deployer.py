@@ -40,7 +40,8 @@ class DispatcherDeployer():
 
         dispatcher_template = requests.get(
             "https://s3."+self.BUCKET_YAML_TEMPLATES_REGION+".amazonaws.com/"
-            + self.BUCKET_YAML_TEMPLATES+"/dispatcher/dispatcher_deployment.yaml")\
+            + self.BUCKET_YAML_TEMPLATES
+            + "/dispatcher/dispatcher_deployment.yaml")\
             .content.decode("utf-8").format(
                 application_id=kwargs["application_id"],
                 MONGODB_DBNAME='user_' + str(kwargs["user_id"]),
@@ -53,7 +54,9 @@ class DispatcherDeployer():
                 body=yaml.load(dispatcher_config_map_template),
                 pretty=True)
         except Exception as exception:
-            print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % exception)
+            print(
+                "Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % exception
+                )
 
         try:
             self.k8s_deployment.create_namespaced_deployment(
@@ -63,7 +66,9 @@ class DispatcherDeployer():
         except Exception as e:
             print("Exception when calling AppsV1Api->create_namespaced_replica_set: %s\n" % e)
 
-    def deploy_kafka_producer(self, application_id, keywords, datasource_settings, kafka_topic):
+    def deploy_kafka_producer(
+        self, application_id,
+            keywords, datasource_settings, kafka_topic):
         """Kafka producer deployer"""
         print("## -> begin deploy_kafka_producer arguments")
         print("\tapplication_id -> {app_id}".format(app_id=application_id))
