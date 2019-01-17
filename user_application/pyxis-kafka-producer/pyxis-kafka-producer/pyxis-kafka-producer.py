@@ -33,13 +33,13 @@ class ExploiterTwitterStreamListener(tweepy.StreamListener):
 def generate_auth_object():
     """Use twitter credentials to generate auth object"""
     collector_api_token = os.environ.get\
-    ("TWITTER_CONSUMER_API_KEY", "qUBED8JONS1rdOXMGXxJw3KDK")
+    ("TWITTER_API_KEY", "qUBED8JONS1rdOXMGXxJw3KDK")
     collector_api_secret = os.environ.get\
-    ("TWITTER_CONSUMER_API_SECRET", "DUI0ICvIXTYE4SPxdBSRVlq3xEw1UDpcy6mZG2qWE1yyX3nH2M")
+    ("TWITTER_API_SECRET_KEY", "DUI0ICvIXTYE4SPxdBSRVlq3xEw1UDpcy6mZG2qWE1yyX3nH2M")
     collector_access_token = os.environ.get\
-    ("TWITTER_CONSUMER_TOKEN", "245605482-rajqw4klordPOid8izXvAHBc8DhU8QliOFraCFqM")
+    ("TWITTER_ACCESS_TOKEN", "245605482-rajqw4klordPOid8izXvAHBc8DhU8QliOFraCFqM")
     collector_access_secret = os.environ.get\
-    ("TWITTER_CONSUMER_SECRET", "kYalUO9SmnLvcjXPIrRE0dSEDd2LhQBSBMPD57UgLvzse")
+    ("TWITTER_ACCESS_TOKEN_SECRET", "kYalUO9SmnLvcjXPIrRE0dSEDd2LhQBSBMPD57UgLvzse")
     auth = tweepy.OAuthHandler(collector_api_token, collector_api_secret)
     auth.set_access_token(collector_access_token, collector_access_secret)
     return auth

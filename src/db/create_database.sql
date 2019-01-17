@@ -147,7 +147,7 @@ INSERT INTO users(email, hashed_password, name, type)
 VALUES ('admin@pyxisml.com','$2b$12$jzfu7DwswPSzBWV9tjHSpeBxuasg27M9Ho5Zw7yKPBekmCNm.F8OS','ADMIN',1);
 -- TWITTER API FOR ADMIN
 INSERT INTO datasource_settings (user_id, type, datasource_access_settings)
-VALUES (1, 1, '{"TWITTER_CONSUMER_API_KEY":"qUBED8JONS1rdOXMGXxJw3KDK", "TWITTER_CONSUMER_API_SECRET":"DUI0ICvIXTYE4SPxdBSRVlq3xEw1UDpcy6mZG2qWE1yyX3nH2M", "TWITTER_CONSUMER_TOKEN":"245605482-rajqw4klordPOid8izXvAHBc8DhU8QliOFraCFqM", "TWITTER_CONSUMER_SECRET":"kYalUO9SmnLvcjXPIrRE0dSEDd2LhQBSBMPD57UgLvzse"}');
+VALUES (1, 1, '{ "TWITTER_ACCESS_TOKEN_SECRET":"kYalUO9SmnLvcjXPIrRE0dSEDd2LhQBSBMPD57UgLvzse", "TWITTER_ACCESS_TOKEN":"245605482-rajqw4klordPOid8izXvAHBc8DhU8QliOFraCFqM","TWITTER_API_SECRET_KEY":"DUI0ICvIXTYE4SPxdBSRVlq3xEw1UDpcy6mZG2qWE1yyX3nH2M","TWITTER_API_KEY":"qUBED8JONS1rdOXMGXxJw3KDK"}');
 -- CLASSIFICATION CRITERIA
 INSERT INTO classification_criteria (name, properties, description)
 VALUES ('Default', '{}', 'Votación en caso de ser número impar de modelos y máxima probabilidad en caso de ser par.');

@@ -19,21 +19,21 @@ spec:
         image: 998377059405.dkr.ecr.eu-central-1.amazonaws.com/pyxis-kafka-producer:latest
         imagePullPolicy: Always
         env:
-          - name: TWITTER_CONSUMER_API_KEY
+          - name: TWITTER_API_KEY
             valueFrom:
               configMapKeyRef:
                 name: kafka-producer-config
-                key: TWITTER_CONSUMER_API_KEY
-          - name: TWITTER_CONSUMER_API_SECRET
+                key: TWITTER_API_KEY
+          - name: TWITTER_API_SECRET_KEY
             valueFrom:
               configMapKeyRef:
                 name: kafka-producer-config
-                key: TWITTER_CONSUMER_API_SECRET
-          - name: TWITTER_CONSUMER_SECRET
+                key: TWITTER_API_SECRET_KEY
+          - name: TWITTER_ACCESS_TOKEN
             valueFrom:
               configMapKeyRef:
                 name: kafka-producer-config
-                key: TWITTER_CONSUMER_SECRET
+                key: TWITTER_ACCESS_TOKEN
           - name: WORDS_TO_TRACK
             valueFrom:
               configMapKeyRef:

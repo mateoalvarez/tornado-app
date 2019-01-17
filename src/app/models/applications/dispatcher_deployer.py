@@ -88,10 +88,10 @@ class DispatcherDeployer():
                 application_id=application_id,
                 WORDS_TO_TRACK=keywords,
                 KAFKA_TOPIC=kafka_topic,
-                TWITTER_CONSUMER_API_KEY=datasource_settings["TWITTER_CONSUMER_API_KEY"],
-                TWITTER_CONSUMER_API_SECRET=datasource_settings["TWITTER_CONSUMER_API_SECRET"],
-                TWITTER_CONSUMER_TOKEN=datasource_settings["TWITTER_CONSUMER_TOKEN"],
-                TWITTER_CONSUMER_SECRET=datasource_settings["TWITTER_CONSUMER_SECRET"])
+                TWITTER_API_KEY=datasource_settings["TWITTER_API_KEY"],
+                TWITTER_API_SECRET_KEY=datasource_settings["TWITTER_API_SECRET_KEY"],
+                TWITTER_ACCESS_TOKEN=datasource_settings["TWITTER_ACCESS_TOKEN"],
+                TWITTER_ACCESS_TOKEN_SECRET=datasource_settings["TWITTER_ACCESS_TOKEN_SECRET"])
 
         try:
             self.k8s_deployment.create_namespaced_deployment(

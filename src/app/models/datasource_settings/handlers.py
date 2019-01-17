@@ -23,12 +23,14 @@ class DataSourceSettingsHandler(BaseHandler):
         """POST method for datasource settings"""
         datasource_settings = json.dumps(\
         {element: self.get_argument(element) for element in self.request.arguments})
-        print('\n\n\n')
-        from pprint import pprint
-        pprint(datasource_settings)
-        print('\n\n\n')
         self.db_cur.execute(\
         "INSERT INTO datasource_settings (user_id, type, datasource_access_settings)\
          VALUES (%s, %s, %s);", (str(self.current_user["id"]), 1, datasource_settings))
         self.db_conn.commit()
         self.redirect("/user_settings")
+
+    @gen.coroutine
+    @tornado.web.authenticated
+    def update(self):
+        """UPDATE method for datasource settings"""
+        pass

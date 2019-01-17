@@ -2,7 +2,6 @@ import logging
 import tornado
 from tornado import gen
 import json
-import botocore
 from .job_builder import JobAssemblerHandler
 from ..base.handlers import BaseHandler
 
@@ -85,7 +84,7 @@ class MLModelsHandler(BaseHandler):
         """GET to EMR to check pipeline status"""
         emr_client = self.start_emr_connection()
         cluster_status = emr_client.describe_cluster(ClusterId=job_id)\
-        ["Cluster"]["Status"]
+            ["Cluster"]["Status"]
 
         status = {
             "STARTING": "training",
@@ -96,7 +95,7 @@ class MLModelsHandler(BaseHandler):
             "TERMINATED": "trained",
             "TERMINATED_WITH_ERRORS": "error"
         }
-        
+
         if status[cluster_status["State"]] == "error"\
             or (status[cluster_status["State"]] == "trained"\
             and cluster_status["StateChangeReason"]["Message"] != "Steps completed"):
