@@ -1,7 +1,11 @@
 <p>
-  <a class="btn btn-primary btn-lg col-12" data-toggle="collapse" href="#createApplication" role="button" aria-expanded="false" aria-controls="createApplication">
+  {% if user_credentials %}
+    <a class="btn btn-primary btn-lg col-12" data-toggle="collapse" href="#createApplication" role="button" aria-expanded="false" aria-controls="createApplication">
     {{ _("applications.create_application.create_form.reveal_button") }}
-  </a>
+    </a>
+  {% else %}
+    <a href="/user_settings">{{ _("applications.create_application.add_credentials") }}</a>
+  {%end%}
 </p>
 <div class="collapse" id="createApplication">
   <div class="card shadow rounded">

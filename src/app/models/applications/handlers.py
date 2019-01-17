@@ -35,11 +35,18 @@ class ApplicationsHandler(BaseHandler):
             "SELECT * FROM pipelines WHERE user_id=1;"
         )
         public_pipelines = self.db_cur.fetchall()
+        user_credentials = False
+        self.db_cur.execute(
+            "SELECT COUNT(1) FROM datasource_settings WHERE user_id = %s;"
+            , (self.current_user["id"], ))
+        if(self.db_cur.fetchall()[0]['count'] != 0):
+            user_credentials = True
 
         self.render("applications/applications.html",
                     user_applications=user_applications,
                     user_pipelines=user_pipelines,
-                    public_pipelines=public_pipelines
+                    public_pipelines=public_pipelines,
+                    user_credentials=user_credentials
                     )
 
     @gen.coroutine
