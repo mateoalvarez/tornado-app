@@ -120,13 +120,16 @@ class UserSettingsHandler(BaseHandler):
         all_twitter_settings = self.db_cur.fetchall()
 
         user_twitter_settings = []
+        user_twitter_settings_id = 0
         for configuration in all_twitter_settings:
             user_twitter_settings.append(
                 configuration["datasource_access_settings"])
+            user_twitter_settings_id = configuration["id"]
 
         self.render("users/settings.html",
                     user_data=user_data,
-                    user_twitter_settings=user_twitter_settings)
+                    user_twitter_settings=user_twitter_settings,
+                    user_twitter_settings_id=user_twitter_settings_id)
 
 
 class UserDatasourcesHandler(BaseHandler):

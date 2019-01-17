@@ -12,6 +12,7 @@ from models.pipelines.aws_deploy_handler import MLModelsAWSDeployHandler
 from models.running_applications.handlers import RunningApplicationsHandler
 from models.running_applications.handlers import VisualizeApplicationsHandler, DownloadDataHandler
 from models.datasource_settings.handlers import DataSourceSettingsHandler
+from models.datasource_settings.handlers import DataSourceSettingsHandlerDelete
 
 URL_PATTERNS = [
     # Home
@@ -47,5 +48,6 @@ URL_PATTERNS = [
     url(r"/user_settings", UserSettingsHandler, name="user_settings"),
 
     # User twitter settings
-    url(r"/datasource_settings", DataSourceSettingsHandler, name="datasource_settings")
+    url(r"/datasource_settings", DataSourceSettingsHandler, name="datasource_settings"),
+    url(r"/datasource_settings/delete", DataSourceSettingsHandlerDelete, name="datasource_settings_delete")
 ]

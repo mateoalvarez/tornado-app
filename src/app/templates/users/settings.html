@@ -1,10 +1,10 @@
 {% extends "../base/base.html" %}
 {% block body %}
 <div class="container">
-  <h1>{{ _("user.settings.title") }}</h1>
+
   <div class="row">
     <div class="row">
-      <h1>User Settings</h1>
+      <h1>{{ _("user.settings.title") }}</h1>
       <div class="table-responsive text-center mx-auto">
         <table class="table-striped table-bordered table-hover">
           {% for data_key, data_value in zip(user_data.keys(), user_data.values()) %}
@@ -24,7 +24,7 @@
       <div class="container">
         <h1>Twitter application configuration</h1>
       </div>
-      <div class="container">
+      <div class="container mb-5">
         {% if len(user_twitter_settings) == 0 %}
           <button type="button" class="btn btn-primary my-3" data-toggle="collapse" data-target="#twitter_credentials">{{ _("user.config.add_twitter_account") }}</button>
           <div id="twitter_credentials" class="container collapse">
@@ -64,6 +64,14 @@
           {% end %}
         {% end %}
       </table>
+      {% if user_twitter_settings_id != 0 %}
+        <div class="container">
+          <form method="post" action="datasource_settings/delete">
+            <input type="text" name="id" value='{{user_twitter_settings_id}}' hidden/>
+            <input type="submit" class="btn btn-primary my-3"        value='{{_("user.config.delete_twitter_account")}}'/>
+          </form>
+        </div>
+      {% end %}
     </div>
   </div>
 </div>
