@@ -130,10 +130,12 @@
 
 ## Twitter config
 "user.config.add_twitter_account","Añadir claves de twitter"
+"user.config.delete_twitter_account","Borrar claves de twitter"
 "user.config.TWITTER_API_KEY","Api Key"
 "user.config.TWITTER_API_SECRET_KEY","Api Secret Key"
 "user.config.TWITTER_ACCESS_TOKEN","Access Token"
 "user.config.TWITTER_ACCESS_TOKEN_SECRET","Access Token Secret"
+
 
 # Pipelines
 
