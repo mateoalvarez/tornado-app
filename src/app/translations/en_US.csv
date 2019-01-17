@@ -131,6 +131,7 @@
 ## Twitter config
 "user.config.add_twitter_account","Add twitter keys"
 "user.config.delete_twitter_account","Delete twitter keys"
+"user.config.twitter_config","Add"
 "user.config.TWITTER_API_KEY","Api Key"
 "user.config.TWITTER_API_SECRET_KEY","Api Secret Key"
 "user.config.TWITTER_ACCESS_TOKEN","Access Token"
