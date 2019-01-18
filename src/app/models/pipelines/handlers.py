@@ -142,7 +142,7 @@ class MLModelsHandler(BaseHandler):
                                       for prep in data_prep_methods])
 
         for pipeline in user_pipelines:
-            if("job_id" in pipeline):
+            if("job_id" in pipeline["job_id"] != ''):
                 self._update_pipeline_training_status(
                     pipeline["job_id"], pipeline["id"])
 
