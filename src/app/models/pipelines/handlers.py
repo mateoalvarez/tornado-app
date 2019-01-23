@@ -22,6 +22,31 @@ class MLModelsHandler(BaseHandler):
         pipelines = self.db_cur.fetchall()
         return pipelines
 
+    def _get_pipeline_dataset(self, dataset_id):
+        """GET pipeline's datasets"""
+        self.db_cur.execute(
+            "SELECT dataset_name FROM datasets WHERE id=%s;", (dataset_id,))
+        dataset = self.db_cur.fetchall()
+        return dataset[0]["dataset_name"]
+
+    def _get_pipeline_template_names(self, code_block_ids):
+        """GET pipeline's models"""
+        self.db_cur.execute(
+            "SELECT code_block_template_id FROM code_block WHERE\
+             id IN %s;", (tuple(code_block_ids),)
+             )
+        code_block_template_ids = self.db_cur.fetchall()
+
+        self.db_cur.execute(
+            "SELECT template_name FROM code_block_templates WHERE\
+            id IN %s;", (
+                tuple(map(lambda x: x["code_block_template_id"],
+                          code_block_template_ids)),
+                )
+        )
+        code_block_names = self.db_cur.fetchall()
+        return list(map(lambda x: x["template_name"], code_block_names))
+
     def _get_user_pipelines_ids(self):
         """GET user's pipelines"""
         self.db_cur.execute(
@@ -141,7 +166,31 @@ class MLModelsHandler(BaseHandler):
         preprocessing_ids = ','.join([str(prep["id"])
                                       for prep in data_prep_methods])
 
+        full_user_pipelines = []
         for pipeline in user_pipelines:
+            full_user_pipelines.append(
+                {
+                    "pipeline_name": pipeline["pipeline_name"],
+                    "pipeline_dataset":
+                        self._get_pipeline_dataset(
+                            pipeline["pipeline_dataset"]
+                        ),
+                    "pipeline_prep_stages_ids":
+                        ', '.join(self._get_pipeline_template_names(
+                            pipeline["pipeline_prep_stages_ids"])
+                        ),
+                    "pipeline_models_ids":
+                        ', '.join(self._get_pipeline_template_names(
+                            pipeline["pipeline_models_ids"])
+                        ),
+                    "classification_criteria":
+                        pipeline["classification_criteria"],
+                    "pipeline_status":
+                        pipeline["pipeline_status"],
+                    "id": pipeline["id"]
+                }
+            )
+
             if(pipeline["job_id"] != ''):
                 self._update_pipeline_training_status(
                     pipeline["job_id"], pipeline["id"])
@@ -151,7 +200,7 @@ class MLModelsHandler(BaseHandler):
             datasets=datasets,
             input_methods=input_methods,
             data_prep_methods=data_prep_methods,
-            user_pipelines=user_pipelines,
+            user_pipelines=full_user_pipelines,
             models=models,
             output_methods=output_methods,
             classification_criteria=classification_criteria,
