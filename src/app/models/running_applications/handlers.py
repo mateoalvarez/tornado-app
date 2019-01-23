@@ -58,7 +58,8 @@ class RunningApplicationsHandler(BaseHandler):
             db_conn.commit()
         except Exception as e:
             db_conn.rollback()
-            LOGGER.error("There was an error in INSERT process into applications table")
+            LOGGER.error(
+                "There was an error in INSERT process into applications table")
             LOGGER.error(e)
 
     def _delete_applications(self, db_cur, db_conn, user, applications):
@@ -69,7 +70,8 @@ class RunningApplicationsHandler(BaseHandler):
             db_conn.commit()
         except Exception as e:
             db_conn.rollback()
-            LOGGER.error("There was an error in DELETE process from applications table")
+            LOGGER.error(
+                "There was an error in DELETE process from applications table")
             LOGGER.error(e)
 
     @gen.coroutine
@@ -86,7 +88,8 @@ class RunningApplicationsHandler(BaseHandler):
         print(running_apps)
         print(" ---- running_apps <- ")
 
-        self.render("running_applications/running_applications.html", running_applications=running_apps)
+        self.render("running_applications/running_applications.html",
+                    running_applications=running_apps)
 
 
 class VisualizeApplicationsHandler(BaseHandler):
@@ -96,13 +99,17 @@ class VisualizeApplicationsHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         """GET visualize data"""
-        LOGGER.info("Going to retrieve information from MongoDB in order to render it in client browser")
+        LOGGER.info(
+            "Going to retrieve information from MongoDB in order\
+             to render it in client browser")
         application_id = self.get_argument("app_id", "")
         last_elements = self.get_argument("elements", "0")
         LOGGER.debug("Application id: {name}".format(name=application_id))
-        LOGGER.debug("Elements to show: {elements}".format(elements=last_elements))
+        LOGGER.debug("Elements to show: {elements}".
+                     format(elements=last_elements))
         if application_id == "":
-            self.render("running_applications/pipelines_visualization.html", records=[])
+            self.render("running_applications/pipelines_visualization.html",
+                        records=[])
         else:
             # TODO Filter for those that match with timestamp filter
             records_to_show = list(
@@ -114,21 +121,21 @@ class VisualizeApplicationsHandler(BaseHandler):
                         records=records_to_show, app_id=application_id)
 
 
-class DownloadDataHandler(BaseHandler):#, tornado.web.StaticFileHandler):
+class DownloadDataHandler(BaseHandler):
     """Handler to download data"""
     @gen.coroutine
     @tornado.web.authenticated
     def post(self):
         """POST TO DOWNLOAD DATA FROM MONGODB"""
         application_id = self.get_argument("application_id")
-        data = list(self._mongo_client[\
-        "user_" + str(self.current_user["id"])]["application_" +\
-         str(application_id)].find().sort([("_id", -1)]))
-        print('\n\n\n\n')
+        data = list(self._mongo_client[
+            "user_" + str(self.current_user["id"])]
+                    ["application_" + str(application_id)].find()
+                    .sort([("_id", -1)]))
         # print(json.dumps(data[0]))
-        print('\n\n\n\n')
         self.set_header('Content-Type', 'text/json')
-        self.set_header('Content-Disposition', 'attachment; filename=export.json')
+        self.set_header(
+            'Content-Disposition', 'attachment; filename=export.json')
         try:
             for element in data:
                 self.write(JSONEncoder().encode(element))
