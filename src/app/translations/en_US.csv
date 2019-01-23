@@ -82,7 +82,9 @@
 
 # Datasets
 
-"datasets.main.description","Here you can manage your datasets, as well as download the public ones provided. The format of the dataset must be tsv (tab separated values), with the following structure: <text> tab <numeric label>, ie: text to classify  1.0"
+"datasets.main.description_1","Here you can manage your datasets, as well as download the public ones provided."
+"datasets.main.description_2","The format must be tsv (tab separated values), with the following structure: <text> tab <numeric label>, ie: text to classify  1.0"
+"datasets.main.description_3","The labels must be 1.0 for the positive examples and 0.0 for the negative ones, and the file has to be '.txt', with 'utf-8 encoding'. Example files can be downloaded from the public datasets repository"
 "datasets.headers.public_datasets","Public Datasets"
 "datasets.headers.user_datasets","Private Datasets"
 "datasets.no.public.datasets","There are no public datasets yet"

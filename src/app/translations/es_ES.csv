@@ -82,7 +82,9 @@
 
 # Datasets
 
-"datasets.main.description","Aquí puedes gestionar tus datasets, asi como descargar los datasets públicos. El formato aceptado de datasets es tsv (tab separated values), con la siguiente estructura: <texto> tab <etiqueta numérica>, ie: texto a clasificar  1.0"
+"datasets.main.description_1","Aquí puedes gestionar tus datasets, así como descargar los datasets públicos."
+"datasets.main.description_2"," El formato aceptado es tsv (tab separated values), con la siguiente estructura: <texto> tab <etiqueta numérica>, por ejemplo: texto a clasificar  1.0"
+"datasets.main.description_3","Las etiquetas deberán ser 1.0 para los ejemplos positivos y 0.0 para los negativos, y el archivo deberá ser un '.txt' con codificación 'utf-8'. Se puede descargar un ejemplo en los datasets públicos."
 "datasets.headers.public_datasets","Datasets Públicos"
 "datasets.headers.user_datasets","Datasets Privados"
 "datasets.no.public.datasets","No hay datasets públicos cargados"
