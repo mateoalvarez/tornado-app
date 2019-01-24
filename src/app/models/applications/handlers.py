@@ -236,7 +236,8 @@ class ApplicationDeployer(BaseHandler):
                 application_id=application_id,
                 keywords=datasource_keywords,
                 datasource_settings=datasource_access_settings,
-                kafka_topic=kafka_topic
+                kafka_topic=kafka_topic,
+                language=self.get_argument("language")
                 )
 
             # Update application status -> to 'running'

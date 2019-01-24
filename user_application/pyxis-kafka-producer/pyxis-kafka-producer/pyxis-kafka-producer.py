@@ -49,6 +49,7 @@ def run_application():
     auth = generate_auth_object()
     stream_listener = ExploiterTwitterStreamListener()
     words_to_track = os.environ.get("WORDS_TO_TRACK", "bigdata, machinelearning").split(',')
+    language = os.environ.get("LANGUAGE", "en")
     # The hashtag is not allowed for now, so it is set before each word
     words_to_track = [str('#') + word for word in words_to_track]
     print(words_to_track)
@@ -56,7 +57,7 @@ def run_application():
     # Goal is to keep this process always going
     while True:
         try:
-            stream.filter(track=words_to_track)
+            stream.filter(track=words_to_track, languages=[language])
         except Exception as error:
             print("###Error###")
             print(error)

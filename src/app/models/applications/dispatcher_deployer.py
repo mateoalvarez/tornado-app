@@ -68,7 +68,7 @@ class DispatcherDeployer():
 
     def deploy_kafka_producer(
         self, application_id,
-            keywords, datasource_settings, kafka_topic):
+            keywords, datasource_settings, kafka_topic, language):
         """Kafka producer deployer"""
         print("## -> begin deploy_kafka_producer arguments")
         print("\tapplication_id -> {app_id}".format(app_id=application_id))
@@ -91,6 +91,7 @@ class DispatcherDeployer():
             + "/dispatcher/kafka_producer_deployment.yaml")\
             .content.decode("utf-8").format(
                 application_id=application_id,
+                LANGUAGE=language,
                 WORDS_TO_TRACK=keywords,
                 KAFKA_TOPIC=kafka_topic,
                 TWITTER_API_KEY=datasource_settings["TWITTER_API_KEY"],

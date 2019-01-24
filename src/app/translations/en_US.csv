@@ -222,6 +222,7 @@
 ## Application deploy
 "applications.header.deploy","Deploy "
 "applications.content.deploy","Deploy "
+"applications.content.deploy.select_language","Language"
 "applications.header.delete","Stop"
 "applications.content.delete","Stop"
 "applications.deploy.confirm.confirmation_text","The application will deploy within the cluster and will classify Tweets received from Twitter. Enter the keywords (hashtags) that you want to monitorize. Keywords must be separated by commas(,), spaces are not allowed and they are processed as filters ‘OR’"

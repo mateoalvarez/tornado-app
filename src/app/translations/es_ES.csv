@@ -222,6 +222,7 @@
 ## Application deploy
 "applications.header.deploy","Desplegar "
 "applications.content.deploy","Desplegar "
+"applications.content.deploy.select_language","Idioma"
 "applications.header.delete","Parar"
 "applications.content.delete","Parar"
 "applications.deploy.confirm.confirmation_text","La aplicación se desplegará en el cluster, clasificando los tweets que reciba de Twitter. Introduzca las palabras clave (hashtags) que quiera monitorizar. Las palabras deben ir separadas por comas (,), no se admiten espacios, y se procesan como filtros 'OR'."

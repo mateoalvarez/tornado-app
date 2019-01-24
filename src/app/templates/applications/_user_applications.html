@@ -21,6 +21,8 @@
               <li class="list-group-item">
                 <form method="post" action="/applications/deploy">
                   {% if application["application_status"] == "stopped" %}
+                    <label for="language">{{ _("applications.content.deploy.select_language") }}:</label>
+                    <input name="language" id="language" placeholder="en"/>
                     <input hidden value="{{ application["id"] }}" name="application_id"/>
                     <input hidden value="{{ application["application_pipeline"] }}" name="pipeline_id"/>
                     <input hidden value="{{ application["datasource_configuration_id"] }}" name="datasource_configuration_id" />
