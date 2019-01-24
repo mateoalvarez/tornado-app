@@ -2,16 +2,6 @@ function addAxesAndLegend (svg, xAxis, yAxis, margin, chartWidth, chartHeight) {
   var legendWidth  = 200,
       legendHeight = 100;
 
-  // clipping to make sure nothing appears behind legend
-  // svg.append('clipPath')
-//     .attr('id', 'axes-clip')
-//     .append('polygon')
-//       .attr('points', (-margin.left)                 + ',' + (-margin.top)                 + ' ' +
-//                       (chartWidth - legendWidth - 1) + ',' + (-margin.top)                 + ' ' +
-//                       (chartWidth - legendWidth - 1) + ',' + legendHeight                  + ' ' +
-//                       (chartWidth + margin.right)    + ',' + legendHeight                  + ' ' +
-//                       (chartWidth + margin.right)    + ',' + (chartHeight + margin.bottom) + ' ' +
-//                       (-margin.left)                 + ',' + (chartHeight + margin.bottom));
 
   var axes = svg.append('g')
     .attr('clip-path', 'url(#axes-clip)');
@@ -19,7 +9,12 @@ function addAxesAndLegend (svg, xAxis, yAxis, margin, chartWidth, chartHeight) {
   axes.append('g')
     .attr('class', 'x axis')
     .attr('transform', 'translate(0,' + chartHeight + ')')
-    .call(xAxis);
+    .call(xAxis)
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", ".15em")
+      .attr("transform", "rotate(-65)" );
 
   axes.append('g')
     .attr('class', 'y axis')
@@ -57,17 +52,16 @@ function startTransitions (svg, chartWidth, chartHeight, rectClip, x) {
 function makeChart (data) {
   var svgWidth  = 960,
       svgHeight = 500,
-      margin = { top: 20, right: 20, bottom: 40, left: 40 },
+      margin = { top: 20, right: 20, bottom: 80, left: 40 },
       chartWidth  = svgWidth  - margin.left - margin.right,
       chartHeight = svgHeight - margin.top  - margin.bottom;
-  console.log(data)
   var x = d3.time.scale().range([0, chartWidth])
             .domain(d3.extent(data, function (d) { return d.date; }));
       y = d3.scale.linear().range([chartHeight, 0])
-            .domain([d3.min(data, function (d) { return d.aggregated; }), d3.max(data, function (d) { return d.aggregated; })]);
+            .domain([0, d3.max(data, function (d) { return d.aggregated; }) + 2]);
 
-  var xAxis = d3.svg.axis().scale(x).orient('bottom').ticks(10)
-                .innerTickSize(-chartHeight).outerTickSize(0).tickFormat(d3.time.format('%H:%M:%S')).tickPadding(10),
+  var xAxis = d3.svg.axis().scale(x).orient('bottom').ticks(15)
+                .innerTickSize(-chartHeight).outerTickSize(0).tickFormat(d3.time.format('%d/%B, %H:%M')).tickPadding(10),
       yAxis = d3.svg.axis().scale(y).orient('left')
                 .innerTickSize(-chartWidth).outerTickSize(0).tickPadding(10);
 
@@ -77,7 +71,6 @@ function makeChart (data) {
     .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-  // clipping to start chart hidden and slide it in later
   var rectClip = svg.append('clipPath')
     .attr('id', 'rect-clip')
     .append('rect')
