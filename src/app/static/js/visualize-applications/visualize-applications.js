@@ -52,7 +52,7 @@ function startTransitions (svg, chartWidth, chartHeight, rectClip, x) {
 function makeChart (data) {
   var svgWidth  = 960,
       svgHeight = 500,
-      margin = { top: 20, right: 20, bottom: 80, left: 40 },
+      margin = { top: 20, right: 20, bottom: 100, left: 40 },
       chartWidth  = svgWidth  - margin.left - margin.right,
       chartHeight = svgHeight - margin.top  - margin.bottom;
   var x = d3.time.scale().range([0, chartWidth])
@@ -61,7 +61,7 @@ function makeChart (data) {
             .domain([0, d3.max(data, function (d) { return d.aggregated; }) + 2]);
 
   var xAxis = d3.svg.axis().scale(x).orient('bottom').ticks(15)
-                .innerTickSize(-chartHeight).outerTickSize(0).tickFormat(d3.time.format('%d/%B, %H:%M')).tickPadding(10),
+                .innerTickSize(-chartHeight).outerTickSize(0).tickFormat(d3.time.format('%d/%m, %H:%M')).tickPadding(10),
       yAxis = d3.svg.axis().scale(y).orient('left')
                 .innerTickSize(-chartWidth).outerTickSize(0).tickPadding(10);
 
