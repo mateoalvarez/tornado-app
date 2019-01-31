@@ -19,11 +19,14 @@ class TwitterApplication(tornado.web.Application):
 
 def main():
     """Server starter"""
+    MB = 1024 * 1024
+    GB = 1024 * MB
+    MAX_STREAMED_SIZE = 1*GB
     app = TwitterApplication(debug=True)
     tornado.locale.load_translations(options.locale_dir)
     tornado.locale.set_default_locale(options.default_locale)
     http_server = tornado.httpserver.HTTPServer(
-        app, ssl_options=options.ssl_options)
+        app, ssl_options=options.ssl_options, max_body_size=MAX_STREAMED_SIZE)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
 
